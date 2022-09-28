@@ -1,16 +1,3 @@
-CONSTTK const
-INTTK int
-IDENFR array
-LBRACK [
-INTCON 2
-RBRACK ]
-ASSIGN =
-LBRACE {
-INTCON 1
-COMMA ,
-INTCON 2
-RBRACE }
-SEMICN ;
 INTTK int
 MAINTK main
 LPARENT (
@@ -18,39 +5,42 @@ RPARENT )
 LBRACE {
 INTTK int
 IDENFR c
+<VarDef>
 SEMICN ;
+<VarDecl>
 IDENFR c
+<LVal>
 ASSIGN =
 GETINTTK getint
 LPARENT (
 RPARENT )
 SEMICN ;
+<Stmt>
 PRINTFTK printf
 LPARENT (
-STRCON ""
+STRCON "%d"
+COMMA ,
+IDENFR c
+<LVal>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
 RPARENT )
 SEMICN ;
-PRINTFTK printf
-LPARENT (
-STRCON ""
-RPARENT )
-SEMICN ;
-PRINTFTK printf
-LPARENT (
-STRCON ""
-RPARENT )
-SEMICN ;
-PRINTFTK printf
-LPARENT (
-STRCON ""
-RPARENT )
-SEMICN ;
-PRINTFTK printf
-LPARENT (
-STRCON ""
-RPARENT )
-SEMICN ;
+<Stmt>
 RETURNTK return
 IDENFR c
+<LVal>
+<PrimaryExp>
+<UnaryExp>
+<MulExp>
+<AddExp>
+<Exp>
 SEMICN ;
+<Stmt>
 RBRACE }
+<Block>
+<MainFuncDef>
+<CompUnit>

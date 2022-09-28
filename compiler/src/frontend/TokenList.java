@@ -10,9 +10,34 @@ import java.util.List;
 
 public class TokenList {
     private List<Token> tokens = new LinkedList<>();
+    private int pos=0;
 
     public void addToken(Token token) {
         tokens.add(token);
+    }
+
+    public Token peek(int forward) {
+        if (pos >= tokens.size()) {
+            return null;
+        }
+        return tokens.get(pos+forward);
+    }
+
+    public Token poll() {
+        if (pos >= tokens.size()) {
+            return null;
+        }
+        Token token = tokens.get(pos);
+        pos++;
+        return token;
+    }
+
+    public void skip(int steps) {
+        pos += steps;
+    }
+
+    public boolean equalPeekType(int forward,Token.Type type) {
+        return tokens.get(pos+forward).getRefType() == type;
     }
 
     public void print() {

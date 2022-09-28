@@ -17,6 +17,8 @@ public class Lexer {
     private int raw = 0;
     private int col = 0;
 
+    public static TokenList tokenList = new TokenList();
+
     public Lexer(String file) {
         try {
             BufferedReader reader = new BufferedReader((new FileReader(file)));
@@ -98,7 +100,6 @@ public class Lexer {
     }
 
     public TokenList GenTokenList() {
-        TokenList tokenList = new TokenList();
 
         while(!isFileEnd()) {
             skipBlanks();

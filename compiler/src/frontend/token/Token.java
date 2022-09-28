@@ -81,6 +81,10 @@ public class Token {
         return content;
     }
 
+    public Type getRefType() {
+        return refType;
+    }
+
     public static Token createToken(Type refType, String content, int line) {
         switch (refType) {
             case IDENFR: return new Ident(refType,line,content);
@@ -92,6 +96,6 @@ public class Token {
 
     @Override
     public String toString() {
-        return String.format("%s %s", refType, content);
+        return String.format("%s %s\n", refType, content);
     }
 }

@@ -65,13 +65,13 @@ public class Init {
                 scalar.print(output);
                 break;
             case 1:
-                vector.print(output, isConst);
+                vector.print(output);
                 break;
             case 2:
                 output.write(lBrace.toString());
                 Iterator<Token> iter = seperators.iterator();
                 for (Vector vector : vectors) {
-                    vector.print(output, isConst);
+                    vector.print(output);
                     if (iter.hasNext()) {
                         Token comma = iter.next();
                         output.write(comma.toString());
@@ -80,10 +80,39 @@ public class Init {
                 output.write(rBrace.toString());
                 break;
         }
-        if (isConst) {
-            output.write("<ConstInitVal>\n");
-        } else {
-            output.write("<InitVal>\n");
+        if (dimension != 1) {
+            if (isConst) {
+                output.write("<ConstInitVal>\n");
+            } else {
+                output.write("<InitVal>\n");
+            }
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        switch (dimension) {
+            case 0:
+                // scalar
+                sb.append(scalar.toString());
+                break;
+            case 1:
+                sb.append(vector.toString());
+                break;
+            case 2:
+                sb.append("{");
+                Iterator<Token> iter = seperators.iterator();
+                for (Vector vector : vectors) {
+                    sb.append(vector.toString());
+                    if (iter.hasNext()) {
+                        Token comma = iter.next();
+                        sb.append(", ");
+                    }
+                }
+                sb.append("}");
+                break;
+        }
+        return sb.toString();
     }
 }

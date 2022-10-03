@@ -29,4 +29,15 @@ public class FuncCall {
         }
         output.write(rParent.toString());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(ident.getContent());
+        sb.append("(");
+        if (funcRParams != null) {
+            sb.append(funcRParams.toString());
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 }

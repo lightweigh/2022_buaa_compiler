@@ -57,4 +57,21 @@ public class PrimaryExp implements Expression {
         }
         output.write("<PrimaryExp>\n");
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        switch (type) {
+            case 0:
+                sb.append("(").append(exp.toString()).append(")");
+                break;
+            case 1:
+                sb.append(lVal.toString());
+                break;
+            case 2:
+                sb.append(number.toString());
+                break;
+        }
+        return sb.toString();
+    }
 }

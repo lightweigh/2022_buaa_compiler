@@ -14,9 +14,9 @@ public class CompUnitParser {
 
     public void parser() {
         this.compUnit = new CompUnit();
-        Token token0 = Lexer.tokenList.peek(0);
-        Token token1 = Lexer.tokenList.peek(1);
-        Token token2 = Lexer.tokenList.peek(2);
+        Token token0;
+        Token token1;
+        Token token2;
 
         //  ConstDecl   →   'const'     BType   Ident                   ...
         //  VarDecl     →   BType       Ident   { '[' ConstExp ']' }    ...
@@ -24,6 +24,9 @@ public class CompUnitParser {
         //  MainFuncDef →   'int'       'main'  '('                     ...
 
         while (declParser) {
+            token0 = Lexer.tokenList.peek(0);
+            token1 = Lexer.tokenList.peek(1);
+            token2 = Lexer.tokenList.peek(2);
             if (token0.getRefType() == Token.Type.CONSTTK) {
                 compUnit.addDecl();
             } else if (token0.getRefType() == Token.Type.INTTK) {
@@ -37,10 +40,14 @@ public class CompUnitParser {
                         declParser = false;
                     }
                 }
+            } else {    // token0.getRefType() == Token.Type.VOIDTK
+                declParser = false;
             }
         }
 
         while (funcParser) {
+            token0 = Lexer.tokenList.peek(0);
+            token1 = Lexer.tokenList.peek(1);
             if (token0.getRefType() == Token.Type.VOIDTK) {
                 compUnit.addFuncDef();
             } else if (token0.getRefType() == Token.Type.INTTK) {

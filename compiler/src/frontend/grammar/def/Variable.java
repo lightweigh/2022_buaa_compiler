@@ -36,20 +36,8 @@ public class Variable {
         return ident;
     }
 
-    public ArrayList<Token> getBracks() {
-        return bracks;
-    }
-
-    public Token getBrack(int pos) {
-        return bracks.get(pos);
-    }
-
     public ArrayList<ConstExp> getConstExps() {
         return constExps;
-    }
-
-    public HashMap<Integer, ArrayList<Exp>> getInitials() {
-        return initials;
     }
 
     public void print(BufferedWriter output) throws IOException {
@@ -63,5 +51,16 @@ public class Variable {
 
     public int getDimension() {
         return dimension;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(ident.getContent());
+        for (int i = 0;i < getConstExps().size();i++) {
+            sb.append("[");
+            sb.append(constExps.get(i).toString());
+            sb.append("]");
+        }
+        return sb.toString();
     }
 }

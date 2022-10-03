@@ -24,11 +24,25 @@ public class LOrExp implements CondExp {
         LAndExp lAndExp = iter.next();
         lAndExp.print(output);
         for (Token ortk : seperators) {
-            output.write("<LOrExp\n>");
+            output.write("<LOrExp>\n");
             output.write(ortk.toString());
             lAndExp = iter.next();
             lAndExp.print(output);
         }
         output.write("<LOrExp>\n");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<LAndExp> iter = lAndExps.iterator();
+        LAndExp lAndExp = iter.next();
+        sb.append(lAndExp.toString());
+        for (Token ortk : seperators) {
+            sb.append(" || ");
+            lAndExp = iter.next();
+            sb.append(lAndExp.toString());
+        }
+        return sb.toString();
     }
 }

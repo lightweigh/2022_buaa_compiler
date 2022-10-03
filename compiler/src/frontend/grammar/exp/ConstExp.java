@@ -17,5 +17,11 @@ public class ConstExp implements Expression {
 
     public void print(BufferedWriter output) throws IOException {
         addExp.print(output);
+        output.write("<ConstExp>\n");
+    }
+
+    @Override
+    public String toString() {
+        return addExp.toString();
     }
 }

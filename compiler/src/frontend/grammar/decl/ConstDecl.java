@@ -30,7 +30,7 @@ public class ConstDecl extends Decl {
         output.write(intTK.toString());
         Iterator<Token> iterSeperators = separators.iterator();
         for (int i = 0; i < constDefs.size(); i++) {
-            constDefs.get(0).print(output);
+            constDefs.get(i).print(output);
             if (iterSeperators.hasNext()) {
                 Token comma = iterSeperators.next();
                 output.write(comma.toString());
@@ -38,5 +38,21 @@ public class ConstDecl extends Decl {
         }
         output.write(semicon.toString());
         output.write("<ConstDecl>\n");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("const int ");
+        Iterator<Token> iterSeperators = separators.iterator();
+        for (ConstDef constDef : constDefs) {
+            sb.append(constDef.toString());
+            if (iterSeperators.hasNext()) {
+                iterSeperators.next();
+                sb.append(", ");
+            }
+        }
+        sb.append(";");
+        return sb.toString();
     }
 }

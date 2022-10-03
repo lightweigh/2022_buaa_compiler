@@ -25,11 +25,25 @@ public class RelExp implements CondExp {
         CondExp condExp = iter.next();
         condExp.print(output);
         for (CondOp condOp : condOps) {
-            output.write("<RelExp\n>");
+            output.write("<RelExp>\n");
             condOp.print(output);
             condExp = iter.next();
             condExp.print(output);
         }
-        output.write("<RelExp\n>");
+        output.write("<RelExp>\n");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<CondExp> iter = condExps.iterator();
+        CondExp condExp = iter.next();
+        sb.append(condExp);
+        for (CondOp condOp : condOps) {
+            sb.append(condOp.toString());
+            condExp = iter.next();
+            sb.append(condExp);
+        }
+        return sb.toString();
     }
 }

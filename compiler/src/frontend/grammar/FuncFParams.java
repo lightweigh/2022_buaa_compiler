@@ -30,4 +30,18 @@ public class FuncFParams {
         }
         output.write("<FuncFParams>\n");
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<Token> iter = seperators.iterator();
+        for (FuncFParam funcFParam : funcFParams) {
+            sb.append(funcFParam.toString());
+            if (iter.hasNext()) {
+                iter.next();
+                sb.append(", ");
+            }
+        }
+        return sb.toString();
+    }
 }

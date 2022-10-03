@@ -16,7 +16,9 @@ public class ReturnStmt extends Stmt {
 
     public void parser() {
         returnTK = Lexer.tokenList.poll();
-        exp = (Exp) Parser.expressionParser("Exp");
+        if (!Lexer.tokenList.equalPeekType(0, Token.Type.SEMICN)) {
+            exp = (Exp) Parser.expressionParser("Exp");
+        }
         if (!Lexer.tokenList.equalPeekType(0, Token.Type.SEMICN)) {
             // System.out.println("error"); todo
         } else {

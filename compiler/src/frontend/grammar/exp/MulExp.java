@@ -24,11 +24,25 @@ public class MulExp implements Expression {
         Expression expression = iter.next();
         expression.print(output);
         for (Operator operator : operators) {
-            output.write("<MulExp\n>");
+            output.write("<MulExp>\n");
             operator.print(output);
             expression = iter.next();
             expression.print(output);
         }
         output.write("<MulExp>\n");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<Expression> iter = expressions.iterator();
+        Expression expression = iter.next();
+        sb.append(expression.toString());
+        for (Operator operator : operators) {
+            sb.append(operator.toString());
+            expression = iter.next();
+            sb.append(expression.toString());
+        }
+        return sb.toString();
     }
 }

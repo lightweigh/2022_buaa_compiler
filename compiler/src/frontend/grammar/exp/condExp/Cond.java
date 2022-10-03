@@ -18,4 +18,8 @@ public class Cond implements CondExp{
         output.write("<Cond>\n");
     }
 
+    @Override
+    public String toString() {
+        return lOrExp.toString();
+    }
 }

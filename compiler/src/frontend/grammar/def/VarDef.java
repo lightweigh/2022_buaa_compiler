@@ -1,40 +1,27 @@
 package frontend.grammar.def;
 
-import frontend.Lexer;
-import frontend.grammar.init.InitVal;
-import frontend.grammar.exp.ConstExp;
-import frontend.token.Ident;
+import frontend.grammar.init.Init;
 import frontend.token.Token;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class VarDef {
     //  VarDef → Ident { '[' ConstExp ']' } | Ident { '[' ConstExp ']' } '=' InitVal
     private Variable variable;
     private boolean isInit = false;
     private Token assign;
-    private InitVal initVal;
+    private Init initVal;
 
     public VarDef(Variable variable) {
         this.variable = variable;
         this.isInit = false;
     }
 
-    public VarDef(Variable variable, Token assign, InitVal initVal) {
+    public VarDef(Variable variable, Token assign, Init initVal) {
         this.variable = variable;
         this.isInit = true;
         this.assign = assign;
-        this.initVal = initVal;
-    }
-
-    public void setAssign(Token assign) {
-        this.assign = assign;
-        isInit = true;
-    }
-
-    public void setInitVal(InitVal initVal) {
         this.initVal = initVal;
     }
 
@@ -45,5 +32,15 @@ public class VarDef {
             initVal.print(output);
         }
         output.write("<VarDef>\n");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(variable.toString());
+        if (isInit) {
+            sb.append(" = ").append(initVal.toString());
+        }
+        return sb.toString();
     }
 }

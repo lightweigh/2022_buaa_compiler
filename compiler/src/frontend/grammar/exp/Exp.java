@@ -14,4 +14,9 @@ public class Exp implements Expression {
         addExp.print(output);
         output.write("<Exp>\n");
     }
+
+    @Override
+    public String toString() {
+        return addExp.toString();
+    }
 }

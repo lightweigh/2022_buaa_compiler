@@ -23,12 +23,27 @@ public class LAndExp implements CondExp {
         Iterator<EqExp> iter = eqExps.iterator();
         EqExp eqExp = iter.next();
         eqExp.print(output);
-        for (Token ortk : seperators) {
-            output.write("<LAndExp\n>");
-            output.write(ortk.toString());
+        for (Token andtk : seperators) {
+            output.write("<LAndExp>\n");
+            output.write(andtk.toString());
             eqExp = iter.next();
             eqExp.print(output);
         }
-        output.write("<LAndExp\n>");
+        output.write("<LAndExp>\n");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<EqExp> iter = eqExps.iterator();
+        EqExp eqExp = iter.next();
+        sb.append(eqExp.toString());
+        for (Token andtk : seperators) {
+            sb.append(" && ");
+            eqExp = iter.next();
+            sb.append(eqExp.toString());
+        }
+
+        return sb.toString();
     }
 }

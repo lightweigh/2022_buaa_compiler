@@ -64,9 +64,11 @@ public class Lexer {
     }
 
     public void skip(int paces) {
-        if (col + paces > getCurLine().length()) {
+        if (col + paces == getCurLine().length()) {
+            nextLine();
+        } else if (col + paces > getCurLine().length()) {
+            col = col + paces - getCurLine().length();
             raw++;
-            col = 0;
             System.out.println("lexer:stepForward");
         } else {
             col += paces;
@@ -84,6 +86,9 @@ public class Lexer {
     }
 
     public void skipBlanks() {
+        /*if (getCurLine().length() == 0) {
+            nextLine();
+        }*/
         while (!isFileEnd() && Character.isWhitespace(getCurChar())) {
             skip(1);
         }
@@ -110,12 +115,16 @@ public class Lexer {
             if (peakString(2).equals("/*")) {
                 skip(2);
                 while(!isFileEnd() && !peakString(2).equals("*/")) {
+                    if (getCurLine().length() == 0) {
+                        nextLine();
+                        continue;
+                    }
                     skip(1);
                     if(isLineEnd()) {
                         nextLine();
                     }
                 }
-                if (peakString(2).equals("*/")) {
+                if (!isFileEnd() && peakString(2).equals("*/")) {
                     skip(2);
                     continue;
                 }

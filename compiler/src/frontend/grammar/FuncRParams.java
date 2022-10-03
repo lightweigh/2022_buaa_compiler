@@ -30,4 +30,17 @@ public class FuncRParams {
         }
         output.write("<FuncRParams>\n");
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<Exp> iter = exps.iterator();
+        Exp exp = iter.next();
+        sb.append(exp.toString());
+        for (Token comma : seperators) {
+            exp = iter.next();
+            sb.append(", ").append(exp.toString());
+        }
+        return sb.toString();
+    }
 }

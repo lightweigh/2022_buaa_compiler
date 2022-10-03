@@ -40,4 +40,16 @@ public class FuncDef extends Component {
         block.print(output);
         output.write("<FuncDef>\n");
     }
+
+    @Override
+    public String toString() {
+        // FuncType Ident '(' [FuncFParams] ')' Block
+        StringBuilder sb = new StringBuilder();
+        sb.append(funcType.toString()).append(" ").append(ident.getContent()).append("(");
+        if (funcFParams != null) {
+            sb.append(funcFParams.toString());
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 }

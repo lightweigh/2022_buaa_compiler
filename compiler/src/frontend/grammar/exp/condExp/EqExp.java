@@ -23,11 +23,25 @@ public class EqExp implements CondExp {
         RelExp condExp = iter.next();
         condExp.print(output);
         for (CondOp condOp : seperators) {
-            output.write("<EqExp\n>");
+            output.write("<EqExp>\n");
             condOp.print(output);
             condExp = iter.next();
             condExp.print(output);
         }
-        output.write("<EqExp\n>");
+        output.write("<EqExp>\n");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<RelExp> iter = relExps.iterator();
+        RelExp condExp = iter.next();
+        sb.append(condExp);
+        for (CondOp condOp : seperators) {
+            sb.append(condOp.toString());
+            condExp = iter.next();
+            sb.append(condExp);
+        }
+        return sb.toString();
     }
 }

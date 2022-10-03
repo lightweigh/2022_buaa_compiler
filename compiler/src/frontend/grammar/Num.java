@@ -16,4 +16,9 @@ public class Num {
         output.write(intConst.toString());
         output.write("<Number>\n");
     }
+
+    @Override
+    public String toString() {
+        return  intConst.getContent();
+    }
 }

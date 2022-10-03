@@ -36,11 +36,27 @@ public class FuncFParam {
             output.write(bracks.get(++i).toString());
             if (dimension == 2) {
                 output.write(bracks.get(++i).toString());
-                constExp.print(output);
                 output.write(bracks.get(++i).toString());
+                constExp.print(output);
+                // output.write(bracks.get(++i).toString());
             }
             output.write(bracks.get(++i).toString());
         }
         output.write("<FuncFParam>\n");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("int ");
+        sb.append(ident.getContent());
+        if (dimension != 0) {
+            int i = -1;
+            sb.append("[");
+            if (dimension == 2) {
+                sb.append("][").append(constExp.toString());
+            }
+            sb.append("]");
+        }
+        return sb.toString();
     }
 }

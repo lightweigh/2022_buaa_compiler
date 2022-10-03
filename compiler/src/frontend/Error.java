@@ -13,6 +13,7 @@ public class Error {
                     //  缺少分号
                     //  报错行号为分号前一个非终结符所在行号。
                     System.out.println("Error occurs!");
+                    // assert false;
                     return null;
                 } else {
                     return Lexer.tokenList.poll();   //  ';'
@@ -23,7 +24,7 @@ public class Error {
                     // 缺少右中括号’]’
                     // 报错行号为右中括号前一个非终结符所在行号。
                     System.out.println("Error occurs!");
-                    return null;
+                    // return null;
                 } else {
                     return Lexer.tokenList.poll();   // ']'
                 }

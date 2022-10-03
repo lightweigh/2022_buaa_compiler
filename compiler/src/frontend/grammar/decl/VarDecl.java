@@ -40,4 +40,20 @@ public class VarDecl extends Decl {
         output.write(semicon.toString());
         output.write("<VarDecl>\n");
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("int ");
+        Iterator<Token> iterSeperator = seperators.iterator();
+        for (VarDef varDef : varDefs) {
+            sb.append(varDef.toString());
+            if (iterSeperator.hasNext()) {
+                iterSeperator.next();
+                sb.append(", ");
+            }
+        }
+        sb.append(";");
+        return sb.toString();
+    }
 }

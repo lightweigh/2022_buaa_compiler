@@ -31,4 +31,13 @@ public class BlockItem {
             stmt.print(output);
         }
     }
+
+    @Override
+    public String toString() {
+        if (decl != null) {
+            return decl.toString();
+        } else {
+            return stmt.toString();
+        }
+    }
 }

@@ -6,16 +6,13 @@ import frontend.grammar.*;
 import frontend.grammar.def.Variable;
 import frontend.grammar.exp.*;
 import frontend.grammar.exp.condExp.*;
-import frontend.grammar.init.ConstInitVal;
 import frontend.grammar.init.Init;
-import frontend.grammar.init.InitVal;
 import frontend.grammar.decl.ConstDecl;
 import frontend.grammar.decl.Decl;
 import frontend.grammar.decl.VarDecl;
 import frontend.grammar.def.ConstDef;
 import frontend.grammar.def.VarDef;
 import frontend.grammar.init.Vector;
-import frontend.grammar.stmt.Stmt;
 import frontend.token.Ident;
 import frontend.token.IntConst;
 import frontend.token.Token;
@@ -121,11 +118,16 @@ public class Parser {
         // 报错行号为<Ident>所在行数。
         Variable variable = variableParser();
         return new ConstDef(variable, Lexer.tokenList.poll(),
-                (ConstInitVal) initParser(variable.getDimension(),"ConstExp"));
+                initParser(variable.getDimension(),"ConstExp"));
     }
 
     private static Vector vectorParser(String type) {
-        Token lBrace = Lexer.tokenList.poll();
+        boolean hasBrace = false;
+        Token lBrace = null;
+        if (Lexer.tokenList.equalPeekType(0, Token.Type.LBRACE)) {
+            lBrace = Lexer.tokenList.poll();
+            hasBrace = true;
+        }
         ArrayList<Expression> expressions = new ArrayList<>();
         ArrayList<Token> seperators = new ArrayList<>();
         expressions.add(expressionParser(type));
@@ -133,9 +135,11 @@ public class Parser {
             seperators.add(Lexer.tokenList.poll());
             expressions.add(expressionParser(type));
         }
-        assert Lexer.tokenList.equalPeekType(0, Token.Type.LBRACE);
-        Token rBrace = Lexer.tokenList.poll();
-        return new Vector(lBrace, expressions, seperators, rBrace);
+        Token rBrace = null;
+        if (hasBrace) {
+            rBrace = Lexer.tokenList.poll();
+        }
+        return new Vector(lBrace, expressions, seperators, rBrace, type);
 
     }
 
@@ -185,7 +189,7 @@ public class Parser {
         Variable variable = variableParser();
         if (Lexer.tokenList.equalPeekType(0, Token.Type.ASSIGN)) {
             Token assign = Lexer.tokenList.poll();
-            InitVal initVal = (InitVal) initParser(variable.getDimension(), "Exp");
+            Init initVal = initParser(variable.getDimension(), "Exp");
             return new VarDef(variable, assign, initVal);
         } else {
             return new VarDef(variable);
@@ -215,16 +219,16 @@ public class Parser {
                 MulExp mulExp = (MulExp) expressionParser("MulExp");
                 if (mulExp != null) {
                     ArrayList<Expression> expressions = new ArrayList<>();
-                    ArrayList<UnaryOp> unaryOps = new ArrayList<>();
+                    ArrayList<Operator> operators = new ArrayList<>();
                     expressions.add(mulExp);
 
                     tType = Lexer.tokenList.peek(0).getRefType();
-                    while (tType == Token.Type.AND || tType == Token.Type.MINU) {
-                        unaryOps.add(new UnaryOp(Lexer.tokenList.poll()));// '+' | '-'
+                    while (tType == Token.Type.PLUS || tType == Token.Type.MINU) {
+                        operators.add(new Operator(Lexer.tokenList.poll()));// '+' | '-'
                         expressions.add(expressionParser("MulExp"));
                         tType = Lexer.tokenList.peek(0).getRefType();
                     }
-                    return new AddExp(expressions, unaryOps);
+                    return new AddExp(expressions, operators);
                 }
                 return null;
             case "MulExp":
@@ -337,7 +341,7 @@ public class Parser {
         Ident ident = (Ident) Lexer.tokenList.poll();
         Token lParent = Lexer.tokenList.poll();
         FuncRParams funcRParams=null;
-        if (!Lexer.tokenList.equalPeekType(0, Token.Type.RBRACK)) {
+        if (!Lexer.tokenList.equalPeekType(0, Token.Type.RPARENT)) {
             funcRParams = funcRParamsParser();
         }
         Token rParent = Lexer.tokenList.poll();

@@ -36,4 +36,14 @@ public class LVal {
         }
         output.write("<LVal>\n");
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(ident.getContent());
+        for (Exp exp : exps) {
+            sb.append("[").append(exp.toString()).append("]");
+        }
+        return sb.toString();
+    }
 }

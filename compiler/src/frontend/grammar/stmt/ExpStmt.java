@@ -15,7 +15,10 @@ public class ExpStmt extends Stmt {
     private Token semicon;
 
     public void parser() {
-        exp = (Exp) Parser.expressionParser("Exp");
+        if (!Lexer.tokenList.equalPeekType(0, Token.Type.SEMICN)) {
+            exp = (Exp) Parser.expressionParser("Exp");
+        }
+
         if (!Lexer.tokenList.equalPeekType(0, Token.Type.SEMICN)) {
             Error.errorDetect(';');
         } else {

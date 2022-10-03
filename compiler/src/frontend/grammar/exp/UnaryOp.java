@@ -16,5 +16,12 @@ public class UnaryOp implements Expression {
     @Override
     public void print(BufferedWriter output) throws IOException {
         output.write(unaryOp.toString());
+        output.write("<UnaryOp>\n");
+    }
+
+    @Override
+    public String toString() {
+        Token.Type type = unaryOp.getRefType();
+        return type == Token.Type.PLUS ? "+" : type == Token.Type.MINU ? "-" : "!";
     }
 }

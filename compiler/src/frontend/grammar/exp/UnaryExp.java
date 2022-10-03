@@ -51,4 +51,21 @@ public class UnaryExp implements Expression {
         }
         output.write("<UnaryExp>\n");
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        switch (type) {
+            case 0:
+                sb.append(primaryExp.toString());
+                break;
+            case 1:
+                sb.append(funcCall.toString());
+                break;
+            case 2:
+                sb.append(unaryOp.toString()).append(unaryExp.toString());
+                break;
+        }
+        return sb.toString();
+    }
 }

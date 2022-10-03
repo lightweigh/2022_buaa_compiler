@@ -47,10 +47,9 @@ public class Stmt {
                 PrintfStmt printfStmt = new PrintfStmt();
                 printfStmt.parser();
                 return printfStmt;
-
             default:
                 // Stmt → LVal '=' Exp ';'
-                // Stmt → [Exp] ';'
+                // Stmt → Exp ';'
                 int i = 0;
                 while (Lexer.tokenList.peek(i).getRefType() != Token.Type.SEMICN) {
                     if (Lexer.tokenList.peek(i).getRefType() == Token.Type.ASSIGN) {

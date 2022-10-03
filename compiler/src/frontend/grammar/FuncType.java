@@ -22,4 +22,9 @@ public class FuncType {
         output.write(funcType.toString());
         output.write("<FuncType>\n");
     }
+
+    @Override
+    public String toString() {
+        return needRet ? "int " : "void";
+    }
 }

@@ -123,19 +123,23 @@ public class Parser {
 
     private static Vector vectorParser(String type) {
         boolean hasBrace = false;
-        Token lBrace = null;
+        Token lBrace = null,rBrace=null;
         if (Lexer.tokenList.equalPeekType(0, Token.Type.LBRACE)) {
             lBrace = Lexer.tokenList.poll();
             hasBrace = true;
         }
         ArrayList<Expression> expressions = new ArrayList<>();
         ArrayList<Token> seperators = new ArrayList<>();
-        expressions.add(expressionParser(type));
+        if (Lexer.tokenList.equalPeekType(0, Token.Type.RBRACE)) {
+            rBrace = Lexer.tokenList.poll();
+            return new Vector(lBrace,expressions,seperators,rBrace,type);
+        }
+        expressions.add(expressionParser(type));    // wrong occurs
         while (Lexer.tokenList.equalPeekType(0, Token.Type.COMMA)) {
             seperators.add(Lexer.tokenList.poll());
             expressions.add(expressionParser(type));
         }
-        Token rBrace = null;
+
         if (hasBrace) {
             rBrace = Lexer.tokenList.poll();
         }

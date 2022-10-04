@@ -8,90 +8,8 @@
   <component name="ChangeListManager">
     <list default="true" id="efa5aa63-31f4-4d04-bbdd-682ed7f941b3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/META-INF/compiler.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/Error.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/Error.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/Lexer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/Lexer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/BlockItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/BlockItem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncCall.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncCall.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncDef.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncDef.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncFParam.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncFParam.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncFParams.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncFParams.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncRParam.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncRParams.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncRParams.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/FuncType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/LVal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/LVal.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/Num.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/Num.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/decl/ConstDecl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/decl/ConstDecl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/decl/VarDecl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/decl/VarDecl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/def/ConstDef.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/def/ConstDef.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/def/VarDef.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/def/VarDef.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/def/Variable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/def/Variable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/AddExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/AddExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/ConstExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/ConstExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/Exp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/Exp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/ExpParser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/MulExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/MulExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/Operator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/Operator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/PrimaryExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/PrimaryExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/UnaryExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/UnaryExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/UnaryOp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/UnaryOp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/Cond.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/Cond.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/CondOp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/CondOp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/EqExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/EqExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/LAndExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/LAndExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/LOrExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/LOrExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/RelExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/RelExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/init/ConstInitVal.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/init/Init.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/init/Init.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/init/InitVal.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/init/Vector.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/init/Vector.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/stmt/ExpStmt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/stmt/ExpStmt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/stmt/ReturnStmt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/stmt/ReturnStmt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/stmt/Stmt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/stmt/Stmt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/parser/CompUnitParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/parser/CompUnitParser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/parser/Parser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/parser/Parser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/src.zip" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/src.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/src.zip" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/Error.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/Error.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/Lexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/BlockItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/BlockItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/FuncCall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/FuncCall.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/FuncDef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/FuncDef.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/FuncFParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/FuncFParam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/FuncFParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/FuncFParams.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/FuncRParam.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/FuncRParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/FuncRParams.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/FuncType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/FuncType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/LVal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/LVal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/Num.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/Num.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/decl/ConstDecl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/decl/ConstDecl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/decl/Decl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/decl/Decl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/decl/VarDecl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/decl/VarDecl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/def/ConstDef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/def/ConstDef.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/def/VarDef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/def/VarDef.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/def/Variable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/def/Variable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/AddExp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/AddExp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/ConstExp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/ConstExp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/Exp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/Exp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/MulExp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/MulExp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/Operator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/Operator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/PrimaryExp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/PrimaryExp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/UnaryExp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/UnaryExp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/UnaryOp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/UnaryOp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/Cond.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/Cond.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/CondOp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/CondOp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/EqExp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/EqExp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/LAndExp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/LAndExp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/LOrExp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/LOrExp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/RelExp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/RelExp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/init/ConstInitVal.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/init/Init.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/init/Init.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/init/InitVal.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/init/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/init/Vector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/stmt/ExpStmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/stmt/ExpStmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/stmt/ReturnStmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/stmt/ReturnStmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/stmt/Stmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/stmt/Stmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/parser/CompUnitParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/parser/CompUnitParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/parser/Parser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/testfile.txt" afterDir="false" />
     </list>
@@ -107,7 +25,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/frontend/grammar/MainFuncDef.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
+            <state relative-caret-position="357">
               <caret line="21" selection-start-line="21" selection-end-line="21" />
             </state>
           </provider>
@@ -116,7 +34,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/frontend/parser/CompUnitParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
+            <state relative-caret-position="1176">
               <caret line="61" selection-start-line="61" selection-end-line="61" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -125,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/frontend/parser/Parser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="247" column="31" selection-start-line="247" selection-start-column="31" selection-end-line="247" selection-end-column="31" />
+            <state relative-caret-position="387">
+              <caret line="134" column="73" selection-start-line="134" selection-start-column="73" selection-end-line="134" selection-end-column="73" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#funcFParamsParser#0;class#Parser#0" />
@@ -144,17 +62,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/frontend/grammar/init/Init.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="88" column="9" selection-start-line="88" selection-start-column="9" selection-end-line="88" selection-end-column="9" />
+            <state relative-caret-position="168">
+              <caret line="19" column="7" lean-forward="true" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="59" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/frontend/grammar/init/Vector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="49" column="26" lean-forward="true" selection-start-line="49" selection-start-column="26" selection-end-line="49" selection-end-column="26" />
+            <state relative-caret-position="210">
+              <caret line="45" column="46" selection-start-line="45" selection-start-column="46" selection-end-line="45" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testfile.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="640">
+              <caret line="124" selection-start-line="124" selection-end-line="124" />
             </state>
           </provider>
         </entry>
@@ -171,7 +98,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/frontend/grammar/decl/VarDecl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
+            <state relative-caret-position="672">
               <caret line="39" selection-start-line="39" selection-end-line="39" />
             </state>
           </provider>
@@ -180,7 +107,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/frontend/grammar/def/Variable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
+            <state relative-caret-position="819">
               <caret line="52" selection-start-line="52" selection-end-line="52" />
               <folding>
                 <element signature="e#1528#1529#0" expanded="true" />
@@ -192,7 +119,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/frontend/grammar/BlockItem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
+            <state relative-caret-position="252">
               <caret line="19" selection-start-line="19" selection-end-line="19" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -268,20 +195,19 @@
         <option value="$PROJECT_DIR$/src/frontend/grammar/stmt/Stmt.java" />
         <option value="$PROJECT_DIR$/src/frontend/grammar/stmt/ExpStmt.java" />
         <option value="$PROJECT_DIR$/src/frontend/Lexer.java" />
-        <option value="$PROJECT_DIR$/testfile.txt" />
         <option value="$PROJECT_DIR$/src/frontend/grammar/exp/UnaryOp.java" />
         <option value="$PROJECT_DIR$/src/frontend/grammar/init/Init.java" />
         <option value="$PROJECT_DIR$/src/frontend/grammar/exp/AddExp.java" />
-        <option value="$PROJECT_DIR$/src/frontend/parser/Parser.java" />
         <option value="$PROJECT_DIR$/src/frontend/grammar/init/Vector.java" />
+        <option value="$PROJECT_DIR$/testfile.txt" />
+        <option value="$PROJECT_DIR$/src/frontend/parser/Parser.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="443" />
-    <option name="y" value="153" />
+    <option name="x" value="20" />
     <option name="width" value="1430" />
-    <option name="height" value="1049" />
+    <option name="height" value="1038" />
   </component>
   <component name="ProjectId" id="2EeQeYZpkw0xLCP2ngHvXHvuR04" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -428,9 +354,9 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="355" y="123" width="1144" height="839" extended-state="0" />
+    <frame x="16" y="0" width="1144" height="830" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2145488" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22191529" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -439,8 +365,8 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32719547" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.35785007" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.41404012" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.35734463" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4138418" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -527,7 +453,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/frontend/parser/Parser.java</url>
-          <line>160</line>
+          <line>164</line>
           <properties />
           <option name="timeStamp" value="35" />
         </line-breakpoint>
@@ -921,57 +847,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/def/Variable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="52" selection-start-line="52" selection-end-line="52" />
-          <folding>
-            <element signature="e#1528#1529#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/decl/VarDecl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/frontend/parser/CompUnitParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="61" selection-start-line="61" selection-end-line="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/MainFuncDef.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/BlockItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testfile.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/frontend/grammar/exp/UnaryOp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="164">
@@ -992,6 +867,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/MainFuncDef.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frontend/parser/CompUnitParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1176">
+          <caret line="61" selection-start-line="61" selection-end-line="61" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/frontend/grammar/exp/MulExp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -999,10 +891,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/decl/VarDecl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/def/Variable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="819">
+          <caret line="52" selection-start-line="52" selection-end-line="52" />
+          <folding>
+            <element signature="e#1528#1529#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/BlockItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/init/Init.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="19" column="7" lean-forward="true" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/init/Vector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="45" column="46" selection-start-line="45" selection-start-column="46" selection-end-line="45" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testfile.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="640">
+          <caret line="124" selection-start-line="124" selection-end-line="124" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/frontend/parser/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="247" column="31" selection-start-line="247" selection-start-column="31" selection-end-line="247" selection-end-column="31" />
+        <state relative-caret-position="387">
+          <caret line="134" column="73" selection-start-line="134" selection-start-column="73" selection-end-line="134" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#funcFParamsParser#0;class#Parser#0" />
@@ -1010,20 +950,6 @@
             <element signature="method#condExpParser#0;class#Parser#0" />
             <element signature="method#funcRParamsParser#0;class#Parser#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/init/Init.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="88" column="9" selection-start-line="88" selection-start-column="9" selection-end-line="88" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/init/Vector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="49" column="26" lean-forward="true" selection-start-line="49" selection-start-column="26" selection-end-line="49" selection-end-column="26" />
         </state>
       </provider>
     </entry>

@@ -1,7 +1,5 @@
-package frontend.grammar.init;
+package frontend.grammar.decl.def.init;
 
-import frontend.grammar.exp.ConstExp;
-import frontend.grammar.exp.Exp;
 import frontend.grammar.exp.Expression;
 import frontend.token.Token;
 

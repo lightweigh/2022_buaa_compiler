@@ -1,6 +1,7 @@
 package frontend.grammar;
 
 import frontend.grammar.decl.Decl;
+import frontend.grammar.funcDef.FuncDef;
 import frontend.parser.Parser;
 
 import java.io.BufferedWriter;

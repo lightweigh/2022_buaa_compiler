@@ -1,6 +1,5 @@
-package frontend.grammar;
+package frontend.grammar.funcDef;
 
-import frontend.Lexer;
 import frontend.token.Token;
 
 import java.io.BufferedWriter;

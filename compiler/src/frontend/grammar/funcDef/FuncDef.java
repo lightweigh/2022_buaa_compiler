@@ -1,6 +1,7 @@
-package frontend.grammar;
+package frontend.grammar.funcDef;
 
-import frontend.Lexer;
+import frontend.grammar.Block;
+import frontend.grammar.Component;
 import frontend.token.Ident;
 import frontend.token.Token;
 

@@ -1,4 +1,4 @@
-package frontend.grammar;
+package frontend.grammar.funcDef;
 
 import frontend.Lexer;
 import frontend.grammar.exp.ConstExp;

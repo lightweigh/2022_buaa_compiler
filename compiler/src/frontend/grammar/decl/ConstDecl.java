@@ -1,6 +1,6 @@
 package frontend.grammar.decl;
 
-import frontend.grammar.def.ConstDef;
+import frontend.grammar.decl.def.ConstDef;
 import frontend.token.Token;
 
 import java.io.BufferedWriter;

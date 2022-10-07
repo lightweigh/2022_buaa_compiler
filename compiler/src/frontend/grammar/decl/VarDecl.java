@@ -1,7 +1,6 @@
 package frontend.grammar.decl;
 
-import frontend.Lexer;
-import frontend.grammar.def.VarDef;
+import frontend.grammar.decl.def.VarDef;
 import frontend.token.Token;
 
 import java.io.BufferedWriter;

@@ -1,16 +1,11 @@
-package frontend.grammar.init;
+package frontend.grammar.decl.def.init;
 
-import frontend.grammar.def.ConstDef;
-import frontend.grammar.exp.ConstExp;
-import frontend.grammar.exp.Exp;
 import frontend.grammar.exp.Expression;
-import frontend.parser.Parser;
 import frontend.token.Token;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 public class Init {

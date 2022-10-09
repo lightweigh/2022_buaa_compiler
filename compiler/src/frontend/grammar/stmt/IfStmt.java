@@ -1,5 +1,6 @@
 package frontend.grammar.stmt;
 
+import frontend.Error;
 import frontend.Lexer;
 import frontend.grammar.exp.condExp.Cond;
 import frontend.parser.Parser;
@@ -22,7 +23,7 @@ public class IfStmt extends Stmt {
         ifTK = Lexer.tokenList.poll();
         lParent = Lexer.tokenList.poll();
         cond = (Cond) Parser.condExpParser("Cond");
-        rParent = Lexer.tokenList.poll();
+        rParent = Error.errorDetect(Token.Type.RPARENT);
         stmt = Stmt.stmtParser();
         if (Lexer.tokenList.equalPeekType(0, Token.Type.ELSETK)) {
             elseTK=Lexer.tokenList.poll();

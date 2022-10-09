@@ -1,5 +1,6 @@
 package frontend.grammar.stmt;
 
+import frontend.Error;
 import frontend.Lexer;
 import frontend.grammar.exp.condExp.Cond;
 import frontend.parser.Parser;
@@ -16,11 +17,31 @@ public class WhileStmt extends Stmt {
     private Token rParent;
     private Stmt stmt;
 
+    public Token getWhileTK() {
+        return whileTK;
+    }
+
+    public Token getlParent() {
+        return lParent;
+    }
+
+    public Cond getCond() {
+        return cond;
+    }
+
+    public Token getrParent() {
+        return rParent;
+    }
+
+    public Stmt getStmt() {
+        return stmt;
+    }
+
     public void parser() {
         whileTK = Lexer.tokenList.poll();
         lParent = Lexer.tokenList.poll();
         cond= (Cond) Parser.condExpParser("Cond");
-        rParent = Lexer.tokenList.poll();
+        rParent = Error.errorDetect(Token.Type.RPARENT);
         stmt = Stmt.stmtParser();
     }
 

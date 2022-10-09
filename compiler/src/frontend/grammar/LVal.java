@@ -27,6 +27,22 @@ public class LVal {
         this.exps = exps;
     }
 
+    public Ident getIdent() {
+        return ident;
+    }
+
+    public ArrayList<Token> getBracks() {
+        return bracks;
+    }
+
+    public int getDimension() {
+        return dimension;
+    }
+
+    public ArrayList<Exp> getExps() {
+        return exps;
+    }
+
     public void print(BufferedWriter output) throws IOException {
         output.write(ident.toString());
         for (int i = 0;i < exps.size();i++) {

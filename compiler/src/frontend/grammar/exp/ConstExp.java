@@ -4,15 +4,15 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 
 public class ConstExp implements Expression {
-    private AddExp addExp = null;
+    private AddExp addExp;
     private Integer constValue;
+
+    public ConstExp(AddExp addExp) {
+        this.addExp = addExp;
+    }
 
     public Integer getConstValue() {
         return constValue;
-    }
-
-    public void setAddExp(AddExp addExp) {
-        this.addExp = addExp;
     }
 
     public void print(BufferedWriter output) throws IOException {

@@ -1,6 +1,6 @@
 package frontend.grammar;
 
-import frontend.grammar.exp.Exp;
+import frontend.grammar.exp.*;
 import frontend.token.Token;
 
 import java.io.BufferedWriter;
@@ -18,6 +18,18 @@ public class FuncRParams {
         this.seperators = seperators;
     }
 
+    public ArrayList<Exp> getExps() {
+        return exps;
+    }
+
+    public UnaryExp getRParamUnaryExp(Exp exp) {
+        AddExp addExp = exp.getAddExp();
+        assert addExp.getExpressions().size() == 1;
+        MulExp mulExp = (MulExp) addExp.getExpressions().get(0);
+        assert mulExp.getExpressions().size() == 1;
+        // unaryExp.getType == 0 || == 2
+        return (UnaryExp) mulExp.getExpressions().get(0);
+    }
 
     public void print(BufferedWriter output) throws IOException {
         Iterator<Exp> iter = exps.iterator();

@@ -7,8 +7,9 @@ import frontend.token.Token;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class FuncDef extends Component {
+public class FuncDef implements Component {
     //  FuncDef → FuncType Ident '(' [FuncFParams] ')' Block
     private FuncType funcType;
     private boolean needRet;
@@ -17,6 +18,8 @@ public class FuncDef extends Component {
     private Token rParent;
     private FuncFParams funcFParams;
     private Block block;
+    private boolean hasRet;
+    private int retRow;
 
     public FuncDef(FuncType funcType, Ident ident, Token lParent,
                    Token rParent, FuncFParams funcFParams, Block block) {
@@ -27,6 +30,64 @@ public class FuncDef extends Component {
         this.rParent = rParent;
         this.funcFParams = funcFParams;
         this.block = block;
+        this.hasRet = block.hasRetval();
+        this.retRow = block.getRetRow();
+    }
+
+    public boolean isNeedRet() {
+        return needRet;
+    }
+
+    public Ident getIdent() {
+        return ident;
+    }
+
+    public Token getlParent() {
+        return lParent;
+    }
+
+    public Token getrParent() {
+        return rParent;
+    }
+
+    public Block getBlock() {
+        return block;
+    }
+
+    public boolean isHasRet() {
+        return hasRet;
+    }
+
+    public boolean needRet() {
+        return needRet;
+    }
+
+    public boolean hasRet() {
+        return hasRet;
+    }
+
+    public int getRetRow() {
+        return retRow;
+    }
+
+    public int getRBraceRow() {
+        return block.getRBraceRow();
+    }
+
+    public FuncType getFuncType() {
+        return funcType;
+    }
+
+    public int getNameRow() {
+        return ident.getRow();
+    }
+
+    public String getName() {
+        return ident.getContent();
+    }
+
+    public ArrayList<FuncFParam> getFuncFParams() {
+        return funcFParams.getFuncFParams();
     }
 
     @Override

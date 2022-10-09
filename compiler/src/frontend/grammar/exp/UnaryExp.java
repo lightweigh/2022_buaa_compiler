@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class UnaryExp implements Expression {
     //  UnaryExp → PrimaryExp | Ident '(' [FuncRParams] ')' | UnaryOp UnaryExp
+    //  UnaryExp → PrimaryExp | FuncCall | UnaryOp UnaryExp
     private PrimaryExp primaryExp = null;
     private FuncCall funcCall = null;
     private UnaryOp unaryOp = null;
@@ -33,6 +34,26 @@ public class UnaryExp implements Expression {
         this.unaryOp = unaryOp;
         this.unaryExp = unaryExp;
         this.type = 2;
+    }
+
+    public PrimaryExp getPrimaryExp() {
+        return primaryExp;
+    }
+
+    public FuncCall getFuncCall() {
+        return funcCall;
+    }
+
+    public UnaryOp getUnaryOp() {
+        return unaryOp;
+    }
+
+    public UnaryExp getUnaryExp() {
+        return unaryExp;
+    }
+
+    public int getType() {
+        return type;
     }
 
     @Override

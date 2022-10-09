@@ -1,5 +1,6 @@
 package frontend.parser;
 
+import frontend.Error;
 import frontend.Lexer;
 import frontend.grammar.CompUnit;
 import frontend.token.Token;
@@ -11,6 +12,10 @@ public class CompUnitParser {
     private CompUnit compUnit;
     private boolean declParser = true;
     private boolean funcParser = true;
+
+    public CompUnit getCompUnit() {
+        return compUnit;
+    }
 
     public void parser() {
         this.compUnit = new CompUnit();

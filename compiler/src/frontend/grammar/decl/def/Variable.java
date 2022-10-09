@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Variable {
+    // Variable → Ident { '[' ConstExp ']' }
     // const or non-const
     // a or a[0] or a[0][0]
     private Ident ident;
@@ -40,7 +41,7 @@ public class Variable {
     }
 
     public void print(BufferedWriter output) throws IOException {
-        output.write(getIdent().toString());
+        ident.print(output);
         for (int i = 0;i < getConstExps().size();i++) {
             output.write(bracks.get(2*i).toString());
             getConstExps().get(i).print(output);

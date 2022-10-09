@@ -3,6 +3,7 @@ package frontend.parser;
 import frontend.Lexer;
 import frontend.Error;
 import frontend.grammar.*;
+import frontend.grammar.decl.def.Def;
 import frontend.grammar.decl.def.Variable;
 import frontend.grammar.exp.*;
 import frontend.grammar.exp.condExp.*;
@@ -21,18 +22,40 @@ import frontend.token.Ident;
 import frontend.token.IntConst;
 import frontend.token.Token;
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 
 public class Parser {
 
     public static Decl declParser() {
+        //  Decl → {'const'} BType Def { ',' Def } ';'
+        Token constTK = null;
         if (Lexer.tokenList.peek(0).getRefType() == Token.Type.CONSTTK) {
-            return constDeclParser();
-        } else if (Lexer.tokenList.peek(0).getRefType() == Token.Type.INTTK) {
-            return valDeclParser();
-        } else {
-            return null;
+            constTK = Lexer.tokenList.poll();
         }
+        Token intTK = Lexer.tokenList.poll();
+        ArrayList<Def> defs = new ArrayList<>();
+        ArrayList<Token> seperators = new ArrayList<>();
+        defs.add(defParser(constTK != null));
+        while (Lexer.tokenList.equalPeekType(0, Token.Type.COMMA)) {
+            seperators.add(Lexer.tokenList.poll());
+            defs.add(defParser(constTK != null));
+        }
+        Token semicon = Error.errorDetect(Token.Type.SEMICN);
+        return new Decl(constTK, intTK, seperators, defs, semicon);
+    }
+
+    public static Def defParser(boolean isConst) {
+        //  Def → Variable [ '=' InitVal ]
+        Variable variable = variableParser();
+        String type = isConst ? "ConstExp" : "Exp";
+        Token assign = null;
+        Init init = null;
+        if (Lexer.tokenList.equalPeekType(0, Token.Type.ASSIGN)) {
+            assign = Lexer.tokenList.poll();
+            init = initParser(variable.getDimension(), type);
+        }
+        return new Def(variable, assign, init, isConst);
     }
 
     public static FuncDef funcDefParser() {
@@ -40,11 +63,8 @@ public class Parser {
         FuncType funcType = new FuncType(Lexer.tokenList.poll());
         Ident ident = (Ident) Lexer.tokenList.poll();
         Token lParent = Lexer.tokenList.poll();
-        FuncFParams funcFParams = null;
-        if (!Lexer.tokenList.equalPeekType(0, Token.Type.RPARENT)) {
-            funcFParams = funcFParamsParser();
-        }
-        Token rParent = Lexer.tokenList.poll();
+        FuncFParams funcFParams = funcFParamsParser();
+        Token rParent = Error.errorDetect(Token.Type.RPARENT);
         Block block = new Block(false);
         block.parser();
         return new FuncDef(funcType, ident, lParent, rParent, funcFParams, block);
@@ -54,12 +74,14 @@ public class Parser {
         // FuncFParams → FuncFParam { ',' FuncFParam }
         ArrayList<FuncFParam> funcFParams = new ArrayList<>();
         ArrayList<Token> seperators = new ArrayList<>();
-        FuncFParam funcFParam = funcFParamParser();
-        funcFParams.add(funcFParam);
+        if (Lexer.tokenList.equalPeekType(0, Token.Type.INTTK)) {
+            FuncFParam funcFParam = funcFParamParser();
+            funcFParams.add(funcFParam);
 
-        while (Lexer.tokenList.equalPeekType(0, Token.Type.COMMA)) {
-            seperators.add(Lexer.tokenList.poll());
-            funcFParams.add(funcFParamParser());
+            while (Lexer.tokenList.equalPeekType(0, Token.Type.COMMA)) {
+                seperators.add(Lexer.tokenList.poll());
+                funcFParams.add(funcFParamParser());
+            }
         }
         return new FuncFParams(funcFParams, seperators);
     }
@@ -68,22 +90,27 @@ public class Parser {
         // FuncFParam → BType Ident ['[' ']' { '[' ConstExp ']' }]
         Token intTK = Lexer.tokenList.poll();
         Ident ident = (Ident) Lexer.tokenList.poll();
-        int dimension = 0;
+        int type = 0;
         ArrayList<Token> bracks = new ArrayList<>();
         ConstExp constExp = null;
         while (Lexer.tokenList.equalPeekType(0, Token.Type.LBRACK)) {
-            dimension++;
+            type++;
             bracks.add(Lexer.tokenList.poll()); // '['
+            // todo check this
             if (Lexer.tokenList.peek(0).getRefType() != Token.Type.RBRACK) {
                 constExp = (ConstExp) Parser.expressionParser("ConstExp");
             }
-            bracks.add(Lexer.tokenList.poll()); // ']'
+            Token rBrack = Error.errorDetect(Token.Type.RBRACK);
+            if (rBrack != null) {
+                bracks.add(rBrack); // ']'
+            }
         }
 
-        return new FuncFParam(intTK, ident, dimension, bracks, constExp);
+        return new FuncFParam(intTK, ident, type, bracks, constExp);
     }
 
     private static Variable variableParser() {
+        // Variable → Ident { '[' ConstExp ']' }
         Ident ident = (Ident) Lexer.tokenList.poll();
         ArrayList<Token> bracks = new ArrayList<>();
         ArrayList<ConstExp> constExps = new ArrayList<>();
@@ -92,40 +119,16 @@ public class Parser {
             dimension++;
             bracks.add(Lexer.tokenList.poll());
             constExps.add((ConstExp) expressionParser("ConstExp"));
-            Token rBrack = Error.errorDetect(']');
-            bracks.add(rBrack);
+            Token rBrack = Error.errorDetect(Token.Type.RBRACK);
+            if (rBrack != null) {
+                bracks.add(rBrack);
+            }
         }
         return new Variable(ident, bracks, dimension, constExps);
     }
 
-    private static Decl constDeclParser() {
-        //  ConstDecl → 'const' BType ConstDef { ',' ConstDef } ';'
-        Token constTK = Lexer.tokenList.poll();
-        Token intTK = Lexer.tokenList.poll();
-        ArrayList<ConstDef> constDefs = new ArrayList<>();
-        ArrayList<Token> seperators = new ArrayList<>();
-        ConstDef constDef = constDefParser();
-        constDefs.add(constDef);
-        while (Lexer.tokenList.equalPeekType(0, Token.Type.COMMA)) {
-            seperators.add(Lexer.tokenList.poll());
-            constDefs.add(constDefParser());
-        }
-        Token semicon = Error.errorDetect(';');
-        return new ConstDecl(constTK, intTK, seperators, constDefs, semicon);
-    }
-
-    private static ConstDef constDefParser() {
-        //  ConstDef → Ident { '[' ConstExp ']' } '=' ConstInitVal
-        assert Lexer.tokenList.peek(0).getRefType() != Token.Type.IDENFR;
-        // TODO Error b
-        // 函数名或者变量名在当前作用域下重复定义。
-        // 报错行号为<Ident>所在行数。
-        Variable variable = variableParser();
-        return new ConstDef(variable, Lexer.tokenList.poll(),
-                initParser(variable.getDimension(),"ConstExp"));
-    }
-
     private static Vector vectorParser(String type) {
+        // Vector := '{'Expression {',' Expression}'}'  | Expression
         boolean hasBrace = false;
         Token lBrace = null,rBrace=null;
         if (Lexer.tokenList.equalPeekType(0, Token.Type.LBRACE)) {
@@ -177,74 +180,53 @@ public class Parser {
         return null;
     }
 
-    private static Decl valDeclParser() {
-        //  VarDecl → BType VarDef { ',' VarDef } ';'
-        Token intTK = Lexer.tokenList.poll();
-        ArrayList<Token> seperators = new ArrayList<>();
-        ArrayList<VarDef> varDefs = new ArrayList<>();
-        varDefs.add(varDefParser());
-        while (Lexer.tokenList.equalPeekType(0, Token.Type.COMMA)) {
-            seperators.add(Lexer.tokenList.poll());
-            varDefs.add(varDefParser());
-        }
-        Token semicon = Error.errorDetect(';');
-        return new VarDecl(intTK, varDefs, seperators, semicon);
-    }
-
-    private static VarDef varDefParser() {
-        //  VarDef → Ident { '[' ConstExp ']' } |
-        //  Ident { '[' ConstExp ']' } '=' InitVal
-        Variable variable = variableParser();
-        if (Lexer.tokenList.equalPeekType(0, Token.Type.ASSIGN)) {
-            Token assign = Lexer.tokenList.poll();
-            Init initVal = initParser(variable.getDimension(), "Exp");
-            return new VarDef(variable, assign, initVal);
-        } else {
-            return new VarDef(variable);
-        }
-    }
-
     // parse ConstExp, Exp, AddExp
     public static Expression expressionParser(String type) {
         Token.Type tType;
         switch (type) {
             case "ConstExp":
                 // ConstExp → AddExp
-                ConstExp constExp = new ConstExp();
-                constExp.setAddExp((AddExp) expressionParser("AddExp"));
-                return constExp;
-            case "Exp":
-                // Exp → AddExp
-                Exp exp = null;
                 AddExp addExp = (AddExp) expressionParser("AddExp");
                 if (addExp != null) {
-                    exp = new Exp();
-                    exp.setAddExp(addExp);
-                }
-                return exp;
-            case "AddExp":
-                // AddExp → MulExp | AddExp ('+' | '−') MulExp
-                MulExp mulExp = (MulExp) expressionParser("MulExp");
-                if (mulExp != null) {
-                    ArrayList<Expression> expressions = new ArrayList<>();
-                    ArrayList<Operator> operators = new ArrayList<>();
-                    expressions.add(mulExp);
-
-                    tType = Lexer.tokenList.peek(0).getRefType();
-                    while (tType == Token.Type.PLUS || tType == Token.Type.MINU) {
-                        operators.add(new Operator(Lexer.tokenList.poll()));// '+' | '-'
-                        expressions.add(expressionParser("MulExp"));
-                        tType = Lexer.tokenList.peek(0).getRefType();
-                    }
-                    return new AddExp(expressions, operators);
+                    return new ConstExp(addExp);
                 }
                 return null;
+            case "Exp":
+                // Exp → AddExp
+                addExp = (AddExp) expressionParser("AddExp");
+                if (addExp != null) {
+                    return new Exp(addExp);
+                }
+                return null;
+            case "AddExp":
+                // 判断FIRST集
+                tType = Lexer.tokenList.peek(0).getRefType();
+                if (tType != Token.Type.IDENFR && tType != Token.Type.LPARENT
+                        && tType != Token.Type.INTCON && tType != Token.Type.PLUS
+                        && tType != Token.Type.MINU && tType != Token.Type.NOT) {
+                    return null;
+                }
+                // AddExp → MulExp | AddExp ('+' | '−') MulExp
+                MulExp mulExp = (MulExp) expressionParser("MulExp");
+                // if (mulExp != null) {
+                ArrayList<Expression> expressions = new ArrayList<>();
+                ArrayList<Operator> operators = new ArrayList<>();
+                expressions.add(mulExp);
+
+                tType = Lexer.tokenList.peek(0).getRefType();
+                while (tType == Token.Type.PLUS || tType == Token.Type.MINU) {
+                    operators.add(new Operator(Lexer.tokenList.poll()));// '+' | '-'
+                    expressions.add(expressionParser("MulExp"));
+                    tType = Lexer.tokenList.peek(0).getRefType();
+                }
+                return new AddExp(expressions, operators);
+                // }
             case "MulExp":
                 // MulExp → UnaryExp | MulExp ('*' | '/' | '%') UnaryExp
                 UnaryExp unaryExp = (UnaryExp) expressionParser("UnaryExp");
                 if (unaryExp != null) {
-                    ArrayList<Expression> expressions = new ArrayList<>();
-                    ArrayList<Operator> operators = new ArrayList<>();
+                    expressions = new ArrayList<>();
+                    operators = new ArrayList<>();
                     expressions.add(unaryExp);
 
                     tType = Lexer.tokenList.peek(0).getRefType();
@@ -258,7 +240,7 @@ public class Parser {
                 return null;
             case "UnaryExp":
                 // UnaryExp → PrimaryExp    0
-                // → Ident '(' [FuncRParams] ')'    1
+                // → FuncCall    1
                 // → UnaryOp UnaryExp   2
                 tType = Lexer.tokenList.peek(0).getRefType();
                 if (tType == Token.Type.PLUS || tType == Token.Type.MINU || tType == Token.Type.NOT) {
@@ -280,7 +262,7 @@ public class Parser {
                 tType = Lexer.tokenList.peek(0).getRefType();
                 if (tType == Token.Type.LPARENT) {
                     return new PrimaryExp(Lexer.tokenList.poll(),
-                            (Exp) expressionParser("Exp"), Lexer.tokenList.poll());
+                            (Exp) expressionParser("Exp"), Error.errorDetect(Token.Type.RPARENT));
                 } else if (tType == Token.Type.INTCON) {
                     return new PrimaryExp(new Num((IntConst) Lexer.tokenList.poll()));
                 } else {
@@ -349,10 +331,8 @@ public class Parser {
         Ident ident = (Ident) Lexer.tokenList.poll();
         Token lParent = Lexer.tokenList.poll();
         FuncRParams funcRParams=null;
-        if (!Lexer.tokenList.equalPeekType(0, Token.Type.RPARENT)) {
-            funcRParams = funcRParamsParser();
-        }
-        Token rParent = Lexer.tokenList.poll();
+        funcRParams = funcRParamsParser();
+        Token rParent = Error.errorDetect(Token.Type.RPARENT);
         return new FuncCall(ident,lParent,funcRParams,rParent);
     }
 
@@ -360,10 +340,13 @@ public class Parser {
         // FuncRParams → Exp { ',' Exp
         ArrayList<Exp> exps = new ArrayList<>();
         ArrayList<Token> seperators = new ArrayList<>();
-        exps.add((Exp) expressionParser("Exp"));
-        while (Lexer.tokenList.equalPeekType(0, Token.Type.COMMA)) {
-            seperators.add(Lexer.tokenList.poll());
-            exps.add((Exp) expressionParser("Exp"));
+        Exp exp = (Exp) expressionParser("Exp");
+        if (exp != null) {
+            exps.add(exp);
+            while (Lexer.tokenList.equalPeekType(0, Token.Type.COMMA)) {
+                seperators.add(Lexer.tokenList.poll());
+                exps.add((Exp) expressionParser("Exp"));
+            }
         }
         return new FuncRParams(exps,seperators);
     }
@@ -378,8 +361,10 @@ public class Parser {
             dimension++;
             bracks.add(Lexer.tokenList.poll());
             exps.add((Exp) expressionParser("Exp"));
-            Token rBrack = Error.errorDetect(']');
-            bracks.add(rBrack);
+            Token rBrack = Error.errorDetect(Token.Type.RBRACK);
+            if (rBrack != null) {
+                bracks.add(rBrack);
+            }
         }
         return new LVal(ident,bracks,dimension,exps);
     }

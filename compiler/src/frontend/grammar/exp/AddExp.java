@@ -17,6 +17,10 @@ public class AddExp implements Expression, CondExp {
         this.operators = operators;
     }
 
+    public ArrayList<Expression> getExpressions() {
+        return expressions;
+    }
+
     public void print(BufferedWriter output) throws IOException {
         Iterator<Expression> iter = expressions.iterator();
         Expression expression = iter.next();

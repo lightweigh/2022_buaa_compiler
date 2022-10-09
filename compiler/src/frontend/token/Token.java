@@ -1,17 +1,26 @@
 package frontend.token;
 
+import frontend.grammar.Component;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
-public class Token {
+public class Token implements Component {
     private Type refType;
-    private int line;
+    private int row;
 //    private int col;
     private String content;
 
-    public Token(Type refType, int line, String content) {
+    public Token(Type refType, int row, String content) {
         this.refType = refType;
-        this.line = line;
+        this.row = row;
         this.content = content;
+    }
+
+    @Override
+    public void print(BufferedWriter output) throws IOException {
+        output.write(String.format("%s %s\n", refType, content));
     }
 
     public enum Type {
@@ -83,6 +92,10 @@ public class Token {
 
     public Type getRefType() {
         return refType;
+    }
+
+    public int getRow() {
+        return row;
     }
 
     public static Token createToken(Type refType, String content, int line) {

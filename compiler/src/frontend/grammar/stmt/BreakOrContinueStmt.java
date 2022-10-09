@@ -1,5 +1,6 @@
 package frontend.grammar.stmt;
 
+import frontend.Error;
 import frontend.Lexer;
 import frontend.token.Token;
 
@@ -13,11 +14,11 @@ public class BreakOrContinueStmt extends Stmt {
 
     public void parser() {
         breakOrContinue = Lexer.tokenList.poll();
-        if (!isSemicon(Lexer.tokenList.peek(0))) {
-            System.out.println("Error occurs!");    //todo
-        } else {
-            semicon = Lexer.tokenList.poll();
-        }
+        semicon = Error.errorDetect(Token.Type.SEMICN);
+    }
+
+    public int getRow() {
+        return breakOrContinue.getRow();
     }
 
     @Override

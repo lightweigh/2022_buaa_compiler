@@ -21,6 +21,22 @@ public class FuncCall {
         this.funcRParams = funcRParams;
     }
 
+    public Ident getIdent() {
+        return ident;
+    }
+
+    public Token getlParent() {
+        return lParent;
+    }
+
+    public Token getrParent() {
+        return rParent;
+    }
+
+    public FuncRParams getFuncRParams() {
+        return funcRParams;
+    }
+
     public void print(BufferedWriter output) throws IOException {
         output.write(ident.toString());
         output.write(lParent.toString());

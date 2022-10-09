@@ -8,28 +8,23 @@ import java.io.IOException;
 
 public class ConstDef {
     //  ConstDef → Ident { '[' ConstExp ']' } '=' ConstInitVal
-    private Variable variable;
-    private Token assign;
-    private Init constInitVal;
 
-    public ConstDef(Variable variable, Token assign, Init constInitVal) {
-        this.variable = variable;
-        this.assign = assign;
-        this.constInitVal = constInitVal;
+    /*public ConstDef(Variable variable, Token assign, Init constInitVal) {
+        super(variable, assign, constInitVal);
     }
 
     public void print(BufferedWriter output) throws IOException {
         // ConstDef → Ident { '[' ConstExp ']' } '=' ConstInitVal
-        variable.print(output);
-        output.write(assign.toString());
-        constInitVal.print(output);
+        super.getVariable().print(output);
+        output.write(super.getAssign().toString());
+        super.getInit().print(output);
         output.write("<ConstDef>\n");
     }
 
     @Override
     public String toString() {
-        return variable.toString() +
+        return super.getVariable().toString() +
                 " = " +
-                constInitVal.toString();
-    }
+                super.getInit().toString();
+    }*/
 }

@@ -18,6 +18,10 @@ public class FuncFParams {
         this.seperators = seperators;
     }
 
+    public ArrayList<FuncFParam> getFuncFParams() {
+        return funcFParams;
+    }
+
     public void print(BufferedWriter output) throws IOException {
         Iterator<Token> iter = seperators.iterator();
         for (FuncFParam funcFParam : funcFParams) {

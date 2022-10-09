@@ -1,6 +1,5 @@
 package frontend;
 
-import frontend.token.Ident;
 import frontend.token.Token;
 
 import java.io.BufferedReader;
@@ -9,12 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Lexer {
     private List<String> lines = new ArrayList<>();
 
-    private int raw = 0;
+    private int row = 0;
     private int col = 0;
 
     public static TokenList tokenList = new TokenList();
@@ -32,8 +30,8 @@ public class Lexer {
         }
     }
 
-    public int getRaw() {
-        return raw + 1;
+    public int getRow() {
+        return row + 1;
     }
 
     public int getCol() {
@@ -41,12 +39,12 @@ public class Lexer {
     }
 
     public boolean isFileEnd() {
-        return raw >= lines.size();
+        return row >= lines.size();
     }
 
     public String getCurLine() {
         if (!isFileEnd()) {
-            return lines.get(raw);
+            return lines.get(row);
         } else {
             return "";
         }
@@ -58,7 +56,7 @@ public class Lexer {
 
     public void nextLine() {
         if (!isFileEnd()) {
-            raw++;
+            row++;
             col = 0;
         }
     }
@@ -68,7 +66,7 @@ public class Lexer {
             nextLine();
         } else if (col + paces > getCurLine().length()) {
             col = col + paces - getCurLine().length();
-            raw++;
+            row++;
             System.out.println("lexer:stepForward");
         } else {
             col += paces;
@@ -150,7 +148,7 @@ public class Lexer {
             Matcher matcher = type.getPattern().matcher(getCurLine().substring(col));
             if (matcher.find()) {
                 // System.out.println(matcher.group(0) + " type: " + type);
-                token = Token.createToken(type, matcher.group(0),getRaw());
+                token = Token.createToken(type, matcher.group(0), getRow());
                 getToken = true;
                 break;
             }

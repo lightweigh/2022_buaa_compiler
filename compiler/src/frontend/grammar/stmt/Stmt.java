@@ -1,17 +1,15 @@
 package frontend.grammar.stmt;
 
+import frontend.Error;
 import frontend.Lexer;
 import frontend.grammar.Block;
+import frontend.grammar.Component;
 import frontend.token.Token;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class Stmt {
-
-    public boolean isSemicon(Token token) {
-        return token.getRefType() == Token.Type.SEMICN;
-    }
+public class Stmt implements Component {
 
     public static Stmt stmtParser() {
         Token.Type type = Lexer.tokenList.peek(0).getRefType();
@@ -46,6 +44,7 @@ public class Stmt {
                 // 'printf''('FormatString{','Exp}')'';'
                 PrintfStmt printfStmt = new PrintfStmt();
                 printfStmt.parser();
+                Error.errorDetect(printfStmt, "printfStmt");
                 return printfStmt;
             default:
                 // Stmt → LVal '=' Exp ';'

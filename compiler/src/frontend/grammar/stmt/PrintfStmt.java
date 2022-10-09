@@ -2,8 +2,8 @@ package frontend.grammar.stmt;
 
 import frontend.Error;
 import frontend.Lexer;
+import frontend.grammar.Component;
 import frontend.grammar.exp.Exp;
-import frontend.grammar.exp.condExp.LAndExp;
 import frontend.parser.Parser;
 import frontend.token.FormatString;
 import frontend.token.Token;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class PrintfStmt extends Stmt {
+public class PrintfStmt extends Stmt implements Component {
     // 'printf''('FormatString{','Exp}')'';'
     private Token printf;
     private Token lParent;
@@ -32,13 +32,20 @@ public class PrintfStmt extends Stmt {
             Exp exp = (Exp) Parser.expressionParser("Exp");
             exps.add(exp);
         }
-        rParent = Lexer.tokenList.poll();
-        /*if (!Lexer.tokenList.equalPeekType(0, Token.Type.COMMA)) {
-            Error.errorDetect(';');
-        } else {
-            semicon = Lexer.tokenList.poll();
-        }*/
-        semicon = Error.errorDetect(';');
+        rParent = Error.errorDetect(Token.Type.RPARENT);
+        semicon = Error.errorDetect(Token.Type.SEMICN);
+    }
+
+    public int getExpNum() {
+        return exps.size();
+    }
+
+    public FormatString getFormatString() {
+        return formatString;
+    }
+
+    public int getPrintfRow() {
+        return printf.getRow();
     }
 
     @Override

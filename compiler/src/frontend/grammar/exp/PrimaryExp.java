@@ -40,6 +40,30 @@ public class PrimaryExp implements Expression {
         this.type = 2;
     }
 
+    public Token getlParent() {
+        return lParent;
+    }
+
+    public Exp getExp() {
+        return exp;
+    }
+
+    public Token getrParent() {
+        return rParent;
+    }
+
+    public LVal getlVal() {
+        return lVal;
+    }
+
+    public Num getNumber() {
+        return number;
+    }
+
+    public int getType() {
+        return type;
+    }
+
     @Override
     public void print(BufferedWriter output) throws IOException {
         switch (type) {

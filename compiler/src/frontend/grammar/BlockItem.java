@@ -23,6 +23,18 @@ public class BlockItem {
         }
     }
 
+    public boolean isDecl() {
+        return decl != null;
+    }
+
+    public Decl getDecl() {
+        return decl;
+    }
+
+    public Stmt getStmt() {
+        return stmt;
+    }
+
     public void print(BufferedWriter output) throws IOException {
         if (decl != null) {
             decl.print(output);

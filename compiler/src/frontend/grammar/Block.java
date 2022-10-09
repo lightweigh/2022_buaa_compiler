@@ -1,6 +1,7 @@
 package frontend.grammar;
 
 import frontend.Lexer;
+import frontend.grammar.stmt.ReturnStmt;
 import frontend.grammar.stmt.Stmt;
 import frontend.token.Token;
 
@@ -14,6 +15,7 @@ public class Block extends Stmt {
     private Token rBrace;
     private ArrayList<BlockItem> blockItems = new ArrayList<>();
     private boolean isStmt; //
+    private int retRow=-1;
 
     public Block(boolean isStmt) {
         this.isStmt = isStmt;
@@ -27,6 +29,45 @@ public class Block extends Stmt {
             blockItems.add(blockItem);
         }
         rBrace = Lexer.tokenList.poll();
+    }
+
+    public Token getlBrace() {
+        return lBrace;
+    }
+
+    public Token getrBrace() {
+        return rBrace;
+    }
+
+    public ArrayList<BlockItem> getBlockItems() {
+        return blockItems;
+    }
+
+    public boolean isStmt() {
+        return isStmt;
+    }
+
+    public boolean hasRetval() {
+        boolean hasRet=false;
+        if (isStmt) {
+            System.out.println("wrong using of hasRetval()!");
+        }
+        if (!blockItems.isEmpty()) {
+            BlockItem blockItem = blockItems.get(blockItems.size()-1);
+            if (!blockItem.isDecl() && blockItem.getStmt() instanceof ReturnStmt) {
+                hasRet = ((ReturnStmt) blockItem.getStmt()).hasExp();
+                retRow = ((ReturnStmt) blockItem.getStmt()).getRetRow();
+            }
+        }
+        return hasRet;
+    }
+
+    public int getRetRow() {
+        return retRow;
+    }
+
+    public int getRBraceRow() {
+        return rBrace.getRow();
     }
 
     public void print(BufferedWriter output) throws IOException {

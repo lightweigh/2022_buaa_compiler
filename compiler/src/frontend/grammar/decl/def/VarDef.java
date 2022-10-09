@@ -8,28 +8,23 @@ import java.io.IOException;
 
 public class VarDef {
     //  VarDef → Ident { '[' ConstExp ']' } | Ident { '[' ConstExp ']' } '=' InitVal
-    private Variable variable;
-    private boolean isInit = false;
-    private Token assign;
-    private Init initVal;
+    private boolean isInit;
 
-    public VarDef(Variable variable) {
-        this.variable = variable;
+    /*public VarDef(Variable variable) {
+        super(variable, null, null);
         this.isInit = false;
     }
 
     public VarDef(Variable variable, Token assign, Init initVal) {
-        this.variable = variable;
+        super(variable, assign, initVal);
         this.isInit = true;
-        this.assign = assign;
-        this.initVal = initVal;
-    }
+    }*/
 
     public void print(BufferedWriter output) throws IOException {
-        variable.print(output);
+        // super.getVariable().print(output);
         if (isInit) {
-            output.write(assign.toString());
-            initVal.print(output);
+            // output.write(super.getAssign().toString());
+            // super.getInit().print(output);
         }
         output.write("<VarDef>\n");
     }
@@ -37,9 +32,9 @@ public class VarDef {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(variable.toString());
+        // sb.append(super.getVariable().toString());
         if (isInit) {
-            sb.append(" = ").append(initVal.toString());
+            // sb.append(" = ").append(super.getInit().toString());
         }
         return sb.toString();
     }

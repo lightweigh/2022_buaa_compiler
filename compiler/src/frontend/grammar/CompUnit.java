@@ -1,5 +1,6 @@
 package frontend.grammar;
 
+import frontend.Error;
 import frontend.grammar.decl.Decl;
 import frontend.grammar.funcDef.FuncDef;
 import frontend.parser.Parser;
@@ -8,7 +9,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class CompUnit extends Component {
+public class CompUnit implements Component {
     //  CompUnit → {ConstDecl | VarDecl} {FuncDef} MainFuncDef
     private ArrayList<Decl> decls = new ArrayList<>();
     private ArrayList<FuncDef> funcDefs = new ArrayList<>();
@@ -19,12 +20,15 @@ public class CompUnit extends Component {
     }
 
     public void addFuncDef() {
-        funcDefs.add(Parser.funcDefParser());
+        FuncDef funcDef = Parser.funcDefParser();
+        Error.errorDetect(funcDef, "funcDef");
+        funcDefs.add(funcDef);
     }
 
 
     public void mainParser() {
         mainFuncDef.parser();
+        Error.errorDetect(mainFuncDef, "main");
     }
 
     public void print(BufferedWriter output) throws IOException {
@@ -39,6 +43,15 @@ public class CompUnit extends Component {
         mainFuncDef.print(output);
     }
 
+    public ArrayList<Decl> getDecls() {
+        return decls;
+    }
 
+    public ArrayList<FuncDef> getFuncDefs() {
+        return funcDefs;
+    }
 
+    public MainFuncDef getMainFuncDef() {
+        return mainFuncDef;
+    }
 }

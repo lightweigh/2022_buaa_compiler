@@ -6,13 +6,15 @@ import frontend.token.Token;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class MainFuncDef extends Component{
+public class MainFuncDef implements Component{
     //  MainFuncDef → 'int' 'main' '(' ')' Block
     private Token intTK;
     private Token mainTK;
     private Token lParent;
     private Token rParent;
     private Block block = new Block(false);
+    private boolean hasRet;
+    private int retRow;
 
     public void parser() {
         intTK = Lexer.tokenList.poll();
@@ -20,6 +22,40 @@ public class MainFuncDef extends Component{
         lParent = Lexer.tokenList.poll();
         rParent = Lexer.tokenList.poll();
         block.parser();
+        hasRet = block.hasRetval();
+        retRow = block.getRetRow();
+    }
+
+    public int getRBraceRow() {
+        return block.getRBraceRow();
+    }
+
+    public boolean hasRet() {
+        return hasRet;
+    }
+
+    public int getRetRow() {
+        return retRow;
+    }
+
+    public Token getIntTK() {
+        return intTK;
+    }
+
+    public Token getMainTK() {
+        return mainTK;
+    }
+
+    public Token getlParent() {
+        return lParent;
+    }
+
+    public Token getrParent() {
+        return rParent;
+    }
+
+    public Block getBlock() {
+        return block;
     }
 
     public void print(BufferedWriter output) throws IOException {

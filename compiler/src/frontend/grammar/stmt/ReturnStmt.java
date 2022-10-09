@@ -1,5 +1,6 @@
 package frontend.grammar.stmt;
 
+import frontend.Error;
 import frontend.Lexer;
 import frontend.grammar.exp.Exp;
 import frontend.parser.Parser;
@@ -16,14 +17,16 @@ public class ReturnStmt extends Stmt {
 
     public void parser() {
         returnTK = Lexer.tokenList.poll();
-        if (!Lexer.tokenList.equalPeekType(0, Token.Type.SEMICN)) {
-            exp = (Exp) Parser.expressionParser("Exp");
-        }
-        if (!Lexer.tokenList.equalPeekType(0, Token.Type.SEMICN)) {
-            // System.out.println("error"); todo
-        } else {
-            semicon = Lexer.tokenList.poll();
-        }
+        exp = (Exp) Parser.expressionParser("Exp");
+        semicon = Error.errorDetect(Token.Type.SEMICN);
+    }
+
+    public boolean hasExp() {
+        return exp != null;
+    }
+
+    public int getRetRow() {
+        return returnTK.getRow();
     }
 
     @Override

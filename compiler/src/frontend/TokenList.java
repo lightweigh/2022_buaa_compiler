@@ -16,11 +16,11 @@ public class TokenList {
         tokens.add(token);
     }
 
-    public Token peek(int forward) {
-        if (pos >= tokens.size()) {
+    public Token peek(int step) {
+        if (pos + step < 0 || pos+step >= tokens.size()) {
             return null;
         }
-        return tokens.get(pos+forward);
+        return tokens.get(pos+step);
     }
 
     public Token poll() {

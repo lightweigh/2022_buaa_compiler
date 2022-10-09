@@ -23,6 +23,37 @@ public class LvalStmt extends Stmt {
     private Token lParent;
     private Token rParent;
 
+    public LVal getlVal() {
+        return lVal;
+    }
+
+    public Token getAssign() {
+        return assign;
+    }
+
+    public Exp getExp() {
+        return exp;
+    }
+
+    public Token getSemicon() {
+        return semicon;
+    }
+
+    public boolean isGetInt() {
+        return isGetInt;
+    }
+
+    public Token getGetInt() {
+        return getInt;
+    }
+
+    public Token getlParent() {
+        return lParent;
+    }
+
+    public Token getrParent() {
+        return rParent;
+    }
 
     public void parser() {
         lVal = Parser.lValParser();
@@ -30,16 +61,12 @@ public class LvalStmt extends Stmt {
         if (Lexer.tokenList.equalPeekType(0, Token.Type.GETINTTK)) {
             getInt = Lexer.tokenList.poll();
             lParent = Lexer.tokenList.poll();
-            rParent = Lexer.tokenList.poll();
+            rParent = Error.errorDetect(Token.Type.RPARENT);
             isGetInt = true;
         } else {
             exp = (Exp) Parser.expressionParser("Exp");
         }
-        if (!Lexer.tokenList.equalPeekType(0, Token.Type.SEMICN)) {
-            Error.errorDetect(';');
-        } else {
-            semicon = Lexer.tokenList.poll();
-        }
+        semicon = Error.errorDetect(Token.Type.SEMICN);
     }
 
     @Override

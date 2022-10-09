@@ -18,6 +18,10 @@ public class MulExp implements Expression {
         this.operators = operators;
     }
 
+    public ArrayList<Expression> getExpressions() {
+        return expressions;
+    }
+
     @Override
     public void print(BufferedWriter output) throws IOException {
         Iterator<Expression> iter = expressions.iterator();

@@ -77,7 +77,7 @@ public class Visitor {
             if (blockItem.isDecl()) {
                 visitDecl(blockItem.getDecl());
             } else {
-                visitStmt(blockItem.getStmt(),isInwhile);
+                visitStmt(blockItem.getStmt(), isInwhile);
             }
         }
         curSymTable = prevTable;
@@ -95,11 +95,15 @@ public class Visitor {
                 visitAddExp(((LvalStmt) stmt).getExp().getAddExp());
             }
         } else if (stmt instanceof WhileStmt) {
-
             visitStmt(((WhileStmt) stmt).getStmt(), true);
         } else if (stmt instanceof BreakOrContinueStmt) {
             if (!isInwhile) {
-                Error.errorTable.add(new Error(Error.ErrorType.WRONG_BREAK_CONTINUE,((BreakOrContinueStmt)stmt).getRow()));
+                Error.errorTable.add(new Error(Error.ErrorType.WRONG_BREAK_CONTINUE, ((BreakOrContinueStmt) stmt).getRow()));
+            }
+        } else if (stmt instanceof IfStmt) {
+            visitStmt(((IfStmt) stmt).getStmt(),isInwhile);
+            if (((IfStmt) stmt).hasElse()) {
+                visitStmt(((IfStmt) stmt).getElseStmt(),isInwhile);
             }
         }
     }
@@ -111,7 +115,7 @@ public class Visitor {
             Error.errorTable.add(new Error(Error.ErrorType.NAME_UNDEF,
                     lval.getIdent().getRow()));
         } else {
-            if (((VarSymbol) lvalSym).isConst()) {
+            if (((VarSymbol) lvalSym).isConst() && isLeft) {
                 Error.errorTable.add(new Error(Error.ErrorType.MODIFY_CONST,
                         lval.getIdent().getRow()));
             }
@@ -161,45 +165,61 @@ public class Visitor {
             Error.errorTable.add(new Error(Error.ErrorType.NAME_UNDEF, funcCall.getIdent().getRow()));
         } else {
             if (symbol instanceof FuncSymbol) {
-                Iterator<Symbol> fParamSymIter = ((FuncSymbol) symbol).getfParams().iterator();
-                Iterator<Exp> fParamExpIter = funcCall.getFuncRParams().getExps().iterator();
-                while (fParamSymIter.hasNext() && fParamExpIter.hasNext()) {
-                    FParamSymbol fParamSym = (FParamSymbol) fParamSymIter.next();
-                    Exp fParamExp = fParamExpIter.next();
-                    int fParamType = -1;
-                    UnaryExp fParam = funcCall.getFuncRParams().getRParamUnaryExp(fParamExp);
-                    //  UnaryExp → PrimaryExp | FuncCall | UnaryOp UnaryExp
-                    while (fParam.getType() == 2) {
-                        fParam = fParam.getUnaryExp();
-                    }
-                    if (fParam.getType() == 0) {
-                        PrimaryExp primaryExp = fParam.getPrimaryExp();
-                        //  PrimaryExp → '(' Exp ')' | LVal | Num
-                        if (primaryExp.getType() == 1) {
-                            LVal lVal = primaryExp.getlVal();
-                            VarSymbol varSymbol = (VarSymbol) getSymbol(lVal.getIdent().getContent());
-                            if (varSymbol == null) {
-                                Error.errorTable.add(new Error(Error.ErrorType.NAME_UNDEF,
-                                        lVal.getIdent().getRow())); //
-                            } else {
-                                fParamType = getFParamType(varSymbol, lVal);
-                            }
-                        } else if (primaryExp.getType() == 2) {
-                            Num num = primaryExp.getNumber();
-                            fParamType=0;
-                        }
-                    } else if (fParam.getType() == 1) {
-                        // funcCall 俺不知道了
-                    }
-                    if (fParamSym.getType() != fParamType) {
-                        Error.errorTable.add(new Error(Error.ErrorType.WRONG_PARA_TYPE,
-                                funcCall.getIdent().getRow()));
-                    }
-                }
-                if (fParamSymIter.hasNext() || fParamExpIter.hasNext()) {
+                if (((FuncSymbol) symbol).getfParams().size() != funcCall.getFuncRParams().getExps().size()) {
                     Error.errorTable.add(new Error(Error.ErrorType.WRONG_PARA_NUM,
                             funcCall.getIdent().getRow()));
+                } else {
+                    Iterator<Symbol> fParamSymIter = ((FuncSymbol) symbol).getfParams().iterator();
+                    Iterator<Exp> rParamExpIter = funcCall.getFuncRParams().getExps().iterator();
+                    while (fParamSymIter.hasNext() && rParamExpIter.hasNext()) {
+                        FParamSymbol fParamSym = (FParamSymbol) fParamSymIter.next();
+                        Exp rParamExp = rParamExpIter.next();
+                        int rParamType = -1;
+                        UnaryExp rParam = funcCall.getFuncRParams().getRParamUnaryExp(rParamExp);
+                        //  UnaryExp → PrimaryExp | FuncCall | UnaryOp UnaryExp
+                        while (rParam.getType() == 2) {
+                            rParam = rParam.getUnaryExp();
+                        }
+                        if (rParam.getType() == 0) {
+                            PrimaryExp primaryExp = rParam.getPrimaryExp();
+                            //  PrimaryExp → '(' Exp ')' | LVal | Num
+                            if (primaryExp.getType() == 1) {
+                                LVal lVal = primaryExp.getlVal();
+                                VarSymbol varSymbol = (VarSymbol) getSymbol(lVal.getIdent().getContent());
+                                if (varSymbol == null) {
+                                    Error.errorTable.add(new Error(Error.ErrorType.NAME_UNDEF,
+                                            lVal.getIdent().getRow())); //
+                                } else {
+                                    rParamType = getFParamType(varSymbol, lVal);
+                                }
+                            } else if (primaryExp.getType() == 2) {
+                                Num num = primaryExp.getNumber();
+                                rParamType = 0;
+                            }
+                        } else if (rParam.getType() == 1) {
+                            // funcCall 对应函数返回类型    // todo call void ?
+                            FuncCall rFuncCall = rParam.getFuncCall();
+                            Symbol funcSymbol = getSymbol(rFuncCall.getIdent().getContent());
+                            if (!(funcSymbol instanceof FuncSymbol)) {
+                                Error.errorTable.add(new Error(Error.ErrorType.NAME_UNDEF,
+                                        rFuncCall.getIdent().getRow()));
+                            } else if (((FuncSymbol) funcSymbol).isInt()) {
+                                rParamType = 0;
+                            }
+                        }
+                        if (fParamSym.getType() != rParamType) {
+                            Error.errorTable.add(new Error(Error.ErrorType.WRONG_PARA_TYPE,
+                                    funcCall.getIdent().getRow()));
+                        }
+                    }
                 }
+            } else {
+                // void a(){}
+                // main 中
+                // int a = 1;
+                //     a();
+                Error.errorTable.add(new Error(Error.ErrorType.NAME_UNDEF,
+                        funcCall.getIdent().getRow()));
             }
         }
     }

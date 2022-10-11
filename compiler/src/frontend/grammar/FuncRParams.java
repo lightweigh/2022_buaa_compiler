@@ -33,14 +33,17 @@ public class FuncRParams {
 
     public void print(BufferedWriter output) throws IOException {
         Iterator<Exp> iter = exps.iterator();
-        Exp exp = iter.next();
-        exp.print(output);
-        for (Token comma : seperators) {
-            output.write(comma.toString());
+        Exp exp;
+        if (iter.hasNext()) {
             exp = iter.next();
             exp.print(output);
+            for (Token comma : seperators) {
+                output.write(comma.toString());
+                exp = iter.next();
+                exp.print(output);
+            }
+            output.write("<FuncRParams>\n");
         }
-        output.write("<FuncRParams>\n");
     }
 
     @Override

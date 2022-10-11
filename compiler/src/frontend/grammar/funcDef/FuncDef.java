@@ -24,13 +24,14 @@ public class FuncDef implements Component {
     public FuncDef(FuncType funcType, Ident ident, Token lParent,
                    Token rParent, FuncFParams funcFParams, Block block) {
         this.funcType = funcType;
-        this.needRet = funcType.isNeedRet();
+        this.needRet = funcType.needRet();
         this.ident = ident;
         this.lParent = lParent;
         this.rParent = rParent;
         this.funcFParams = funcFParams;
         this.block = block;
         this.hasRet = block.hasRetval();
+        // this.hasRet = block.rightRet(needRet);
         this.retRow = block.getRetRow();
     }
 

@@ -62,11 +62,11 @@ public class Error implements Comparable {
             case "printfStmt":
                 PrintfStmt printfStmt = (PrintfStmt) component;
                 FormatString formatString = printfStmt.getFormatString();
+                if (printfStmt.getFormatString().hasIllegalSym()) {
+                    errorTable.add(new Error(ErrorType.ILLEGAL_SYM, printfStmt.getFormatString().getRow()));
+                }
                 if (formatString.getFormedCharNum() != printfStmt.getExpNum()) {
                     errorTable.add(new Error(ErrorType.WRONG_PRINTF_EXP, printfStmt.getPrintfRow()));
-                }
-                if (printfStmt.getFormatString().isHasIllegalSym()) {
-                    errorTable.add(new Error(ErrorType.ILLEGAL_SYM, printfStmt.getFormatString().getRow()));
                 }
                 break;
 

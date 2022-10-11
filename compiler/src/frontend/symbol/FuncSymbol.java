@@ -14,8 +14,8 @@ public class FuncSymbol extends Symbol {
         this.funcType = funcType;
     }
 
-    public FuncType getFuncType() {
-        return funcType;
+    public boolean isInt() {
+        return funcType.needRet();
     }
 
     public ArrayList<Symbol> getfParams() {

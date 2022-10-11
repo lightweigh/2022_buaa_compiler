@@ -14,7 +14,7 @@ public class FuncType {
         needRet = funcType.getRefType() == Token.Type.INTTK;
     }
 
-    public boolean isNeedRet() {
+    public boolean needRet() {
         return needRet;
     }
 

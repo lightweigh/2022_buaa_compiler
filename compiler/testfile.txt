@@ -1,11 +1,91 @@
-int a;
-const int b;
+int main( {
+    int ilvi2[2[2 = {{0, 0}, {0, 0}}
 
-void f2(){
+    1
+    2
+    1 + 2
+    x = 1
+    y = 2
+    z = 1 + 2
+    w = 1 + 2 * (3 + 4 * 5
+    xx[0 = 1
+    yy[0[1 = 2
+    zz[0[1] = 2
+    ww[0][1 = 2
+    yyy[f2() = 1
+    yyy[f2(] = 1
 
-}
+    zzz[1][2]
+    zzz[1][2] = 1
 
-int main() {
-    f2(;
-    return 0;
+    zzz[1[2]
+    zzz[1[2] = 1
+
+    zzz[1][2
+    zzz[1][2 = 1
+
+    zzz[1[2
+    zzz[1[2 = 1
+
+    while (0) {
+        break
+        continue
+        break continue
+    }
+
+    while (0) break
+    while (1) break
+
+    x = getint()
+    if (1) x = getint()
+    if (1) x = getint()
+    else x = getint()
+
+    y = getint(
+    if (1) y = getint(
+    if (1) y = getint(
+    else y = getint(
+
+    x = x + y
+    if (1) x = x + y
+    if (1) x = x + y
+    else x = x + y
+
+    y = f3(1
+    if (1) y = f3(1
+    if (1) y = f3(1
+    else y = f3(1
+
+    while (0 break
+    while (1 break
+
+    x = getint()
+    if (1 x = getint()
+    if (1 x = getint()
+    else x = getint()
+
+    y = getint(
+    if (1 y = getint(
+    if (1 y = getint(
+    else y = getint(
+
+    x = x + y
+    if (1 x = x + y
+    if (1 x = x + y
+    else x = x + y
+
+    y = f3(1
+    if (1 y = f3(1
+    if (1 y = f3(1
+    else y = f3(1
+
+    printf("hello world")
+    printf
+    ("hello world")
+
+    printf("hello world"
+    printf
+    ("hello world"
+
+    return 0
 }

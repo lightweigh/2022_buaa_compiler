@@ -55,8 +55,9 @@ public class LvalStmt extends Stmt {
         return rParent;
     }
 
-    public void parser() {
-        lVal = Parser.lValParser();
+    public void parser(LVal lVal) {
+        // lVal = Parser.lValParser();
+        this.lVal = lVal;
         assign = Lexer.tokenList.poll();
         if (Lexer.tokenList.equalPeekType(0, Token.Type.GETINTTK)) {
             getInt = Lexer.tokenList.poll();

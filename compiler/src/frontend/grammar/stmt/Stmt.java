@@ -4,6 +4,9 @@ import frontend.Error;
 import frontend.Lexer;
 import frontend.grammar.Block;
 import frontend.grammar.Component;
+import frontend.grammar.LVal;
+import frontend.parser.Parser;
+import frontend.token.Ident;
 import frontend.token.Token;
 
 import java.io.BufferedWriter;
@@ -50,16 +53,24 @@ public class Stmt implements Component {
                 // Stmt → LVal '=' Exp ';'
                 // Stmt → Exp ';'
                 int i = 0;
-                while (Lexer.tokenList.peek(i).getRefType() != Token.Type.SEMICN) {
-                    if (Lexer.tokenList.peek(i).getRefType() == Token.Type.ASSIGN) {
+                if (Lexer.tokenList.equalPeekType(0, Token.Type.IDENFR) &&
+                        !Lexer.tokenList.equalPeekType(1, Token.Type.LPARENT)) {
+                    // 可能是 LVal 也可能是 LVal '=' Exp ; 多往前看几步
+
+
+                    LVal lVal = Parser.lValParser();
+                    if (Lexer.tokenList.equalPeekType(0, Token.Type.ASSIGN)) {
                         LvalStmt lvalStmt = new LvalStmt();
-                        lvalStmt.parser();
+                        lvalStmt.parser(lVal);
                         return lvalStmt;
+                    } else {
+                        ExpStmt expStmt = new ExpStmt();
+                        expStmt.parser(lVal);
+                        return expStmt;
                     }
-                    i++;
                 }
                 ExpStmt expStmt = new ExpStmt();
-                expStmt.parser();
+                expStmt.parser(null);
                 return expStmt;
 
         }

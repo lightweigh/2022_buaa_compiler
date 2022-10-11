@@ -2,7 +2,6 @@ import frontend.Error;
 import frontend.Lexer;
 import frontend.TokenList;
 import frontend.parser.CompUnitParser;
-import frontend.token.Token;
 import frontend.visitor.Visitor;
 
 import java.io.BufferedWriter;

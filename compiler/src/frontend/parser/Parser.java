@@ -12,17 +12,12 @@ import frontend.grammar.funcDef.FuncFParam;
 import frontend.grammar.funcDef.FuncFParams;
 import frontend.grammar.funcDef.FuncType;
 import frontend.grammar.decl.def.init.Init;
-import frontend.grammar.decl.ConstDecl;
 import frontend.grammar.decl.Decl;
-import frontend.grammar.decl.VarDecl;
-import frontend.grammar.decl.def.ConstDef;
-import frontend.grammar.decl.def.VarDef;
 import frontend.grammar.decl.def.init.Vector;
 import frontend.token.Ident;
 import frontend.token.IntConst;
 import frontend.token.Token;
 
-import java.io.BufferedWriter;
 import java.util.ArrayList;
 
 public class Parser {
@@ -96,10 +91,7 @@ public class Parser {
         while (Lexer.tokenList.equalPeekType(0, Token.Type.LBRACK)) {
             type++;
             bracks.add(Lexer.tokenList.poll()); // '['
-            // todo check this
-            if (Lexer.tokenList.peek(0).getRefType() != Token.Type.RBRACK) {
-                constExp = (ConstExp) Parser.expressionParser("ConstExp");
-            }
+            constExp = (ConstExp) Parser.expressionParser("ConstExp");
             Token rBrack = Error.errorDetect(Token.Type.RBRACK);
             if (rBrack != null) {
                 bracks.add(rBrack); // ']'

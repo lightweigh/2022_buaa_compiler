@@ -1,5 +1,6 @@
 package frontend.grammar;
 
+import frontend.Error;
 import frontend.Lexer;
 import frontend.token.Token;
 
@@ -20,9 +21,9 @@ public class MainFuncDef implements Component{
         intTK = Lexer.tokenList.poll();
         mainTK = Lexer.tokenList.poll();
         lParent = Lexer.tokenList.poll();
-        rParent = Lexer.tokenList.poll();
+        rParent = Error.errorDetect(Token.Type.RPARENT);
         block.parser();
-        hasRet = block.hasRetval();
+        hasRet = block.rightRet(true);
         retRow = block.getRetRow();
     }
 

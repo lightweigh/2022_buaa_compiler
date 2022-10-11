@@ -31,7 +31,9 @@ public class FuncFParams {
                 output.write(comma.toString());
             }
         }
-        output.write("<FuncFParams>\n");
+        if (!funcFParams.isEmpty()) {
+            output.write("<FuncFParams>\n");
+        }
     }
 
     @Override

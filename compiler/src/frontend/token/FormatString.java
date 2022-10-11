@@ -35,7 +35,7 @@ public class FormatString extends Token {
         }
     }
 
-    public boolean isHasIllegalSym() {
+    public boolean hasIllegalSym() {
         return hasIllegalSym;
     }
 

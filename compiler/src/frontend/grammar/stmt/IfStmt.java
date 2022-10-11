@@ -16,8 +16,40 @@ public class IfStmt extends Stmt {
     private Cond cond;
     private Token rParent;
     private Stmt stmt;
-    private Token elseTK=null;
-    private Stmt elseStmt=null;
+    private Token elseTK = null;
+    private Stmt elseStmt = null;
+
+    public Token getIfTK() {
+        return ifTK;
+    }
+
+    public Token getlParent() {
+        return lParent;
+    }
+
+    public Cond getCond() {
+        return cond;
+    }
+
+    public Token getrParent() {
+        return rParent;
+    }
+
+    public Stmt getStmt() {
+        return stmt;
+    }
+
+    public Token getElseTK() {
+        return elseTK;
+    }
+
+    public boolean hasElse() {
+        return elseTK != null;
+    }
+
+    public Stmt getElseStmt() {
+        return elseStmt;
+    }
 
     public void parser() {
         ifTK = Lexer.tokenList.poll();
@@ -26,7 +58,7 @@ public class IfStmt extends Stmt {
         rParent = Error.errorDetect(Token.Type.RPARENT);
         stmt = Stmt.stmtParser();
         if (Lexer.tokenList.equalPeekType(0, Token.Type.ELSETK)) {
-            elseTK=Lexer.tokenList.poll();
+            elseTK = Lexer.tokenList.poll();
             elseStmt = Stmt.stmtParser();
         }
     }

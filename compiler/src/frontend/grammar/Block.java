@@ -62,6 +62,20 @@ public class Block extends Stmt {
         return hasRet;
     }
 
+    public boolean rightRet(boolean needRet) {
+        boolean rightRet = false;
+        if (!blockItems.isEmpty()) {
+            BlockItem blockItem = blockItems.get(blockItems.size()-1);
+            if (!blockItem.isDecl() && blockItem.getStmt() instanceof ReturnStmt) {
+                if (needRet || !((ReturnStmt) blockItem.getStmt()).hasExp()) {
+                    rightRet = true;
+                }
+                retRow = ((ReturnStmt) blockItem.getStmt()).getRetRow();
+            }
+        }
+        return rightRet;
+    }
+
     public int getRetRow() {
         return retRow;
     }

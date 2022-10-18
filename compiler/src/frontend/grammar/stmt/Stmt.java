@@ -52,25 +52,20 @@ public class Stmt implements Component {
             default:
                 // Stmt → LVal '=' Exp ';'
                 // Stmt → Exp ';'
-                int i = 0;
+                int curPos = Lexer.tokenList.getPos();
                 if (Lexer.tokenList.equalPeekType(0, Token.Type.IDENFR) &&
                         !Lexer.tokenList.equalPeekType(1, Token.Type.LPARENT)) {
-                    // 可能是 LVal 也可能是 LVal '=' Exp ; 多往前看几步
-
-
+                    // 可能是 LVal '=' Exp  也可能是 LVal, 还可能是 [Exp];  多往前看几步
                     LVal lVal = Parser.lValParser();
                     if (Lexer.tokenList.equalPeekType(0, Token.Type.ASSIGN)) {
                         LvalStmt lvalStmt = new LvalStmt();
                         lvalStmt.parser(lVal);
                         return lvalStmt;
-                    } else {
-                        ExpStmt expStmt = new ExpStmt();
-                        expStmt.parser(lVal);
-                        return expStmt;
                     }
                 }
+                Lexer.tokenList.setPos(curPos);
                 ExpStmt expStmt = new ExpStmt();
-                expStmt.parser(null);
+                expStmt.parser();
                 return expStmt;
 
         }

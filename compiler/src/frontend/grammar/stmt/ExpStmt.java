@@ -16,21 +16,8 @@ public class ExpStmt extends Stmt {
     private Exp exp = null;
     private Token semicon;
 
-    public void parser(LVal lVal) {
-        if (lVal == null) {
-            exp = (Exp) Parser.expressionParser("Exp");
-        } else {
-            PrimaryExp primaryExp = new PrimaryExp(lVal);
-            UnaryExp unaryExp = new UnaryExp(primaryExp);
-            ArrayList<Expression> unaryExps = new ArrayList<>();
-            unaryExps.add(unaryExp);
-            ArrayList<Operator> separators = new ArrayList<>();
-            MulExp mulExp = new MulExp(unaryExps,separators);
-            ArrayList<Expression> mulExps = new ArrayList<>();
-            mulExps.add(mulExp);
-            AddExp addExp = new AddExp(mulExps,separators);
-            exp = new Exp(addExp);
-        }
+    public void parser() {
+        exp = (Exp) Parser.expressionParser("Exp");
         semicon = Error.errorDetect(Token.Type.SEMICN);
     }
 

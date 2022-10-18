@@ -23,6 +23,15 @@ public class TokenList {
         return tokens.get(pos+step);
     }
 
+    // 只有在Stmt分析时使用一次！ 破坏了封闭性，难过qwq
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
+
     public Token poll() {
         if (pos >= tokens.size()) {
             return null;

@@ -53,6 +53,34 @@ public class Init {
         this.rBrace = rBrace;
     }
 
+    public boolean isConst() {
+        return isConst;
+    }
+
+    public Expression getScalar() {
+        return scalar;
+    }
+
+    public Vector getVector() {
+        return vector;
+    }
+
+    public ArrayList<Vector> getVectors() {
+        return vectors;
+    }
+
+    public Token getlBrace() {
+        return lBrace;
+    }
+
+    public ArrayList<Token> getSeperators() {
+        return seperators;
+    }
+
+    public Token getrBrace() {
+        return rBrace;
+    }
+
     public void print(BufferedWriter output) throws IOException {
         switch (dimension) {
             case 0:

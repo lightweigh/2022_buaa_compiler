@@ -36,6 +36,10 @@ public class PrintfStmt extends Stmt implements Component {
         semicon = Error.errorDetect(Token.Type.SEMICN);
     }
 
+    public ArrayList<Exp> getExps() {
+        return exps;
+    }
+
     public int getExpNum() {
         return exps.size();
     }

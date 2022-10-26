@@ -29,6 +29,10 @@ public class ReturnStmt extends Stmt {
         return returnTK.getRow();
     }
 
+    public Exp getExp() {
+        return exp;
+    }
+
     @Override
     public void print(BufferedWriter output) throws IOException {
         output.write(returnTK.toString());

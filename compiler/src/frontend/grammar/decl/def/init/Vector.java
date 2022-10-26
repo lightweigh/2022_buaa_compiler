@@ -27,6 +27,10 @@ public class Vector {
         this.isConst = type.equals("ConstExp");
     }
 
+    public ArrayList<Expression> getExpressions() {
+        return expressions;
+    }
+
     public void print(BufferedWriter output) throws IOException {
         if (lBrace != null) {
             output.write(lBrace.toString());

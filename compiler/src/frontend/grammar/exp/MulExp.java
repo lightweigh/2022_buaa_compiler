@@ -22,6 +22,14 @@ public class MulExp implements Expression {
         return expressions;
     }
 
+    public Iterator<Expression> getExpIter() {
+        return expressions.iterator();
+    }
+
+    public Iterator<Operator> getOpIter() {
+        return operators.iterator();
+    }
+
     @Override
     public void print(BufferedWriter output) throws IOException {
         Iterator<Expression> iter = expressions.iterator();

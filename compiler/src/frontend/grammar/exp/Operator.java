@@ -6,11 +6,15 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 
 public class Operator implements Expression {
-    // '*' | '/' | '%'
+    // '*' | '/' | '%' | '+' | '-'
     private final Token op;
 
     public Operator(Token op) {
         this.op = op;
+    }
+
+    public String getOp() {
+        return op.getContent();
     }
 
     @Override
@@ -20,7 +24,6 @@ public class Operator implements Expression {
 
     @Override
     public String toString() {
-        Token.Type type = op.getRefType();
-        return type == Token.Type.MULT ? " * " : type == Token.Type.DIV ? " / " : " % ";
+        return op.getContent();
     }
 }

@@ -3,10 +3,13 @@ import frontend.Lexer;
 import frontend.TokenList;
 import frontend.parser.CompUnitParser;
 import frontend.visitor.Visitor;
+import middle.BasicBlock;
+import middle.quartercode.operand.MiddleCode;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Compiler {
     public static void main(String[] args) {
@@ -35,5 +38,18 @@ public class Compiler {
             e.printStackTrace();
         }
 
+        // 中间代码生成
+        try {
+            BufferedWriter output = new BufferedWriter(new FileWriter("ir.txt"));
+            ArrayList<MiddleCode> constStr = new ArrayList<>(visitor.getConstStr().values());
+            for (MiddleCode middleCode : constStr) {
+                output.write(middleCode.toString());
+            }
+            BasicBlock bb = visitor.getGlobalBlock();
+            bb.output(output);
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

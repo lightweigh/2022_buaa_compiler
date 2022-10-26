@@ -21,6 +21,14 @@ public class AddExp implements Expression, CondExp {
         return expressions;
     }
 
+    public Iterator<Expression> getExpIter() {
+        return expressions.iterator();
+    }
+
+    public Iterator<Operator> getOpIter() {
+        return operators.iterator();
+    }
+
     public void print(BufferedWriter output) throws IOException {
         Iterator<Expression> iter = expressions.iterator();
         Expression expression = iter.next();

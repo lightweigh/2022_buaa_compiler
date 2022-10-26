@@ -12,6 +12,10 @@ public class Num {
         this.intConst = intConst;
     }
 
+    public int getValueOfNum() {
+        return Integer.parseInt(intConst.getContent());
+    }
+
     public void print(BufferedWriter output) throws IOException {
         output.write(intConst.toString());
         output.write("<Number>\n");

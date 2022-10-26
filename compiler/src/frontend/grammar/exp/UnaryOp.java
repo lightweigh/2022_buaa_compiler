@@ -13,6 +13,10 @@ public class UnaryOp implements Expression {
         this.unaryOp = unaryOp;
     }
 
+    public String getOp() {
+        return unaryOp.getContent();
+    }
+
     @Override
     public void print(BufferedWriter output) throws IOException {
         output.write(unaryOp.toString());

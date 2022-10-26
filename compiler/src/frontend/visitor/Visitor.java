@@ -5,20 +5,52 @@ import frontend.grammar.*;
 import frontend.grammar.decl.Decl;
 import frontend.grammar.decl.def.Def;
 import frontend.grammar.decl.def.Variable;
+import frontend.grammar.decl.def.init.Init;
+import frontend.grammar.decl.def.init.Vector;
 import frontend.grammar.exp.*;
 import frontend.grammar.funcDef.FuncDef;
 import frontend.grammar.funcDef.FuncFParam;
+import frontend.grammar.funcDef.FuncType;
 import frontend.grammar.stmt.*;
 import frontend.symbol.*;
+import middle.BasicBlock;
+import middle.MiddleTn;
+import middle.quartercode.*;
+import middle.quartercode.array.ArrayAssign;
+import middle.quartercode.array.ArrayDef;
+import middle.quartercode.array.ArrayStore;
+import middle.quartercode.function.FParaCode;
+import middle.quartercode.function.FuncCallCode;
+import middle.quartercode.function.FuncDefCode;
+import middle.quartercode.function.RParaCode;
+import middle.quartercode.operand.primaryOpd.LValOpd;
+import middle.quartercode.operand.primaryOpd.Immediate;
+import middle.quartercode.operand.MiddleCode;
+import middle.quartercode.operand.Operand;
+import middle.quartercode.operand.primaryOpd.PrimaryOpd;
+import middle.quartercode.operand.primaryOpd.RetOpd;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class Visitor {
     private SymTable curSymTable;
+    private SymTable globalSymTable;
+
+    private BasicBlock curBBlock;
+    private BasicBlock globalBlock;
+    private MiddleTn middleTn;
+    private HashMap<String, MiddleCode> constStr;
+    private int constStringCnt = 0;
 
     public Visitor() {
         this.curSymTable = new SymTable(null);
+        this.globalSymTable = curSymTable;
+        this.curBBlock = new BasicBlock("global_block_");
+        this.globalBlock = curBBlock;
+        this.middleTn = new MiddleTn();
+        this.constStr = new HashMap<>();
     }
 
     public void visitCompUnit(CompUnit compUnit) {
@@ -40,6 +72,7 @@ public class Visitor {
                     mainFuncDef.getMainTK().getRow()));
         }
         SymTable newTable = new SymTable(curSymTable);
+        curBBlock.append(new FuncDefCode("main", new FuncType(mainFuncDef.getIntTK())));
         visitBlock(mainFuncDef.getBlock(), newTable, false);
     }
 
@@ -52,21 +85,28 @@ public class Visitor {
         } else {
             curSymTable.addSymbol(funcSymbol);
         }
-        SymTable newBlock = new SymTable(curSymTable);
+        curBBlock.append(new FuncDefCode(funcDef.getName(), funcDef.getFuncType())); // todo 我想不要这个东西，我的BasicBlock还没整呢
+        SymTable newSymTable = new SymTable(curSymTable);
         for (FuncFParam funcFParam : funcDef.getFuncFParams()) {
-            // 函数参数的 名字重定义 是怎样的呢？ todo 名字重定义
-            // 函数参数在当前域下能不能重命名？
-            VarSymbol fParamSymbol = new VarSymbol(funcFParam.getIdent().getContent(), false, funcFParam.getType());
-            if (newBlock.hasSymbol(funcFParam.getIdent().getContent())) {
+            // todo modified
+            int type = funcFParam.getType();
+            int colNum = 1;
+            if (type == 2) {
+                ArrayList<Operand> operands = analyseExpression(funcFParam.getConstExp());
+                colNum = ((Immediate) operands.get(0)).getValue();
+            }
+            FParamSymbol fParamSymbol = new FParamSymbol(funcFParam.getIdent().getContent(), funcFParam.getType(), colNum);
+            if (newSymTable.hasSymbol(funcFParam.getIdent().getContent())) {
                 Error.errorTable.add(new Error(Error.ErrorType.NAME_REDEF,
                         funcFParam.getIdent().getRow()));
             } else {
-                newBlock.addSymbol(fParamSymbol);
+                newSymTable.addSymbol(fParamSymbol);
             }
             funcSymbol.addFParam(new FParamSymbol(funcFParam.getIdent().getContent(),
-                    funcFParam.getType()));
+                    funcFParam.getType(),colNum));
+            curBBlock.append(new FParaCode(funcFParam.getIdent().getContent(), funcFParam.getType() != 0));
         }
-        visitBlock(funcDef.getBlock(), newBlock, false);
+        visitBlock(funcDef.getBlock(), newSymTable, false);
     }
 
     private void visitBlock(Block block, SymTable newTable, boolean isInwhile) {
@@ -84,15 +124,69 @@ public class Visitor {
     }
 
     private void visitStmt(Stmt stmt, boolean isInwhile) {
+        middleTn.clear();
         if (stmt instanceof Block) {
             SymTable newTable = new SymTable(curSymTable);
             visitBlock((Block) stmt, newTable, isInwhile);
         } else if (stmt instanceof ExpStmt && ((ExpStmt) stmt).getExp() != null) {
-            visitAddExp(((ExpStmt) stmt).getExp().getAddExp());
+            AddExp addExp = ((ExpStmt) stmt).getExp().getAddExp();
+            visitAddExp((addExp));
+            // middle code part
+            ArrayList<Operand> operands = analyseAddExp(addExp);
+            // todo check primaryOpd
+            if (getLast(operands) instanceof PrimaryOpd) {
+                // 如果是 单一的 应该 没什么用吧。
+                operands.remove(getLast(operands));
+            }
+            for (Operand operand : operands) {
+                curBBlock.append((MiddleCode) operand);
+            }
+
         } else if (stmt instanceof LvalStmt) {
-            visitLVal(((LvalStmt) stmt).getlVal(), true);
+            LVal lVal = ((LvalStmt) stmt).getlVal();
+            visitLVal(lVal, true);
             if (!((LvalStmt) stmt).isGetInt()) {
-                visitAddExp(((LvalStmt) stmt).getExp().getAddExp());
+                AddExp addExp = ((LvalStmt) stmt).getExp().getAddExp();
+                visitAddExp(addExp);
+                ArrayList<Operand> expOps = analyseAddExp(addExp);
+                ArrayList<Operand> lValOps = analyseLVal(lVal);
+
+                // todo check primaryOpd
+                Operand lastOfExp = getLast(expOps);
+                if (lastOfExp instanceof PrimaryOpd) {
+                    expOps.remove(lastOfExp);
+                }
+                for (Operand operand : expOps) {
+                    curBBlock.append((MiddleCode) operand);
+                }
+
+                Operand lastOfLVal = getLast(lValOps);
+                assert lastOfLVal instanceof LValOpd;
+                lValOps.remove(lastOfLVal);
+                for (Operand operand : lValOps) {
+                    curBBlock.append((MiddleCode) operand);
+                }
+
+                if (((LValOpd) lastOfLVal).getIdx() == null) {
+                    curBBlock.append(new AssignCode(lastOfLVal.getName(), lastOfExp));
+                } else {
+                    curBBlock.append(new ArrayStore((PrimaryOpd) lastOfLVal, lastOfExp));
+                }
+            } else {
+                MiddleCode t1 = new ReadIn(middleTn.genTemporyName());
+                curBBlock.append(t1);
+                ArrayList<Operand> lValOps = analyseLVal(lVal);
+                Operand lastOfLVal = getLast(lValOps);
+                assert lastOfLVal instanceof LValOpd;
+                lValOps.remove(lastOfLVal);
+                for (Operand operand : lValOps) {
+                    curBBlock.append((MiddleCode) operand);
+                }
+                if (((LValOpd) lastOfLVal).getIdx() == null) {
+                    curBBlock.append(new AssignCode(lastOfLVal.getName(), t1));
+                } else {
+                    curBBlock.append(new ArrayStore((PrimaryOpd) lastOfLVal, t1));
+                }
             }
         } else if (stmt instanceof WhileStmt) {
             visitStmt(((WhileStmt) stmt).getStmt(), true);
@@ -101,9 +195,64 @@ public class Visitor {
                 Error.errorTable.add(new Error(Error.ErrorType.WRONG_BREAK_CONTINUE, ((BreakOrContinueStmt) stmt).getRow()));
             }
         } else if (stmt instanceof IfStmt) {
-            visitStmt(((IfStmt) stmt).getStmt(),isInwhile);
+            visitStmt(((IfStmt) stmt).getStmt(), isInwhile);
             if (((IfStmt) stmt).hasElse()) {
-                visitStmt(((IfStmt) stmt).getElseStmt(),isInwhile);
+                visitStmt(((IfStmt) stmt).getElseStmt(), isInwhile);
+            }
+        } else if (stmt instanceof PrintfStmt) {
+            PrintfStmt printfStmt = (PrintfStmt) stmt;
+            String inner = printfStmt.getFormatString().getInner();
+            ArrayList<Integer> formatChars = printfStmt.getFormatString().getFormatChars();
+            Iterator<Exp> expIter = printfStmt.getExps().iterator();
+            ArrayList<Operand> subBB = new ArrayList<>();
+            int start = 0;
+            for (int end : formatChars) {
+                if (start != end) {
+                    ConstStrCode str;
+                    String sub = inner.substring(start, end);
+                    if (!constStr.containsKey(sub)) {
+                        str = new ConstStrCode("str_" + constStringCnt++, sub);
+                        constStr.put(sub, str);
+                    }
+                    str = (ConstStrCode) constStr.get(sub);
+                    subBB.add(new PutOut(str));
+                }
+                assert expIter.hasNext();
+                Exp exp = expIter.next();
+                ArrayList<Operand> operands = analyseExpression(exp);
+                Operand lastOne = getLast(operands);
+                if (lastOne instanceof PrimaryOpd) {
+                    operands.remove(lastOne);
+                }
+                subBB.addAll(operands);
+                subBB.add(new PutOut(lastOne));
+                start = end + 2;
+            }
+            if (start < inner.length()) {
+                ConstStrCode str;
+                String sub = inner.substring(start);
+                if (!constStr.containsKey(sub)) {
+                    str = new ConstStrCode("str_" + constStringCnt++, sub);
+                    constStr.put(sub, str);
+                }
+                str = (ConstStrCode) constStr.get(sub);
+                subBB.add(new PutOut(str));
+            }
+            for (Operand operand : subBB) {
+                curBBlock.append((MiddleCode) operand);
+            }
+        } else if (stmt instanceof ReturnStmt) {
+            if (((ReturnStmt) stmt).hasExp()) {
+                Exp exp = ((ReturnStmt) stmt).getExp();
+                ArrayList<Operand> operands = analyseAddExp(exp.getAddExp());
+                Operand lastOne = getLast(operands);
+                if (lastOne instanceof PrimaryOpd) {
+                    operands.remove(lastOne);
+                }
+                operands.add(new RetCode(lastOne));
+                for (Operand operand : operands) {
+                    curBBlock.append((MiddleCode) operand);
+                }
             }
         }
     }
@@ -256,20 +405,346 @@ public class Visitor {
         //  ConstDef → Ident { '[' ConstExp ']' } '=' ConstInitVal
         //  VarDef → Ident { '[' ConstExp ']' } | Ident { '[' ConstExp ']' } '=' InitVal
         //  Def → Variable [ '=' InitVal ]
-        visitVariable(def.getVariable(), isConst);
-        /*if (def.getInit() != null) {
-
-        }*/
-    }
-
-    private void visitVariable(Variable variable, boolean isConst) {
+        Variable variable = def.getVariable();
+        ArrayList<ConstExp> constExps = variable.getConstExps();
+        int size = 1;
+        int colNum = 1;
+        ArrayList<Integer> values = new ArrayList<>();
         // Variable → Ident { '[' ConstExp ']' }
         if (curSymTable.hasSymbol(variable.getIdent().getContent())) {
             Error.errorTable.add(new Error(Error.ErrorType.NAME_REDEF,
                     variable.getIdent().getRow()));
         } else {
+            if (constExps.size() >= 1) {
+                Immediate immediate = (Immediate) analyseAddExp(constExps.get(0).getAddExp()).get(0);
+                size = immediate.getValue();
+                colNum = size;
+            }
+            if (constExps.size() == 2) {
+                Immediate immediate = (Immediate) analyseAddExp(constExps.get(1).getAddExp()).get(0);
+                colNum = immediate.getValue();
+                size *= colNum;
+            }
+            // 如果没有被初始化,那么也不需要给它构造四元式.吗?
+            // middleTn 初始化? todo
+            middleTn.clear();
+            if (def.getInit() == null) {
+                curBBlock.append(new ConstVar(isConst, def.getVariable().getIdent(),null));
+            }
+            if (def.getInit() != null) {
+                Init init = def.getInit();
+                // todo 没有考虑 a[2] = {} 类似的情况
+                ArrayList<Operand> operands;
+                switch (init.getDimension()) {
+                    case 0:
+                        // scalar
+                        operands = analyseExpression(init.getScalar());
+                        Operand lastOne = getLast(operands);
+                        if (lastOne instanceof PrimaryOpd) {
+                            operands.remove(lastOne);
+                        }
+                        for (Operand operand : operands) {
+                            curBBlock.append((MiddleCode) operand);
+                        }
+                        if (lastOne instanceof Immediate) {
+                            values.add(((Immediate) lastOne).getValue());
+                        }
+                        curBBlock.append(new ConstVar(isConst, def.getVariable().getIdent(), lastOne));
+                        break;
+                    case 1:
+                        curBBlock.append(new ArrayDef(isConst, def.getVariable().getIdent(), size));
+                        ArrayList<Expression> expressions = init.getVector().getExpressions();
+                        for (int i = 0; i < expressions.size(); i++) {
+                            operands = analyseExpression(expressions.get(i));
+                            lastOne = getLast(operands);
+                            if (lastOne instanceof PrimaryOpd) {
+                                operands.remove(lastOne);
+                            }
+                            for (Operand operand : operands) {
+                                curBBlock.append((MiddleCode) operand);
+                            }
+                            if (lastOne instanceof Immediate) {
+                                values.add(((Immediate) lastOne).getValue());
+                            }
+                            curBBlock.append(new ArrayAssign(def.getVariable().getIdent(), i, lastOne));
+                        }
+                        break;
+                    case 2:
+                        curBBlock.append(new ArrayDef(isConst, def.getVariable().getIdent(), size));
+                        int cnt = 0;
+                        for (Vector vector : init.getVectors()) {
+                            expressions = vector.getExpressions();
+                            for (Expression expression1 : expressions) {
+                                operands = analyseExpression(expression1);
+                                lastOne = getLast(operands);
+                                if (lastOne instanceof PrimaryOpd) {
+                                    operands.remove(lastOne);
+                                }
+                                for (Operand operand : operands) {
+                                    curBBlock.append((MiddleCode) operand);
+                                }
+                                if (lastOne instanceof Immediate) {
+                                    values.add(((Immediate) lastOne).getValue());
+                                }
+                                curBBlock.append(new ArrayAssign(def.getVariable().getIdent(), cnt++, lastOne));
+                            }
+                        }
+                        break;
+                }
+            }
             curSymTable.addSymbol(new VarSymbol(variable.getIdent().getContent(),
-                    isConst, variable.getDimension()));
+                    isConst, variable.getDimension(), size, colNum, values));
         }
+    }
+
+    private Operand getLast(ArrayList<Operand> operands) {
+        return operands.get(operands.size() - 1);
+    }
+
+    private ArrayList<Operand> analyseExpression(Expression expression) {
+        if (expression instanceof ConstExp) {
+            return analyseAddExp(((ConstExp) expression).getAddExp());
+        }
+        return analyseAddExp(((Exp) expression).getAddExp());
+    }
+
+    private ArrayList<Operand> analyseAddExp(AddExp addExp) {
+        Iterator<Expression> expIter = addExp.getExpIter();
+        Iterator<Operator> opIter = addExp.getOpIter();
+        MulExp mulExp = (MulExp) expIter.next();
+
+        ArrayList<Operand> operands1 = analyseMulExp(mulExp);
+        ArrayList<Operand> operands = new ArrayList<>(operands1);
+        Operand leftOne;
+        Operand rightOne;
+        ArrayList<Operand> operands2;
+        while (expIter.hasNext()) {
+            leftOne = getLast(operands);
+            if (leftOne instanceof PrimaryOpd) {
+                operands.remove(leftOne);
+            }
+            Operator op = opIter.next();
+            mulExp = (MulExp) expIter.next();
+            operands2 = analyseMulExp(mulExp);
+            rightOne = getLast(operands2);
+            if (leftOne instanceof Immediate && rightOne instanceof Immediate) {
+                // 如果是Immediate 的话，那么operands1、2 里面应该只能有一个元素。
+                ((Immediate) leftOne).procValue(op.getOp(), (Immediate) rightOne);
+            } else {
+                operands.addAll(operands2);
+                if (rightOne instanceof PrimaryOpd) {
+                    operands.remove(rightOne);
+                }
+                operands.add(new BinaryCode(middleTn.genTemporyName(), leftOne, rightOne, op.getOp()));
+            }
+        }
+        return operands;
+    }
+
+    private ArrayList<Operand> analyseMulExp(MulExp mulExp) {
+
+        Iterator<Expression> expIter = mulExp.getExpIter();
+        Iterator<Operator> opIter = mulExp.getOpIter();
+        UnaryExp unaryExp = (UnaryExp) expIter.next();
+
+        ArrayList<Operand> operands1 = analyseUnaryExp(unaryExp);
+        ArrayList<Operand> operands = new ArrayList<>(operands1);
+        Operand leftOne;
+        Operand rightOne;
+        ArrayList<Operand> operands2;
+        while (expIter.hasNext()) {
+            leftOne = getLast(operands);
+            if (leftOne instanceof PrimaryOpd) {
+                operands.remove(leftOne);
+            }
+            Operator op = opIter.next();
+            unaryExp = (UnaryExp) expIter.next();
+            operands2 = analyseUnaryExp(unaryExp);
+            rightOne = getLast(operands2);
+            if (leftOne instanceof Immediate && rightOne instanceof Immediate) {
+                // 如果是Immediate 的话，那么operands1、2 里面应该只能有一个元素。
+                ((Immediate) leftOne).procValue(op.getOp(), (Immediate) rightOne);
+            } else {
+                operands.addAll(operands2);
+                if (rightOne instanceof PrimaryOpd) {
+                    operands.remove(rightOne);
+                }
+                operands.add(new BinaryCode(middleTn.genTemporyName(), leftOne, rightOne, op.getOp()));
+            }
+        }
+        return operands;
+    }
+
+    // 可能有 PrimaryOpd 也可能没有
+    private ArrayList<Operand> analyseUnaryExp(UnaryExp unaryExp) {
+        ArrayList<Operand> operands = new ArrayList<>();
+        switch (unaryExp.getType()) {
+            case 0:
+                operands.addAll(analysePrimaryExp(unaryExp.getPrimaryExp()));
+                break;
+            case 1:
+                // 末尾可能有 PrimaryOpd
+                // FuncCall ->  Ident '(' [FuncRParams] ')'
+                FuncRParams funcRParams = unaryExp.getFuncCall().getFuncRParams();
+                for (Exp exp : funcRParams.getExps()) {
+                    operands.addAll(analyseAddExp(exp.getAddExp()));
+                    Operand lastOne = getLast(operands);
+                    if (lastOne instanceof PrimaryOpd) {
+                        operands.remove(lastOne);
+                    }
+                    operands.add(new RParaCode(lastOne));
+                }
+                // todo 这个FuncCallCode 的属性应该是要改一改的
+                String funcName = unaryExp.getFuncCall().getIdent().getContent();
+                operands.add(new FuncCallCode(funcName));
+                assert getSymbol(funcName) instanceof FuncSymbol;
+                FuncSymbol funcSymbol = (FuncSymbol) getSymbol(funcName);
+                assert funcSymbol != null;
+                if (funcSymbol.isInt()) {
+                    operands.add(new RetOpd());
+                }
+                break;
+            case 2:
+                boolean isNeg = unaryExp.getUnaryOp().getOp().equals("-");
+                UnaryExp subUnary = unaryExp.getUnaryExp();
+                while (subUnary.getType() == 2) {
+                    // 异或一下
+                    isNeg = isNeg ^ subUnary.getUnaryOp().getOp().equals("-");
+                    subUnary = subUnary.getUnaryExp();
+                }
+
+                ArrayList<Operand> operands1 = analyseUnaryExp(subUnary); // recurrence
+                Operand lastOne = getLast(operands1);
+
+                // UnaryExp -> Num | UnaryOp UnaryExp
+                if (lastOne instanceof Immediate) {
+                    assert operands1.size() == 1;   // 应该只有这一个Immediate
+                    ((Immediate) lastOne).procValue(isNeg);
+                    operands.add(lastOne);
+                } else {
+                    // 其他 PrimaryOpd 情况或者 exp
+                    operands.addAll(operands1);
+                    if (isNeg) {
+                        operands.remove(lastOne);
+                        operands.add(new UnaryCode(middleTn.genTemporyName(), lastOne, MiddleCode.Op.SUB));
+                    }
+                }
+                break;
+        }
+        return operands;
+    }
+
+    private ArrayList<Operand> analysePrimaryExp(PrimaryExp primaryExp) {
+        ArrayList<Operand> operands = new ArrayList<>();
+        switch (primaryExp.getType()) {
+            case 0:
+                // (Exp)
+                operands.addAll(analyseAddExp(primaryExp.getExp().getAddExp()));
+                break;
+            case 1:
+                // LVal
+                // 这里在等号右边，Operand，相当于数组读取。
+                // z = a[x][y]
+                LVal lVal = primaryExp.getlVal();
+                operands.addAll(analyseLVal(lVal));
+                break;
+            case 2:
+                // Num
+                operands.add(new Immediate(primaryExp.getNumber().getValueOfNum()));
+                break;
+        }
+        return operands;
+    }
+
+    // 最后一个元素是一个PrimaryOpd:LVal的体现，不是MiddleCode， 根据LVal在左边还是右边灵活使用。
+    private ArrayList<Operand> analyseLVal(LVal lVal) {
+        ArrayList<Operand> operands = new ArrayList<>();
+        switch (lVal.getDimension()) {
+            case 0:
+                // size = 1
+                Symbol symbol = getSymbol(lVal.getIdent().getContent());
+                // System.out.println(lVal.getIdent().getContent());
+                if (symbol instanceof VarSymbol && ((VarSymbol) symbol).isConst()) {
+                    operands.add(new Immediate(((VarSymbol) symbol).getValue(0)));
+                } else {
+                    operands.add(new LValOpd(lVal.getIdent().getContent(), null));
+                }
+                break;
+            case 1:
+                Exp exp = lVal.getExps().get(0);
+                ArrayList<Operand> operands1 = analyseExpression(exp);
+                Operand lastOne = getLast(operands1);
+                if (lastOne instanceof Immediate) {
+                    // 索引是常数
+                    symbol = getSymbol(lVal.getIdent().getContent());
+                    if (symbol instanceof VarSymbol && ((VarSymbol) symbol).isConst()) {
+                        operands.add(new Immediate(((VarSymbol) symbol).getValue(((Immediate) lastOne).getValue())));
+                    } else {
+                        operands.add(new LValOpd(lVal.getIdent().getContent(), lastOne));
+                    }
+                } else {
+                    if (lastOne instanceof PrimaryOpd) {
+                        operands1.remove(lastOne);
+                    }
+                    operands.addAll(operands1);
+                    // 没有检查会不会数组越界
+                    operands.add(new LValOpd(lVal.getIdent().getContent(), lastOne));
+                }
+                break;
+            case 2:
+                operands1 = analyseExpression(lVal.getExps().get(0));
+                ArrayList<Operand> operands2 = analyseExpression(lVal.getExps().get(1));
+                symbol = getSymbol(lVal.getIdent().getContent());
+                Immediate colNum = null;
+                // 左值只会是这两种之一
+                if (symbol instanceof VarSymbol) {
+                    colNum = new Immediate(((VarSymbol) symbol).getColNum());
+                } else if (symbol instanceof FParamSymbol) {
+                    colNum = new Immediate(((FParamSymbol) symbol).getColNum());
+                }
+                Operand x = getLast(operands1);
+                Operand y = getLast(operands2);
+
+                if (x instanceof PrimaryOpd) {
+                    operands1.remove(x);
+                }
+                if (y instanceof PrimaryOpd) {
+                    operands2.remove(y);
+                }
+
+                if (x instanceof Immediate && y instanceof Immediate) {
+                    ((Immediate) x).procValue("+", (Immediate) y);
+                    if (symbol instanceof VarSymbol && ((VarSymbol) symbol).isConst()) {
+                        operands.add(new Immediate(((VarSymbol) symbol).getValue(((Immediate) x).getValue())));
+                    } else {
+                        operands.add(new LValOpd(lVal.getIdent().getContent(), x));
+                    }
+                } else if (x instanceof Immediate) {
+                    ((Immediate) x).procValue("*", colNum);
+                    operands.addAll(operands1);
+                    operands.addAll(operands2);
+                    Operand t1 = new BinaryCode(middleTn.genTemporyName(), x, y, "+");
+                    operands.add(t1);
+                    operands.add(new LValOpd(lVal.getIdent().getContent(), t1));
+                } else {
+                    operands.addAll(operands1);
+                    operands.addAll(operands2);
+                    Operand t1 = new BinaryCode(middleTn.genTemporyName(), x, colNum, "*");
+                    Operand t2 = new BinaryCode(middleTn.genTemporyName(), t1, y, "+");
+                    operands.add(t1);
+                    operands.add(t2);
+                    operands.add(new LValOpd(lVal.getIdent().getContent(), t2));
+                }
+                break;
+        }
+        return operands;
+    }
+
+    public BasicBlock getGlobalBlock() {
+        return globalBlock;
+    }
+
+    public HashMap<String, MiddleCode> getConstStr() {
+        return constStr;
     }
 }

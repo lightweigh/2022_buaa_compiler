@@ -5,14 +5,13 @@ import java.io.IOException;
 
 public class ConstExp implements Expression {
     private AddExp addExp;
-    private Integer constValue;
 
     public ConstExp(AddExp addExp) {
         this.addExp = addExp;
     }
 
-    public Integer getConstValue() {
-        return constValue;
+    public AddExp getAddExp() {
+        return addExp;
     }
 
     public void print(BufferedWriter output) throws IOException {

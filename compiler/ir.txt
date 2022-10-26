@@ -1,0 +1,13 @@
+const int a1 = 1
+const int b1 = 2
+const int c1 = 3
+var int d1 = 4
+var int e1 = 0
+var int f1 = 60
+var int test = 777
+int op1()
+para int b2
+t0 = 1+b2
+RET t0
+int main()
+RET 0

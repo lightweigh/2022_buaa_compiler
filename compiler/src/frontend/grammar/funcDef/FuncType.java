@@ -25,6 +25,6 @@ public class FuncType {
 
     @Override
     public String toString() {
-        return needRet ? "int " : "void";
+        return needRet ? "int" : "void";
     }
 }

@@ -14,7 +14,7 @@ import java.rmi.dgc.Lease;
 public class PrimaryExp implements Expression {
     //  PrimaryExp → '(' Exp ')' | LVal | Num
     private Token lParent;
-    private Exp exp=null;
+    private Exp exp = null;
     private Token rParent;
     private LVal lVal = null;
     private Num number = null;
@@ -40,16 +40,8 @@ public class PrimaryExp implements Expression {
         this.type = 2;
     }
 
-    public Token getlParent() {
-        return lParent;
-    }
-
     public Exp getExp() {
         return exp;
-    }
-
-    public Token getrParent() {
-        return rParent;
     }
 
     public LVal getlVal() {

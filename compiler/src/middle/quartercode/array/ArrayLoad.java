@@ -1,20 +1,50 @@
 package middle.quartercode.array;
 
+import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
+import middle.quartercode.operand.Operand;
+import middle.quartercode.operand.primaryOpd.PrimaryOpd;
 
+// 之前没有用ArrayLoad是把它合并到AssignCode里面去了
 public class ArrayLoad implements MiddleCode {
-    private String name;
-    private String arrayName;
-    private String idx;
+    private PrimaryOpd primaryOpd;
+    private Operand dst;
 
-    public ArrayLoad(String name, String arrayName, String idx) {
-        this.name = name;
-        this.arrayName = arrayName;
-        this.idx = idx;
+    public ArrayLoad(PrimaryOpd primaryOpd, Operand dst) {
+        this.primaryOpd = primaryOpd;
+        this.dst = dst;
     }
 
     @Override
-    public String getName() {
-        return name;
+    public VarName getVarName() {
+        return dst.getVarName();
+    }
+
+    @Override
+    public void rename(VarName name) {
+        dst.rename(name);
+    }
+
+    public PrimaryOpd getPrimaryOpd() {
+        return primaryOpd;
+    }
+
+    public Operand getDst() {
+        return dst;
+    }
+
+    @Override
+    public CodeType getCodeType() {
+        return CodeType.ARRAY_LOAD;
+    }
+
+    @Override
+    public boolean isGlobalVar() {
+        return getVarName().getDepth() == 0;
+    }
+
+    @Override
+    public String toString() {
+        return dst.getVarName() + " = " + primaryOpd.toString() + "\n";
     }
 }

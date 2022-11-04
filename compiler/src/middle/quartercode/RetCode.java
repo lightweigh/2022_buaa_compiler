@@ -1,20 +1,35 @@
 package middle.quartercode;
 
+import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
 
 // 函数内部返回语句
 public class RetCode implements MiddleCode {
-    private String name=null;
+    private VarName name = null;
     private Operand operand;
 
     public RetCode(Operand operand) {
         this.operand = operand;
     }
 
+    public boolean hasRetValue() {
+        return operand != null;
+    }
+
     @Override
-    public String getName() {
-        return name;
+    public VarName getVarName() {
+        return operand.getVarName();
+    }
+
+    @Override
+    public void rename(VarName name) {
+        this.name = name;
+    }
+
+    @Override
+    public CodeType getCodeType() {
+        return CodeType.RET;
     }
 
     public Operand getOperand() {
@@ -22,7 +37,12 @@ public class RetCode implements MiddleCode {
     }
 
     @Override
+    public boolean isGlobalVar() {
+        return getVarName().getDepth() == 0;
+    }
+
+    @Override
     public String toString() {
-        return "RET " + operand.getName() + "\n";
+        return "RET " + (operand != null ? operand.getVarName() : "") + "\n";
     }
 }

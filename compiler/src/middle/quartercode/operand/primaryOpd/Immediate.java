@@ -1,6 +1,6 @@
 package middle.quartercode.operand.primaryOpd;
 
-import frontend.grammar.exp.Operator;
+import middle.VarName;
 
 public class Immediate implements PrimaryOpd {
     // 确定的常数值
@@ -25,6 +25,12 @@ public class Immediate implements PrimaryOpd {
             case "%":
                 this.value %= immediate.value;
                 break;
+            case "+":
+                this.value += immediate.value;
+                break;
+            case "-":
+                this.value -= immediate.value;
+                break;
             default:
                 break;
         }
@@ -40,7 +46,16 @@ public class Immediate implements PrimaryOpd {
     }
 
     @Override
-    public String getName() {
-        return String.valueOf(value);
+    public VarName getVarName() {
+        return new VarName(String.valueOf(value), 0);
+    }
+
+    @Override
+    public boolean isGlobalVar() {
+        return getVarName().getDepth() == 0;
+    }
+
+    @Override
+    public void rename(VarName name) {
     }
 }

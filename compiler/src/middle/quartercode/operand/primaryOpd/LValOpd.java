@@ -1,20 +1,32 @@
 package middle.quartercode.operand.primaryOpd;
 
+import middle.VarName;
 import middle.quartercode.operand.Operand;
 
 public class LValOpd implements PrimaryOpd {
     // a; a[t2]; a[1]
-    private String name;
+    private VarName name;
     private Operand idx;
 
-    public LValOpd(String name, Operand idx) {
+    public LValOpd(VarName name, Operand idx) {
         this.name = name;
         this.idx = idx;
     }
 
+    // t1 ...
+    public LValOpd(VarName name) {
+        this.name = name;
+        this.idx = null;
+    }
+
     @Override
-    public String getName() {
+    public VarName getVarName() {
         return name;
+    }
+
+    @Override
+    public void rename(VarName name) {
+        this.name = name;
     }
 
     public Operand getIdx() {
@@ -22,7 +34,12 @@ public class LValOpd implements PrimaryOpd {
     }
 
     @Override
+    public boolean isGlobalVar() {
+        return getVarName().getDepth() == 0;
+    }
+
+    @Override
     public String toString() {
-        return name + (idx != null ? "[" + idx.getName() + "]" : "");
+        return name + (idx != null ? "[" + idx.getVarName() + "]" : "");
     }
 }

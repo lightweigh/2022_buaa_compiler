@@ -1,5 +1,7 @@
 package middle.quartercode.operand;
 
+import middle.VarName;
+
 public interface MiddleCode extends Operand {
     enum Op {
         // UnaryOp
@@ -24,5 +26,25 @@ public interface MiddleCode extends Operand {
         }
     }
 
-    String getName();
+    enum CodeType {
+        ARRAY_DEF,
+        ARRAY_LOAD,
+        ARRAY_STORE,
+        GLOBAL_ARRAY,
+        FPARA,
+        FUNCCALL,
+        FUNCDEF,
+        RPARA,
+        ASSIGN,
+        BINARY,
+        UNARY,
+        CONSTSTR,
+        CONSTVAR,
+        PRINT,
+        SCANF,
+        RET
+    }
+
+    // 代码生成part
+    CodeType getCodeType();
 }

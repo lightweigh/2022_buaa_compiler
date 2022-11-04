@@ -1,23 +1,34 @@
 package middle.quartercode;
 
+import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
 
 public class UnaryCode implements MiddleCode {
     // // 单目运算
     // 对象本身就是dst
-    private String name;
+    private VarName name;
     private Operand src;
     private Op op;
 
-    public UnaryCode(String name, Operand src, Op op) {
+    public UnaryCode(VarName name, Operand src, Op op) {
         this.name = name;
         this.src = src;
         this.op = op;
     }
 
-    public String getName() {
+    public VarName getVarName() {
         return name;
+    }
+
+    @Override
+    public void rename(VarName name) {
+        this.name = name;
+    }
+
+    @Override
+    public CodeType getCodeType() {
+        return CodeType.UNARY;
     }
 
     public Operand getSrc() {
@@ -29,7 +40,12 @@ public class UnaryCode implements MiddleCode {
     }
 
     @Override
+    public boolean isGlobalVar() {
+        return getVarName().getDepth() == 0;
+    }
+
+    @Override
     public String toString() {
-        return name + " = " + op.getName() + src.getName() + "\n";
+        return name + " = " + op.getName() + src.getVarName() + "\n";
     }
 }

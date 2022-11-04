@@ -1,19 +1,34 @@
 package middle.quartercode;
 
+import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
 
 public class ReadIn implements MiddleCode {
-    private String name=null;
-    private Operand operand;
+    private VarName name = null;
 
-    public ReadIn(String name) {
+    public ReadIn(VarName name) {
         this.name = name;
     }
 
     @Override
-    public String getName() {
+    public VarName getVarName() {
         return name;
+    }
+
+    @Override
+    public void rename(VarName name) {
+        this.name = name;
+    }
+
+    @Override
+    public CodeType getCodeType() {
+        return CodeType.SCANF;
+    }
+
+    @Override
+    public boolean isGlobalVar() {
+        return getVarName().getDepth() == 0;
     }
 
     @Override

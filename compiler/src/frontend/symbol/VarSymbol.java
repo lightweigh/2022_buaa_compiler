@@ -13,13 +13,26 @@ public class VarSymbol extends Symbol {
     private boolean isInit;
     private ArrayList<Integer> values;
 
-    public VarSymbol(String symName, boolean isConst, int dimension, int size, int colNum, ArrayList<Integer> values) {
+    private boolean isFuncFParam = false;
+
+    public VarSymbol(String symName, boolean isConst, int dimension,
+                     int size, int colNum, ArrayList<Integer> values) {
         super(symName);
         this.isConst = isConst;
         this.dimension = dimension;
         this.size = size;
         this.colNum = colNum;
         this.values = values;
+    }
+
+    public VarSymbol(String symName, int dimension) {
+        super(symName);
+        this.dimension = dimension;
+        this.isFuncFParam = true;
+    }
+
+    public boolean isFuncFParam() {
+        return isFuncFParam;
     }
 
     public boolean isConst() {

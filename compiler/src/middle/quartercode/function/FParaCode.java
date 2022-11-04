@@ -1,24 +1,50 @@
 package middle.quartercode.function;
 
+import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 
 public class FParaCode implements MiddleCode {
-    private String name;
+    private VarName name;
     private boolean isAddr;
+    private int num;
 
-    public FParaCode(String name, boolean isAddr) {
+    public FParaCode(VarName name, boolean isAddr, int num) {
         this.name = name;
         this.isAddr = isAddr;
+        this.num = num;
     }
 
     @Override
-    public String getName() {
+    public VarName getVarName() {
         return name;
     }
 
     @Override
+    public void rename(VarName name) {
+        this.name = name;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public boolean isAddr() {
+        return isAddr;
+    }
+
+    @Override
+    public CodeType getCodeType() {
+        return CodeType.FPARA;
+    }
+
+    @Override
+    public boolean isGlobalVar() {
+        return getVarName().getDepth() == 0;
+    }
+
+    @Override
     public String toString() {
-        return "para int"+(isAddr ? "* ": " ") + name + "\n";
+        return "para int" + (isAddr ? "* " : " ") + name + "\n";
 
     }
 }

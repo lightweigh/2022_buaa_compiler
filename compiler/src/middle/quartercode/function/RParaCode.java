@@ -1,5 +1,6 @@
 package middle.quartercode.function;
 
+import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
 
@@ -11,8 +12,18 @@ public class RParaCode implements MiddleCode {
     }
 
     @Override
-    public String getName() {
-        return operand.getName();
+    public VarName getVarName() {
+        return operand.getVarName();
+    }
+
+    @Override
+    public void rename(VarName name) {
+        operand.rename(name);
+    }
+
+    @Override
+    public CodeType getCodeType() {
+        return CodeType.RPARA;
     }
 
     public Operand getOperand() {
@@ -20,7 +31,12 @@ public class RParaCode implements MiddleCode {
     }
 
     @Override
+    public boolean isGlobalVar() {
+        return getVarName().getDepth() == 0;
+    }
+
+    @Override
     public String toString() {
-        return "push " + operand.getName() + "\n";
+        return "push " + operand.getVarName() + "\n";
     }
 }

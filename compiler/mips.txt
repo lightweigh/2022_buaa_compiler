@@ -1,0 +1,316 @@
+.data
+str_6: .asciiz "fun5:g4="
+str_2: .asciiz ", g3="
+str_7: .asciiz "x1="
+str_4: .asciiz "fun2:a="
+str_11: .asciiz ", x5="
+str_10: .asciiz ", x4="
+str_3: .asciiz "\n"
+str_9: .asciiz ", x3="
+str_8: .asciiz ", x2="
+str_12: .asciiz ", x6="
+str_1: .asciiz ", cg="
+str_5: .asciiz "fun3:g1="
+str_0: .asciiz "fun1:g2="
+g1: .word 23
+g2: .word 0
+g3: .word 5
+g4: .word 0
+.text
+j main
+
+fun1:
+move $fp, $sp
+lw $t0, g1
+lw $t1, g3
+add $t2, $t0, $t1
+lw $t3, g2
+add $t3, $t2, $t3
+la $a0, str_0
+li $v0, 4
+syscall
+
+move $a0, $t3
+li $v0, 1
+syscall
+
+la $a0, str_1
+li $v0, 4
+syscall
+
+li $a0, 199
+li $v0, 1
+syscall
+
+la $a0, str_2
+li $v0, 4
+syscall
+
+move $a0, $t1
+li $v0, 1
+syscall
+
+la $a0, str_3
+li $v0, 4
+syscall
+
+
+fun1_ret_:
+sw $t0, g1
+sw $t1, g3
+sw $t3, g2
+jr $ra
+
+fun2:
+move $fp, $sp
+li $a0, 20
+move $t0, $a0
+la $a0, str_4
+li $v0, 4
+syscall
+
+move $a0, $t0
+li $v0, 1
+syscall
+
+la $a0, str_3
+li $v0, 4
+syscall
+
+
+fun2_ret_:
+jr $ra
+
+fun2_2:
+move $fp, $sp
+sub $sp, $sp, 4
+sw $ra, ($sp)
+sub $sp, $sp, 4
+sw $fp, ($sp)
+move $t0, $a0
+move $t1, $a1
+sub $sp, $sp, 8
+sw $t0, ($sp)
+sw $t1, 4($sp)
+jal fun1
+move $sp, $fp
+lw $t0, ($sp)
+lw $t1, 4($sp)
+add $sp, $sp, 8
+lw $fp, ($sp)
+add $sp, $sp, 4
+li $t2, 3
+lw $t3, g3
+add $t4, $t2, $t3
+move $v0, $t4
+
+fun2_2_ret_:
+sw $t3, g3
+lw $ra, ($sp)
+add $sp, $sp, 4
+jr $ra
+
+fun3:
+move $fp, $sp
+sub $sp, $sp, 4
+sw $ra, ($sp)
+sub $sp, $sp, 4
+sw $fp, ($sp)
+lw $t0, g3
+move $t1, $a0
+move $t2, $a1
+move $t3, $a2
+sub $sp, $sp, 16
+sw $t0, ($sp)
+sw $t1, 4($sp)
+sw $t2, 8($sp)
+sw $t3, 12($sp)
+move $a0, $t2
+move $a1, $t0
+jal fun2_2
+move $sp, $fp
+lw $t0, ($sp)
+lw $t1, 4($sp)
+lw $t2, 8($sp)
+lw $t3, 12($sp)
+add $sp, $sp, 16
+lw $fp, ($sp)
+add $sp, $sp, 4
+move $t1, $v0
+la $a0, str_5
+li $v0, 4
+syscall
+
+move $a0, $t1
+li $v0, 1
+syscall
+
+la $a0, str_3
+li $v0, 4
+syscall
+
+mul $t4, $t2, $t3
+add $t5, $t1, $t4
+move $v0, $t5
+
+fun3_ret_:
+sw $t0, g3
+lw $ra, ($sp)
+add $sp, $sp, 4
+jr $ra
+
+fun5:
+move $fp, $sp
+sub $sp, $sp, 4
+mul $t0, $a1, $a2
+add $t1, $a0, $t0
+lw $t2, -4($fp)
+div $a3, $t2
+mfhi $t3
+sub $t4, $t1, $t3
+move $t5, $a0
+la $a0, str_6
+li $v0, 4
+syscall
+
+move $a0, $t4
+li $v0, 1
+syscall
+
+la $a0, str_3
+li $v0, 4
+syscall
+
+move $v0, $t4
+
+fun5_ret_:
+sw $t4, g4
+add $sp, $sp, 4
+jr $ra
+
+main:
+move $fp, $sp
+li $t0, 5
+li $v0, 5
+syscall
+
+move $t1, $v0
+li $t2, 5
+sub $sp, $sp, 4
+sw $fp, ($sp)
+sub $sp, $sp, 12
+sw $t0, ($sp)
+sw $t1, 4($sp)
+sw $t2, 8($sp)
+move $a0, $t0
+move $a1, $t2
+jal fun2_2
+move $sp, $fp
+lw $t0, ($sp)
+lw $t1, 4($sp)
+lw $t2, 8($sp)
+add $sp, $sp, 12
+lw $fp, ($sp)
+add $sp, $sp, 4
+move $t3, $v0
+sub $sp, $sp, 4
+sw $fp, ($sp)
+sub $sp, $sp, 16
+sw $t0, ($sp)
+sw $t1, 4($sp)
+sw $t2, 8($sp)
+sw $t3, 12($sp)
+move $a0, $t3
+move $a1, $t1
+move $a2, $t0
+jal fun3
+move $sp, $fp
+lw $t0, ($sp)
+lw $t1, 4($sp)
+lw $t2, 8($sp)
+lw $t3, 12($sp)
+add $sp, $sp, 16
+lw $fp, ($sp)
+add $sp, $sp, 4
+move $t4, $v0
+sub $sp, $sp, 4
+sw $fp, ($sp)
+sub $sp, $sp, 20
+sw $t0, ($sp)
+sw $t1, 4($sp)
+sw $t2, 8($sp)
+sw $t3, 12($sp)
+sw $t4, 16($sp)
+move $a0, $t4
+move $a1, $t2
+move $a2, $t3
+move $a3, $t1
+sw $t0, -4($sp)
+jal fun5
+move $sp, $fp
+lw $t0, ($sp)
+lw $t1, 4($sp)
+lw $t2, 8($sp)
+lw $t3, 12($sp)
+lw $t4, 16($sp)
+add $sp, $sp, 20
+lw $fp, ($sp)
+add $sp, $sp, 4
+move $t5, $v0
+la $a0, str_7
+li $v0, 4
+syscall
+
+move $a0, $t0
+li $v0, 1
+syscall
+
+la $a0, str_8
+li $v0, 4
+syscall
+
+move $a0, $t1
+li $v0, 1
+syscall
+
+la $a0, str_9
+li $v0, 4
+syscall
+
+move $a0, $t3
+li $v0, 1
+syscall
+
+la $a0, str_10
+li $v0, 4
+syscall
+
+move $a0, $t2
+li $v0, 1
+syscall
+
+la $a0, str_11
+li $v0, 4
+syscall
+
+move $a0, $t4
+li $v0, 1
+syscall
+
+la $a0, str_12
+li $v0, 4
+syscall
+
+move $a0, $t5
+li $v0, 1
+syscall
+
+la $a0, str_3
+li $v0, 4
+syscall
+
+
+main_ret_:
+li $v0, 10
+syscall
+

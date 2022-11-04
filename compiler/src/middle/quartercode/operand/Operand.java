@@ -1,5 +1,11 @@
 package middle.quartercode.operand;
 
+import middle.VarName;
+
 public interface Operand {
-    String getName();
+    VarName getVarName();
+
+    void rename(VarName name);
+
+    boolean isGlobalVar();
 }

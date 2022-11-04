@@ -88,9 +88,9 @@ public class Error implements Comparable {
 
     public static Token errorDetect(Token.Type type) {
         // 在获取所需 Token 之前进行检测, 若无错误则成功返回, 否则记录错误
-        // i,j,k
+        // i,J,k
         if (!Lexer.tokenList.equalPeekType(0, type)) {
-            //  Error i,j,k
+            //  Error i,J,k
             Token prev = Lexer.tokenList.peek(-1);
             ErrorType errorType = type == Token.Type.SEMICN ? ErrorType.MISS_SEM :
                     type == Token.Type.RPARENT ? ErrorType.MISS_RPARENT : ErrorType.MISS_RBACKET;

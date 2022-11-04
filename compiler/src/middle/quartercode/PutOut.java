@@ -1,10 +1,11 @@
 package middle.quartercode;
 
+import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
 
 public class PutOut implements MiddleCode {
-    private String name = null;
+    private VarName name = null;
     private Operand operand;
 
     public PutOut(Operand operand) {
@@ -12,8 +13,18 @@ public class PutOut implements MiddleCode {
     }
 
     @Override
-    public String getName() {
+    public VarName getVarName() {
         return name;
+    }
+
+    @Override
+    public void rename(VarName name) {
+        this.name = name;
+    }
+
+    @Override
+    public CodeType getCodeType() {
+        return CodeType.PRINT;
     }
 
     public Operand getOperand() {
@@ -21,7 +32,12 @@ public class PutOut implements MiddleCode {
     }
 
     @Override
+    public boolean isGlobalVar() {
+        return getVarName().getDepth() == 0;
+    }
+
+    @Override
     public String toString() {
-        return "printf " + operand.getName() + "\n";
+        return "printf " + operand.getVarName() + "\n";
     }
 }

@@ -22,7 +22,7 @@ public class Variable {
     private HashMap<Integer, ArrayList<Exp>> initials = new HashMap<>();
     // a: initials.get(0).get(0)
     // a[i]: initials.get(0).get(i)
-    // a[i][j]: initials.get(i).get(j)
+    // a[i][J]: initials.get(i).get(J)
 
     public Variable(Ident ident, ArrayList<Token> bracks,
                     int dimension, ArrayList<ConstExp> constExps) {

@@ -1,5 +1,6 @@
 package middle.quartercode.operand.primaryOpd;
 
+import middle.VarName;
 import middle.quartercode.operand.Operand;
 
 public interface PrimaryOpd extends Operand {
@@ -32,7 +33,7 @@ public interface PrimaryOpd extends Operand {
         return isRet;
     }*/
 
-    String getName();
+    VarName getVarName();
 
     /*@Override
     public String toString() {
@@ -41,6 +42,6 @@ public interface PrimaryOpd extends Operand {
         } else if (isImmediate) {
             return immediate.toString();
         }
-        return name + (idx != null ? "[" + idx.getName() + "]" : "");
+        return name + (idx != null ? "[" + idx.getLocalName() + "]" : "");
     }*/
 }

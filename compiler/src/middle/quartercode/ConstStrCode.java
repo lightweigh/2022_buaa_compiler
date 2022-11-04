@@ -1,19 +1,35 @@
 package middle.quartercode;
 
+import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 
 public class ConstStrCode implements MiddleCode {
-    private String name;
+    private VarName name;
     private String content;
 
-    public ConstStrCode(String name, String content) {
+    public ConstStrCode(VarName name, String content) {
         this.name = name;
         this.content = content;
     }
 
     @Override
-    public String getName() {
+    public VarName getVarName() {
         return name;
+    }
+
+    @Override
+    public void rename(VarName name) {
+
+    }
+
+    @Override
+    public boolean isGlobalVar() {
+        return getVarName().getDepth() == 0;
+    }
+
+    @Override
+    public CodeType getCodeType() {
+        return CodeType.CONSTSTR;
     }
 
     public String getContent() {

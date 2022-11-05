@@ -24,9 +24,15 @@ public class FuncRParams {
 
     public UnaryExp getRParamUnaryExp(Exp exp) {
         AddExp addExp = exp.getAddExp();
-        assert addExp.getExpressions().size() == 1;
+        // assert addExp.getExpressions().size() == 1;
+        if (addExp.getExpressions().size() != 1) {
+            return null;    // a + b 型实参应该就是变常量了
+        }
         MulExp mulExp = (MulExp) addExp.getExpressions().get(0);
-        assert mulExp.getExpressions().size() == 1;
+        // assert mulExp.getExpressions().size() == 1;
+        if (mulExp.getExpressions().size() != 1) {
+            return null;    // a * b
+        }
         // unaryExp.getType == 0 || == 2
         return (UnaryExp) mulExp.getExpressions().get(0);
     }

@@ -6,6 +6,7 @@ public class VarName {
     private String name;
     private int depth;
     private String localName;
+    private boolean dirty = false;    // 针对全局变量的
 
     public VarName(String name, int depth) {
         this.localName = name;
@@ -15,6 +16,14 @@ public class VarName {
             this.name = name + "@" + depth;
         }
         this.depth = depth;
+    }
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
     }
 
     public String getLocalName() {

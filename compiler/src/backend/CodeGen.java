@@ -63,11 +63,6 @@ public class CodeGen {
     }
 
     private void globalGen() {
-        // 字符串
-        for (String content : constStrs.keySet()) {
-            // System.out.println(name + constStrs.get(name).getContent());
-            mipsCodes.add(new GlobalStr(content, constStrs.get(content).getVarName().toString()));
-        }
         // 全局变量、数组
         for (MiddleCode middleCode : globalBlock.getMiddleCodes()) {
             globalVars.put(middleCode.getVarName(), middleCode);
@@ -85,6 +80,11 @@ public class CodeGen {
                     mipsCodes.add(new GlobalVar(constVar.getVarName(), 0, values));
                 }
             }
+        }
+        // 字符串
+        for (String content : constStrs.keySet()) {
+            // System.out.println(name + constStrs.get(name).getContent());
+            mipsCodes.add(new GlobalStr(content, constStrs.get(content).getVarName().toString()));
         }
     }
 
@@ -266,7 +266,8 @@ public class CodeGen {
                             // todo 考虑函数调用之前有用v0存临时，函数调用之后会覆盖掉这个返回值，用getReg
                             mipsCodes.add(new Move(dstReg, Registers.V0));
                         } else {
-                            assert false;
+                            srcReg = getOrAllocReg4Var(assignCode.getOperand().getVarName(), true);
+                            mipsCodes.add(new Move(dstReg, srcReg));
                         }
                         break;
                     case BINARY:
@@ -342,7 +343,7 @@ public class CodeGen {
                         break;
                     case CONSTVAR:
                         ConstVar constVar = (ConstVar) middleCode;
-                        if (constVar.isInit()) {
+                        if (!constVar.isConst() && constVar.isInit()) {
                             dstReg = getOrAllocReg4Var(constVar.getVarName(), false);
                             if (constVar.getOperand() instanceof Immediate) {
                                 mipsCodes.add(new Li(dstReg, (Immediate) constVar.getOperand()));
@@ -401,7 +402,12 @@ public class CodeGen {
                         break;
                     case UNARY:
                         UnaryCode unaryCode = (UnaryCode) middleCode;
-                        srcReg = getOrAllocReg4Var(unaryCode.getSrc().getVarName(), true);
+                        if (unaryCode.getSrc() instanceof RetOpd) {
+                            srcReg = Registers.V0;
+                        } else {
+                            // Immediate 应该是不会有的
+                            srcReg = getOrAllocReg4Var(unaryCode.getSrc().getVarName(), true);
+                        }
                         dstReg = getOrAllocReg4Var(unaryCode.getVarName(), false);
                         switch (unaryCode.getOp().getName()) {
                             case "+":
@@ -418,6 +424,8 @@ public class CodeGen {
                         break;
                     case FUNCCALL:
                         FuncCallCode funcCallCode = (FuncCallCode) middleCode;
+                        // 把全局变量存回
+                        storeGlobalBackBeforeFuncCall();
                         // curAR = new ActivationRcd(curAR, curSp);
                         // 先保存 fp
                         mipsCodes.add(new Sub(Registers.SP, Registers.SP, new Immediate(4)));
@@ -467,8 +475,7 @@ public class CodeGen {
                                 } else if (((RParaCode) rParaCodes.get(i)).getOperand() instanceof RetOpd) {
                                     srcReg = Registers.V0;
                                 } else {
-                                    // todo debug
-                                    srcReg = getOrAllocReg4Var(rParaCodes.get(i).getVarName(), true);
+                                    srcReg = getOrTmpDesignateReg(rParaCodes.get(i).getVarName());
                                 }
                                 mipsCodes.add(new Store(srcReg, Registers.SP, new Immediate(-4 * (i - 3))));
                             }
@@ -637,10 +644,20 @@ public class CodeGen {
         return reg;
     }
 
+    private void storeGlobalBackBeforeFuncCall() {
+        for (Reg reg : registers.getTempRegs()) {
+            if (reg.isAlloced() && reg.getVarName().isGlobalVar()) {
+                curAR.regUnmapVar(reg);
+                storeBack(reg, reg.getVarName());
+            }
+        }
+    }
+
     private void storeBack(Reg reg, VarName storeVar) {
         // 把 storeVar 给 store 回去
         if (storeVar.isGlobalVar()) {
             // 对于全局变量也是不够了就放回去
+            // todo 改为如果更改了，就放回去?
             mipsCodes.add(new Store(reg, storeVar.toString(), new Immediate(0)));
         } else {
             if (!curAR.isAddressed(storeVar)) {
@@ -661,6 +678,7 @@ public class CodeGen {
                 // 把 storeVar 给 store 回去
                 if (storeVar.isGlobalVar()) {
                     mipsCodes.add(new Store(reg, storeVar.toString(), new Immediate(0)));
+                    // storeVar.setDirty(true);     俩都不是同一个对象
                 }/* else {
                     if (!curAR.isAddressed(storeVar)) {
                         curAR.varSetToMem(storeVar);

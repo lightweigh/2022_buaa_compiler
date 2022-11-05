@@ -420,34 +420,38 @@ public class Visitor {
                         int rParamType = -1;
                         UnaryExp rParam = funcCall.getFuncRParams().getRParamUnaryExp(rParamExp);
                         //  UnaryExp → PrimaryExp | FuncCall | UnaryOp UnaryExp
-                        while (rParam.getType() == 2) {
-                            rParam = rParam.getUnaryExp();
-                        }
-                        if (rParam.getType() == 0) {
-                            PrimaryExp primaryExp = rParam.getPrimaryExp();
-                            //  PrimaryExp → '(' Exp ')' | LVal | Num
-                            if (primaryExp.getType() == 1) {
-                                LVal lVal = primaryExp.getlVal();
-                                VarSymbol varSymbol = (VarSymbol) getSymbol(lVal.getIdent().getContent());
-                                if (varSymbol == null) {
-                                    Error.errorTable.add(new Error(Error.ErrorType.NAME_UNDEF,
-                                            lVal.getIdent().getRow())); //
-                                } else {
-                                    rParamType = getFParamType(varSymbol, lVal);
-                                }
-                            } else if (primaryExp.getType() == 2) {
-                                Num num = primaryExp.getNumber();
-                                rParamType = 0;
+                        if (rParam == null) {
+                            rParamType = 0;
+                        } else {
+                            while (rParam.getType() == 2) {
+                                rParam = rParam.getUnaryExp();
                             }
-                        } else if (rParam.getType() == 1) {
-                            // funcCall 对应函数返回类型    // todo call void ?
-                            FuncCall rFuncCall = rParam.getFuncCall();
-                            Symbol funcSymbol = getSymbol(rFuncCall.getIdent().getContent());
-                            if (!(funcSymbol instanceof FuncSymbol)) {
-                                Error.errorTable.add(new Error(Error.ErrorType.NAME_UNDEF,
-                                        rFuncCall.getIdent().getRow()));
-                            } else if (((FuncSymbol) funcSymbol).isInt()) {
-                                rParamType = 0;
+                            if (rParam.getType() == 0) {
+                                PrimaryExp primaryExp = rParam.getPrimaryExp();
+                                //  PrimaryExp → '(' Exp ')' | LVal | Num
+                                if (primaryExp.getType() == 1) {
+                                    LVal lVal = primaryExp.getlVal();
+                                    VarSymbol varSymbol = (VarSymbol) getSymbol(lVal.getIdent().getContent());
+                                    if (varSymbol == null) {
+                                        Error.errorTable.add(new Error(Error.ErrorType.NAME_UNDEF,
+                                                lVal.getIdent().getRow())); //
+                                    } else {
+                                        rParamType = getFParamType(varSymbol, lVal);
+                                    }
+                                } else if (primaryExp.getType() == 2) {
+                                    Num num = primaryExp.getNumber();
+                                    rParamType = 0;
+                                }
+                            } else if (rParam.getType() == 1) {
+                                // funcCall 对应函数返回类型    // todo call void ?
+                                FuncCall rFuncCall = rParam.getFuncCall();
+                                Symbol funcSymbol = getSymbol(rFuncCall.getIdent().getContent());
+                                if (!(funcSymbol instanceof FuncSymbol)) {
+                                    Error.errorTable.add(new Error(Error.ErrorType.NAME_UNDEF,
+                                            rFuncCall.getIdent().getRow()));
+                                } else if (((FuncSymbol) funcSymbol).isInt()) {
+                                    rParamType = 0;
+                                }
                             }
                         }
                         if (fParamSym.getType() != rParamType) {

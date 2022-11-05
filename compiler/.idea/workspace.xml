@@ -9,65 +9,15 @@
     <list default="true" id="efa5aa63-31f4-4d04-bbdd-682ed7f941b3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ir.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/Compiler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/Compiler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/VarSymbol.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/VarSymbol.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mips.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mips.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/backend/register/Registers.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/backend/register/Registers.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/visitor/Visitor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/visitor/Visitor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/BasicBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/BasicBlock.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/AssignCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/AssignCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/BinaryCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/BinaryCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/ConstStrCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/ConstStrCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/ConstVar.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/ConstVar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/PutOut.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/PutOut.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/ReadIn.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/ReadIn.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/RetCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/RetCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/UnaryCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/UnaryCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/array/Array.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/array/ArrayAssign.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/array/ArrayDef.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/array/ArrayDef.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/array/ArrayLoad.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/array/ArrayLoad.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/array/ArrayStore.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/array/ArrayStore.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/FParaCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/FParaCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/FuncCallCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/FuncCallCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/FuncDefCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/FuncDefCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/RParaCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/RParaCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/MiddleCode$Op.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/MiddleCode$Op.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/MiddleCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/MiddleCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/Operand.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/Operand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/Immediate.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/Immediate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/LValOpd.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/LValOpd.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/PrimaryOpd.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/PrimaryOpd.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/RetOpd.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/RetOpd.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/src.zip" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/src.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compiler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/Error.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/Error.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/decl/def/Variable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/decl/def/Variable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/symbol/VarSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/symbol/VarSymbol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/src.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/CodeGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/CodeGen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/register/Registers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/register/Registers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/visitor/Visitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/visitor/Visitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/BasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/BasicBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/AssignCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/AssignCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/BinaryCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/BinaryCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/ConstStrCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/ConstStrCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/ConstVar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/ConstVar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/PutOut.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/PutOut.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/ReadIn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/ReadIn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/RetCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/RetCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/UnaryCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/UnaryCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/array/Array.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/array/GlobalArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/array/ArrayAssign.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/array/ArrayDef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/array/ArrayDef.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/array/ArrayLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/array/ArrayLoad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/array/ArrayStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/array/ArrayStore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/function/FParaCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/function/FParaCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/function/FuncCallCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/function/FuncCallCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/function/FuncDefCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/function/FuncDefCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/function/RParaCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/function/RParaCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/operand/MiddleCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/operand/MiddleCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/operand/Operand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/operand/Operand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/Immediate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/Immediate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/LValOpd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/LValOpd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/PrimaryOpd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/PrimaryOpd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/RetOpd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/RetOpd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/src.zip" beforeDir="false" afterPath="$PROJECT_DIR$/src/src.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/testfile.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../duipai.py" beforeDir="false" afterPath="$PROJECT_DIR$/../duipai.py" afterDir="false" />
     </list>
@@ -82,27 +32,6 @@
     <SUITE FILE_PATH="coverage/compiler$Compiler.ic" NAME="Compiler Coverage Results" MODIFIED="1667550043019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="DockManager">
-    <window id="3">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/src/frontend/symbol/VarSymbol.java">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="500">
-                    <caret line="34" column="28" lean-forward="true" selection-start-line="34" selection-start-column="28" selection-end-line="34" selection-end-column="28" />
-                    <folding>
-                      <element signature="e#858#859#0" expanded="true" />
-                      <element signature="e#893#894#0" expanded="true" />
-                    </folding>
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
     <window id="1">
       <content type="file-editors">
         <state>
@@ -110,27 +39,8 @@
             <file pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/testfile.txt">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="108">
-                    <caret line="31" column="14" lean-forward="true" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file pinned="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="-11206">
-                    <caret line="397" selection-start-line="397" selection-end-line="397" />
-                    <folding>
-                      <element signature="imports" expanded="true" />
-                      <element signature="method#visitCompUnit#0;class#Visitor#0" />
-                      <element signature="method#visitMainFuncDef#0;class#Visitor#0" />
-                      <element signature="method#visitBlock#0;class#Visitor#0" />
-                      <element signature="method#visitStmt#0;class#Visitor#0" />
-                      <element signature="method#visitLVal#0;class#Visitor#0" />
-                      <element signature="method#visitDecl#0;class#Visitor#0" />
-                      <element signature="method#analyseExpression#0;class#Visitor#0" />
-                    </folding>
+                  <state relative-caret-position="106">
+                    <caret line="116" column="31" selection-start-line="116" selection-start-column="31" selection-end-line="116" selection-end-column="31" />
                   </state>
                 </provider>
               </entry>
@@ -146,8 +56,8 @@
             <file pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/mips.txt">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="216">
-                    <caret line="8" column="22" lean-forward="true" selection-end-line="316" />
+                  <state relative-caret-position="-19">
+                    <caret line="485" column="14" lean-forward="true" selection-start-line="485" selection-start-column="14" selection-end-line="485" selection-end-column="14" />
                   </state>
                 </provider>
               </entry>
@@ -156,15 +66,15 @@
         </state>
       </content>
     </window>
-    <window id="4">
+    <window id="3">
       <content type="file-editors">
         <state>
           <leaf>
             <file pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/ir.txt">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="351">
-                    <caret line="63" column="14" lean-forward="true" selection-start-line="63" selection-start-column="14" selection-end-line="63" selection-end-column="14" />
+                  <state relative-caret-position="324">
+                    <caret line="92" column="9" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
                   </state>
                 </provider>
               </entry>
@@ -182,11 +92,64 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/backend/CodeGen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-783">
-              <caret line="436" selection-start-line="436" selection-end-line="436" />
+            <state relative-caret-position="220">
+              <caret line="610" column="16" selection-start-line="610" selection-start-column="16" selection-end-line="610" selection-end-column="16" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#30980#30981#0" expanded="true" />
+                <element signature="method#clearArgRegs#0;class#CodeGen#0" />
+                <element signature="e#32404#32405#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/backend/register/Reg.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="124">
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
+              <folding>
+                <element signature="e#395#396#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="116">
+              <caret line="141" selection-start-line="141" selection-end-line="141" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#visitCompUnit#0;class#Visitor#0" />
+                <element signature="method#visitMainFuncDef#0;class#Visitor#0" />
+                <element signature="method#visitBlock#0;class#Visitor#0" />
+                <element signature="method#visitStmt#0;class#Visitor#0" />
+                <element signature="method#visitLVal#0;class#Visitor#0" />
+                <element signature="method#visitDecl#0;class#Visitor#0" />
+                <element signature="method#analyseExpression#0;class#Visitor#0" />
+                <element signature="e#43234#43235#0" expanded="true" />
+                <element signature="e#43268#43269#0" expanded="true" />
+                <element signature="e#43326#43327#0" expanded="true" />
+                <element signature="e#43357#43358#0" expanded="true" />
+                <element signature="e#43414#43415#0" expanded="true" />
+                <element signature="e#43450#43451#0" expanded="true" />
+                <element signature="e#43517#43518#0" expanded="true" />
+                <element signature="e#43557#43558#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/backend/ActivationRcd.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="158">
+              <caret line="68" column="16" selection-start-line="68" selection-start-column="16" selection-end-line="68" selection-end-column="16" />
+              <folding>
+                <element signature="e#2099#2100#0" expanded="true" />
+                <element signature="e#2138#2139#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -195,8 +158,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/backend/register/Registers.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="41" column="129" selection-start-line="41" selection-start-column="129" selection-end-line="41" selection-end-column="129" />
+            <state relative-caret-position="112">
+              <caret line="117" column="21" selection-start-line="117" selection-start-column="21" selection-end-line="117" selection-end-column="21" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2894#2895#0" expanded="true" />
+                <element signature="e#2924#2925#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/middle/FuncDefBlock.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="116">
+              <caret line="68" selection-start-line="68" selection-end-line="68" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -205,39 +182,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/Store.java">
+        <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/global/GlobalVar.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="52" column="59" selection-start-line="52" selection-start-column="59" selection-end-line="52" selection-end-column="59" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/Load.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="62" column="75" selection-start-line="62" selection-start-column="75" selection-end-line="62" selection-end-column="75" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/LValOpd.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="23" selection-start-line="23" selection-end-line="23" />
-              <folding>
-                <element signature="e#519#520#0" expanded="true" />
-                <element signature="e#712#713#0" expanded="true" />
-                <element signature="e#763#764#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="243">
+              <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -245,7 +193,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/middle/quartercode/BinaryCode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
+            <state relative-caret-position="1026">
               <caret line="42" selection-start-line="42" selection-end-line="42" />
               <folding>
                 <element signature="e#1024#1025#0" expanded="true" />
@@ -292,6 +240,7 @@
       <find>bINARY</find>
       <find>Registers</find>
       <find>Registers.RA</find>
+      <find>Registers.AT</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -341,22 +290,22 @@
         <option value="$PROJECT_DIR$/src/middle/VarName.java" />
         <option value="$PROJECT_DIR$/src/middle/FuncDefBlock.java" />
         <option value="$PROJECT_DIR$/src/frontend/symbol/VarSymbol.java" />
-        <option value="$PROJECT_DIR$/src/frontend/visitor/Visitor.java" />
         <option value="$PROJECT_DIR$/src/backend/ActivationRcd.java" />
         <option value="$PROJECT_DIR$/ir.txt" />
         <option value="$PROJECT_DIR$/src/backend/mipsCode/global/GlobalVar.java" />
         <option value="$PROJECT_DIR$/src/backend/mipsCode/instruction/Store.java" />
         <option value="$PROJECT_DIR$/src/backend/mipsCode/instruction/Load.java" />
         <option value="$PROJECT_DIR$/mips.txt" />
+        <option value="$PROJECT_DIR$/src/frontend/visitor/Visitor.java" />
         <option value="$PROJECT_DIR$/src/backend/register/Registers.java" />
         <option value="$PROJECT_DIR$/src/backend/CodeGen.java" />
         <option value="$PROJECT_DIR$/testfile.txt" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="828" />
-    <option name="width" value="1099" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-9" />
+    <option name="width" value="1843" />
     <option name="height" value="1038" />
   </component>
   <component name="ProjectId" id="2EeQeYZpkw0xLCP2ngHvXHvuR04" />
@@ -368,6 +317,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -485,13 +435,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1667555689522" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1667576919479" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
@@ -524,6 +473,7 @@
     <configuration name="Compiler" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Compiler" />
       <module name="compiler" />
+      <option name="VM_PARAMETERS" value="-ea" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -535,6 +485,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.Compiler" />
+      <item itemvalue="Application.test" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" BundledDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
@@ -552,9 +506,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-7" y="0" width="1474" height="830" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49889135" visible="true" weight="0.122654155" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49889135" visible="true" weight="0.16949153" />
       <window_info id="Structure" order="1" sideWeight="0.50110865" side_tool="true" weight="0.19108762" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -562,9 +517,9 @@
       <window_info id="UI Designer" order="5" />
       <window_info id="Favorites" order="6" sideWeight="0.50110865" side_tool="true" weight="0.19108762" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3252149" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.499391" visible="true" weight="0.3243626" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.43201134" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32474965" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.499391" visible="true" weight="0.32808024" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.28080228" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -629,9 +584,15 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/backend/CodeGen.java</url>
-          <line>345</line>
+          <line>432</line>
           <properties />
-          <option name="timeStamp" value="117" />
+          <option name="timeStamp" value="127" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/CodeGen.java</url>
+          <line>444</line>
+          <properties />
+          <option name="timeStamp" value="128" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -702,23 +663,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/function/FParaCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/function/FuncCallCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="44" column="40" selection-start-line="44" selection-start-column="40" selection-end-line="44" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/Immediate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="243">
@@ -1023,45 +967,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/middle/FuncDefBlock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-378">
-          <caret line="59" column="26" selection-start-line="59" selection-start-column="26" selection-end-line="59" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-11206">
-          <caret line="397" selection-start-line="397" selection-end-line="397" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#visitCompUnit#0;class#Visitor#0" />
-            <element signature="method#visitMainFuncDef#0;class#Visitor#0" />
-            <element signature="method#visitBlock#0;class#Visitor#0" />
-            <element signature="method#visitStmt#0;class#Visitor#0" />
-            <element signature="method#visitLVal#0;class#Visitor#0" />
-            <element signature="method#visitDecl#0;class#Visitor#0" />
-            <element signature="method#analyseExpression#0;class#Visitor#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/LValOpd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="e#519#520#0" expanded="true" />
-            <element signature="e#712#713#0" expanded="true" />
-            <element signature="e#763#764#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/Store.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
@@ -1075,38 +980,13 @@
     <entry file="file://$PROJECT_DIR$/error.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/register/Registers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="41" column="129" selection-start-line="41" selection-start-column="129" selection-end-line="41" selection-end-column="129" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/frontend/symbol/VarSymbol.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="500">
-          <caret line="34" column="28" lean-forward="true" selection-start-line="34" selection-start-column="28" selection-end-line="34" selection-end-column="28" />
+          <caret line="34" column="28" selection-start-line="34" selection-start-column="28" selection-end-line="34" selection-end-column="28" />
           <folding>
             <element signature="e#858#859#0" expanded="true" />
             <element signature="e#893#894#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/ActivationRcd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="114" column="16" selection-start-line="114" selection-start-column="16" selection-end-line="114" selection-end-column="16" />
-          <folding>
-            <element signature="e#2099#2100#0" expanded="true" />
-            <element signature="e#2138#2139#0" expanded="true" />
-            <element signature="e#2344#2345#0" expanded="true" />
-            <element signature="e#2405#2406#0" expanded="true" />
-            <element signature="e#4394#4395#0" expanded="true" />
-            <element signature="e#4424#4425#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1128,30 +1008,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/global/GlobalVar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/BinaryCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="42" selection-start-line="42" selection-end-line="42" />
-          <folding>
-            <element signature="e#1024#1025#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ir.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="63" column="14" lean-forward="true" selection-start-line="63" selection-start-column="14" selection-end-line="63" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/Load.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="203">
@@ -1169,27 +1025,139 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testfile.txt">
+    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/LValOpd.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="31" column="14" lean-forward="true" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
+        <state relative-caret-position="139">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#519#520#0" expanded="true" />
+            <element signature="e#712#713#0" expanded="true" />
+            <element signature="e#763#764#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/global/GlobalVar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/BinaryCode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1026">
+          <caret line="42" selection-start-line="42" selection-end-line="42" />
+          <folding>
+            <element signature="e#1024#1025#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/middle/MiddleTn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/register/Reg.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="e#395#396#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="141" selection-start-line="141" selection-end-line="141" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#visitCompUnit#0;class#Visitor#0" />
+            <element signature="method#visitMainFuncDef#0;class#Visitor#0" />
+            <element signature="method#visitBlock#0;class#Visitor#0" />
+            <element signature="method#visitStmt#0;class#Visitor#0" />
+            <element signature="method#visitLVal#0;class#Visitor#0" />
+            <element signature="method#visitDecl#0;class#Visitor#0" />
+            <element signature="method#analyseExpression#0;class#Visitor#0" />
+            <element signature="e#43234#43235#0" expanded="true" />
+            <element signature="e#43268#43269#0" expanded="true" />
+            <element signature="e#43326#43327#0" expanded="true" />
+            <element signature="e#43357#43358#0" expanded="true" />
+            <element signature="e#43414#43415#0" expanded="true" />
+            <element signature="e#43450#43451#0" expanded="true" />
+            <element signature="e#43517#43518#0" expanded="true" />
+            <element signature="e#43557#43558#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/register/Registers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="117" column="21" selection-start-line="117" selection-start-column="21" selection-end-line="117" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2894#2895#0" expanded="true" />
+            <element signature="e#2924#2925#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ir.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="92" column="9" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/middle/FuncDefBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="68" selection-start-line="68" selection-end-line="68" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/ActivationRcd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="68" column="16" selection-start-line="68" selection-start-column="16" selection-end-line="68" selection-end-column="16" />
+          <folding>
+            <element signature="e#2099#2100#0" expanded="true" />
+            <element signature="e#2138#2139#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mips.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="22" lean-forward="true" selection-end-line="316" />
+        <state relative-caret-position="-19">
+          <caret line="485" column="14" lean-forward="true" selection-start-line="485" selection-start-column="14" selection-end-line="485" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testfile.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="106">
+          <caret line="116" column="31" selection-start-line="116" selection-start-column="31" selection-end-line="116" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/backend/CodeGen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-783">
-          <caret line="436" selection-start-line="436" selection-end-line="436" />
+        <state relative-caret-position="220">
+          <caret line="610" column="16" selection-start-line="610" selection-start-column="16" selection-end-line="610" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#30980#30981#0" expanded="true" />
+            <element signature="method#clearArgRegs#0;class#CodeGen#0" />
+            <element signature="e#32404#32405#0" expanded="true" />
           </folding>
         </state>
       </provider>

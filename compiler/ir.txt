@@ -1,107 +1,259 @@
-const str str_6 = "fun5:g4="
-const str str_2 = ", g3="
-const str str_7 = "x1="
-const str str_4 = "fun2:a="
-const str str_11 = ", x5="
-const str str_10 = ", x4="
-const str str_3 = "\n"
-const str str_9 = ", x3="
-const str str_8 = ", x2="
-const str str_12 = ", x6="
-const str str_1 = ", cg="
-const str str_5 = "fun3:g1="
-const str str_0 = "fun1:g2="
-const int cg = 199
-var int g1 = 23
-var int g2
-var int g3 = 5
-var int g4
-void fun1()
-t0@1 = g1+g3
-g2 = t0@1+g2
-printf str_0
-printf g2
-printf str_1
-printf 199
-printf str_2
-printf g3
-printf str_3
-RET 
-void fun2()
-para int a@1
-a@1 = 20
-printf str_4
-printf a@1
-printf str_3
-RET 
-int fun2_2()
-para int a@1
-para int b@1
-call fun1
-var int g2@1 = 3
-t0@1 = g2@1+g3
-RET t0@1
-int fun3()
-para int g1@1
-para int b@1
-para int c@1
-push b@1
-push g3
-call fun2_2
-g1@1 = RET
-printf str_5
-printf g1@1
-printf str_3
-t0@1 = b@1*c@1
-t1@1 = g1@1+t0@1
-RET t1@1
-int fun5()
-para int a@1
-para int b@1
-para int c@1
-para int d@1
-para int e@1
-t0@1 = b@1*c@1
-t1@1 = a@1+t0@1
-t2@1 = d@1%e@1
-g4 = t1@1-t2@1
-printf str_6
-printf g4
-printf str_3
-RET g4
+const str str_1 = "\n"
+const str str_0 = "test16:"
+const str str_2 = "test32:"
+var int a0
+var int a1
+var int a2
+var int a3
+var int a4
+var int a5
+var int a6
+var int a7
+var int a8
+var int a9
+var int a10
+var int a11
+var int a12
+var int a13
+var int a14
+var int a15
+var int a16
+var int a17
+var int a18
+var int a19
+var int a20
+var int a21
+var int a22
+var int a23
+var int a24
+var int a25
+var int a26
+var int a27
+var int a28
+var int a29
+var int a30
+var int a31
+var int a32
+var int a33
+var int a34
+var int a35
+var int a36
+var int a37
+var int a38
+var int a39
+int testParam8()
+para int a0@1
+para int a1@1
+para int a2@1
+para int a3@1
+para int a4@1
+para int a5@1
+para int a6@1
+para int a7@1
+t0@1 = a0@1+a1@1
+t1@1 = t0@1+a2@1
+t2@1 = t1@1+a3@1
+t3@1 = t2@1+a4@1
+t4@1 = t3@1+a5@1
+t5@1 = t4@1+a6@1
+t6@1 = t5@1+a7@1
+RET t6@1
+int testParam16()
+para int a0@1
+para int a1@1
+para int a2@1
+para int a3@1
+para int a4@1
+para int a5@1
+para int a6@1
+para int a7@1
+para int a8@1
+para int a9@1
+para int a10@1
+para int a11@1
+para int a12@1
+para int a13@1
+para int a14@1
+para int a15@1
+t0@1 = a0@1+a1@1
+t1@1 = t0@1+a2@1
+t2@1 = t1@1-a3@1
+t3@1 = t2@1-a4@1
+t4@1 = t3@1-a5@1
+t5@1 = t4@1-a6@1
+t6@1 = t5@1-a7@1
+t7@1 = t6@1+a8@1
+t8@1 = t7@1+a9@1
+t9@1 = t8@1+a10@1
+t10@1 = t9@1+a11@1
+t11@1 = t10@1+a12@1
+t12@1 = t11@1+a13@1
+t13@1 = t12@1+a14@1
+t14@1 = t13@1+a15@1
+RET t14@1
+int testParam32()
+para int a0@1
+para int a1@1
+para int a2@1
+para int a3@1
+para int a4@1
+para int a5@1
+para int a6@1
+para int a7@1
+para int a8@1
+para int a9@1
+para int a10@1
+para int a11@1
+para int a12@1
+para int a13@1
+para int a14@1
+para int a15@1
+para int a16@1
+para int a17@1
+para int a18@1
+para int a19@1
+para int a20@1
+para int a21@1
+para int a22@1
+para int a23@1
+para int a24@1
+para int a25@1
+para int a26@1
+para int a27@1
+para int a28@1
+para int a29@1
+para int a30@1
+para int a31@1
+t0@1 = a0@1+a1@1
+t1@1 = t0@1+a2@1
+t2@1 = t1@1+a3@1
+t3@1 = t2@1+a4@1
+t4@1 = t3@1+a5@1
+t5@1 = t4@1+a6@1
+t6@1 = t5@1+a7@1
+t7@1 = t6@1+a8@1
+t8@1 = t7@1+a9@1
+t9@1 = t8@1+a10@1
+t10@1 = t9@1+a11@1
+t11@1 = t10@1+a12@1
+t12@1 = t11@1+a13@1
+t13@1 = t12@1+a14@1
+t14@1 = t13@1+a15@1
+t15@1 = t14@1+a16@1
+t16@1 = t15@1+a17@1
+t17@1 = t16@1-a18@1
+t18@1 = t17@1-a19@1
+t19@1 = t18@1-a20@1
+t20@1 = t19@1-a21@1
+t21@1 = t20@1-a22@1
+t22@1 = t21@1+a23@1
+t23@1 = t22@1+a24@1
+t24@1 = t23@1+a25@1
+t25@1 = t24@1+a26@1
+t26@1 = t25@1+a27@1
+t27@1 = t26@1+a28@1
+t28@1 = t27@1+a29@1
+t29@1 = t28@1+a30@1
+t30@1 = t29@1+a31@1
+RET t30@1
 int main()
-var int x1@1 = 5
-var int x2@1
-scanf x2@1
-var int x3@1
-var int x4@1 = 5
-push x1@1
-push x4@1
-call fun2_2
-x3@1 = RET
-push x3@1
-push x2@1
-push x1@1
-call fun3
-var int x5@1 = RET
-push x5@1
-push x4@1
-push x3@1
-push x2@1
-push x1@1
-call fun5
-var int x6@1 = RET
-printf str_7
-printf x1@1
-printf str_8
-printf x2@1
-printf str_9
-printf x3@1
-printf str_10
-printf x4@1
-printf str_11
-printf x5@1
-printf str_12
-printf x6@1
-printf str_3
+a0 = 0
+a1 = 1
+a2 = 2
+a3 = 3
+a4 = 4
+a5 = 5
+a6 = 6
+a7 = 7
+a8 = 8
+a9 = 9
+a10 = 0
+a11 = 1
+a12 = 2
+a13 = 3
+a14 = 4
+a15 = 5
+a16 = 6
+a17 = 7
+a18 = 8
+a19 = 9
+a20 = 0
+a21 = 1
+a22 = 2
+a23 = 3
+a24 = 4
+a25 = 5
+a26 = 6
+a27 = 7
+a28 = 8
+a29 = 9
+a30 = 0
+a31 = 1
+a32 = 4
+a33 = 5
+a34 = 6
+a35 = 7
+a36 = 8
+a37 = 9
+a38 = 0
+a39 = 1
+push a32
+push a33
+push a34
+push a35
+push a36
+push a37
+push a38
+push a39
+push a8
+push a9
+push a10
+push a11
+push a12
+push a13
+push a14
+push a15
+call testParam16
+a0 = RET
+printf str_0
+printf a0
+printf str_1
+push a0
+push a1
+push a2
+push a3
+push a4
+push a5
+push a6
+push a7
+push a8
+push a9
+push a10
+push a11
+push a12
+push a13
+push a14
+push a15
+push a16
+push a17
+push a18
+push a19
+push a20
+push a21
+push a22
+push a23
+push a24
+push a25
+push a26
+push a27
+push a28
+push a29
+push a30
+push a31
+call testParam32
+a0 = RET
+printf str_2
+printf a0
+printf str_1
+printf 0
 RET 0

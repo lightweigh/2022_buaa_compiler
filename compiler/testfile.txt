@@ -1,47 +1,134 @@
-const int cg = 199;
-int g1 = 23;
-int g2, g3 = 5, g4;
+//89_many_globals.sy
+// Call a func with many params.
 
-void fun1() {
-    g2 = g1 + g3 + g2;
-    printf("fun1:g2=%d, cg=%d, g3=%d\n", g2, cg, g3);
-    return;
+int a0;
+int a1;
+int a2;
+int a3;
+int a4;
+int a5;
+int a6;
+int a7;
+int a8;
+int a9;
+int a10;
+int a11;
+int a12;
+int a13;
+int a14;
+int a15;
+int a16;
+int a17;
+int a18;
+int a19;
+int a20;
+int a21;
+int a22;
+int a23;
+int a24;
+int a25;
+int a26;
+int a27;
+int a28;
+int a29;
+int a30;
+int a31;
+
+int a32;
+int a33;
+int a34;
+int a35;
+int a36;
+int a37;
+int a38;
+int a39;
+
+int testParam8(int a0, int a1, int a2, int a3,
+        int a4, int a5, int a6, int a7) {
+    return a0 + a1 + a2 + a3 + a4 + a5 + a6 + a7;
 }
 
-void fun2(int a) {
-    a = (cg + 1) / 10;
-    printf("fun2:a=%d\n", a);
-    return;
+int testParam16(int a0, int a1, int a2, int a3,
+        int a4, int a5, int a6, int a7,
+        int a8, int a9, int a10, int a11,
+        int a12, int a13, int a14, int a15) {
+    return a0 + a1 + a2 - a3 - a4 - a5 - a6 - a7 +
+            a8 + a9 + a10 + a11 + a12 + a13 + a14 + a15;
 }
 
-int fun2_2(int a, int b) {
-    fun1();
-    int g2 = 3;
-    return g2 + g3;
-}
-
-int fun3(int g1, int b, int c) {
-    g1 = fun2_2(b,g3);
-    printf("fun3:g1=%d\n", g1);
-    return g1 + b*c;
-}
-
-int fun5(int a,int b, int c, int d, int e) {
-    g4 = a + b * c - d % e;
-    printf("fun5:g4=%d\n", g4);
-    return g4;
+int testParam32(int a0, int a1, int a2, int a3,
+        int a4, int a5, int a6, int a7,
+        int a8, int a9, int a10, int a11,
+        int a12, int a13, int a14, int a15,
+        int a16, int a17, int a18, int a19,
+        int a20, int a21, int a22, int a23,
+        int a24, int a25, int a26, int a27,
+        int a28, int a29, int a30, int a31) {
+    return a0 + a1 + a2 + a3 + a4 + a5 + a6 + a7 +
+            a8 + a9 + a10 + a11 + a12 + a13 + a14 + a15 +
+            a16 + a17 - a18 - a19 - a20 - a21 - a22 + a23 +
+            a24 + a25 + a26 + a27 + a28 + a29 + a30 + a31;
 }
 
 int main() {
-    int x1=5;
-    int x2 ;
-    x2 = getint();
-    int x3;
-    int x4 = 5;
+    a0 = 0;
+    a1 = 1;
+    a2 = 2;
+    a3 = 3;
+    a4 = 4;
+    a5 = 5;
+    a6 = 6;
+    a7 = 7;
+    a8 = 8;
+    a9 = 9;
+    a10 = 0;
+    a11 = 1;
+    a12 = 2;
+    a13 = 3;
+    a14 = 4;
+    a15 = 5;
+    a16 = 6;
+    a17 = 7;
+    a18 = 8;
+    a19 = 9;
+    a20 = 0;
+    a21 = 1;
+    a22 = 2;
+    a23 = 3;
+    a24 = 4;
+    a25 = 5;
+    a26 = 6;
+    a27 = 7;
+    a28 = 8;
+    a29 = 9;
+    a30 = 0;
+    a31 = 1;
 
-    x3 = fun2_2(x1, x4);
-    int x5 = fun3(x3,x2,x1);
-    int x6 = fun5(x5, x4,x3,x2,x1);
-    printf("x1=%d, x2=%d, x3=%d, x4=%d, x5=%d, x6=%d\n", x1,x2,x3,x4,x5,x6);
+    a32 = 4;
+    a33 = 5;
+    a34 = 6;
+    a35 = 7;
+    a36 = 8;
+    a37 = 9;
+    a38 = 0;
+    a39 = 1;
+
+    /*a0 = testParam8(a0, a1, a2, a3, a4, a5, a6, a7);
+    printf("test8:%d\n", a0);*/
+    a0 = testParam16(a32, a33, a34, a35,
+            a36, a37, a38, a39,
+            a8, a9, a10, a11,
+            a12, a13, a14, a15);
+    printf("test16:%d\n", a0);
+    a0 = testParam32(a0, a1, a2, a3,
+            a4, a5, a6, a7,
+            a8, a9, a10, a11,
+            a12, a13, a14, a15,
+            a16, a17, a18, a19,
+            a20, a21, a22, a23,
+            a24, a25, a26, a27,
+            a28, a29, a30, a31);
+    printf("test32:%d\n", a0);
+	printf("%d", 0);
     return 0;
 }

@@ -1,48 +1,34 @@
-const int cg = 199;
-int g1 = 23;
-int g2, g3 = 5, g4;
+int g1 = 55;
 
-void fun1() {
-    g2 = g1 + g3 + g2;
-    printf("fun1:g2=%d, cg=%d, g3=%d\n", g2, cg, g3);
-    return;
+int fun0(int a) {
+    return 7-a;
 }
 
-void fun2(int a) {
-    a = (cg + 1) / 10;
-    printf("fun2:a=%d\n", a);
-    return;
+int fun1() {
+    return 7;
 }
 
-int fun2_2(int a, int b) {
-    fun1();
-    int g2 = 3;
-    return g2 + g3;
+int fun2(int a, int b, int c, int d, int e, int f) {
+    int gg = a + b * c - d / e % f;
+    return gg;
 }
 
-int fun3(int g1, int b, int c) {
-    g1 = fun2_2(b,g3);
-    printf("fun3:g1=%d\n", g1);
-    return g1 + b*c;
-}
-
-int fun5(int a,int b, int c, int d, int e) {
-    g4 = a + b * c - d % e;
-    printf("fun5:g4=%d\n", g4);
-return g4;
+int fun3(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7,int a8) {
+    g1 = a0*a1*a2/a3;
+    g1 = -g1;
+    printf("%d\n", g1);
+    int g2 = fun1() + a4*a7;
+    return g2;
 }
 
 int main() {
-    int x1=5;
-    int x2 ;
-    x2 = getint();
-    int x3;
-    int x4 = 5;
-
-    x3 = fun2_2(x1, x4);
-    int x5 = fun3(x3,x2,x1);
-    int x6 = fun5(x5, x4,x3,x2,x1);
-    fun1();
-    printf("x1=%d, x2=%d, x3=%d, x4=%d, x5=%d, x6=%d\n", x1,x2,x3,x4,x5,x6);
-    return 0;
+    printf("fun1()=%d\n", fun1());
+    int a = fun2(g1,g1,g1,fun1(), g1, fun1()+2);
+    printf("a=%d\n", a);
+    int b = 5, b2= 77, b3 = 5;
+    int c = b*2, c2 = b2 + fun1()*3, c3 = fun0(10)*fun1();
+    int d = fun3(a,b,c,b2,c2,b3,c3,4,7);
+    printf("g1=%d\n", g1);
+    printf("c2=%d, c3=%d\n", c2, c3);
+    printf("d=%d\n", d);
 }

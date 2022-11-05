@@ -730,7 +730,17 @@ public class Visitor {
                 // 如果是Immediate 的话，那么operands1、2 里面应该只能有一个元素。
                 ((Immediate) leftOne).procValue(op.getOp(), (Immediate) rightOne);
                 operands.add(leftOne);
-            } else {
+            } else if (leftOne instanceof RetOpd && rightOne instanceof RetOpd){
+                leftOne = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), leftOne);
+                operands.add(leftOne);
+                curFuncDefBb.addLocalVar(leftOne);
+                operands.addAll(operands2);
+                operands.remove(rightOne);
+                BinaryCode b = new BinaryCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), leftOne, rightOne, op.getOp());
+                operands.add(b);
+                curFuncDefBb.addLocalVar(b);
+            }
+            else {
                 operands.addAll(operands2);
                 if (rightOne instanceof PrimaryOpd) {
                     operands.remove(rightOne);

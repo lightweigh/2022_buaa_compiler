@@ -1,108 +1,105 @@
-const str str_6 = "fun5:g4="
-const str str_2 = ", g3="
-const str str_7 = "x1="
-const str str_4 = "fun2:a="
-const str str_11 = ", x5="
-const str str_10 = ", x4="
-const str str_3 = "\n"
-const str str_9 = ", x3="
-const str str_8 = ", x2="
-const str str_12 = ", x6="
-const str str_1 = ", cg="
-const str str_5 = "fun3:g1="
-const str str_0 = "fun1:g2="
-const int cg = 199
-var int g1 = 23
-var int g2
-var int g3 = 5
-var int g4
-void fun1()
-t0@1 = g1+g3
-g2 = t0@1+g2
-printf str_0
-printf g2
-printf str_1
-printf 199
-printf str_2
-printf g3
-printf str_3
-RET 
-void fun2()
+const str str_0 = "\n"
+const str str_3 = "g1="
+const str str_5 = ", c3="
+const str str_6 = "d="
+const str str_2 = "a="
+const str str_1 = "fun1()="
+const str str_4 = "c2="
+var int g1 = 55
+int fun0()
 para int a@1
-a@1 = 20
-printf str_4
-printf a@1
-printf str_3
-RET 
-int fun2_2()
-para int a@1
-para int b@1
-call fun1
-var int g2@1 = 3
-t0@1 = g2@1+g3
+t0@1 = 7-a@1
 RET t0@1
-int fun3()
-para int g1@1
-para int b@1
-para int c@1
-push b@1
-push g3
-call fun2_2
-g1@1 = RET
-printf str_5
-printf g1@1
-printf str_3
-t0@1 = b@1*c@1
-t1@1 = g1@1+t0@1
-RET t1@1
-int fun5()
+int fun1()
+RET 7
+int fun2()
 para int a@1
 para int b@1
 para int c@1
 para int d@1
 para int e@1
+para int f@1
 t0@1 = b@1*c@1
 t1@1 = a@1+t0@1
-t2@1 = d@1%e@1
-g4 = t1@1-t2@1
-printf str_6
-printf g4
-printf str_3
-RET g4
-int main()
-var int x1@1 = 5
-var int x2@1
-scanf x2@1
-var int x3@1
-var int x4@1 = 5
-push x1@1
-push x4@1
-call fun2_2
-x3@1 = RET
-push x3@1
-push x2@1
-push x1@1
-call fun3
-var int x5@1 = RET
-push x5@1
-push x4@1
-push x3@1
-push x2@1
-push x1@1
-call fun5
-var int x6@1 = RET
+t2@1 = d@1/e@1
+t3@1 = t2@1%f@1
+t4@1 = t1@1-t3@1
+var int gg@1 = t4@1
+RET gg@1
+int fun3()
+para int a0@1
+para int a1@1
+para int a2@1
+para int a3@1
+para int a4@1
+para int a5@1
+para int a6@1
+para int a7@1
+para int a8@1
+t0@1 = a0@1*a1@1
+t1@1 = t0@1*a2@1
+g1 = t1@1/a3@1
+g1 = -g1
+printf g1
+printf str_0
 call fun1
-printf str_7
-printf x1@1
-printf str_8
-printf x2@1
-printf str_9
-printf x3@1
-printf str_10
-printf x4@1
-printf str_11
-printf x5@1
-printf str_12
-printf x6@1
+t4@1 = a4@1*a7@1
+t5@1 = RET+t4@1
+var int g2@1 = t5@1
+RET g2@1
+int main()
+printf str_1
+call fun1
+printf RET
+printf str_0
+call fun1
+call fun1
+t0@1 = RET+2
+push g1
+push g1
+push g1
+push RET
+push g1
+push t0@1
+call fun2
+var int a@1 = RET
+printf str_2
+printf a@1
+printf str_0
+var int b@1 = 5
+var int b2@1 = 77
+var int b3@1 = 5
+t1@1 = b@1*2
+var int c@1 = t1@1
+call fun1
+t2@1 = RET*3
+t3@1 = b2@1+t2@1
+var int c2@1 = t3@1
+push 10
+call fun0
+t4@1 = RET
+call fun1
+t5@1 = t4@1*RET
+var int c3@1 = t5@1
+push a@1
+push b@1
+push c@1
+push b2@1
+push c2@1
+push b3@1
+push c3@1
+push 4
+push 7
+call fun3
+var int d@1 = RET
 printf str_3
-RET 0
+printf g1
+printf str_0
+printf str_4
+printf c2@1
+printf str_5
+printf c3@1
+printf str_0
+printf str_6
+printf d@1
+printf str_0

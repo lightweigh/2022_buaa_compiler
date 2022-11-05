@@ -518,11 +518,6 @@ public class CodeGen {
         if (!isMainFunc) {
             freeAllTmpReg();  // 切换到另外的函数块中去了，只需要把isAlloced设置为 false
 
-            // 释放局部变量的栈空间
-            if (curAR.getVarOccupiedSpace() != 0) {
-                mipsCodes.add(new Add(Registers.SP, Registers.SP, new Immediate(curAR.getVarOccupiedSpace())));
-            }
-
             // 先弹ra 如果有
             if (funcDefBlock.isRaNeedSave()) {
                 mipsCodes.add(new Load(getReg(Registers.RA), Registers.SP, new Immediate(0)));
@@ -531,6 +526,10 @@ public class CodeGen {
             }
             // callee saved
             regsLoad(generalRegsUsed);
+            // 释放局部变量的栈空间
+            if (curAR.getVarOccupiedSpace() != 0) {
+                mipsCodes.add(new Add(Registers.SP, Registers.SP, new Immediate(curAR.getVarOccupiedSpace())));
+            }
             mipsCodes.add(new Jr(Registers.RA));
         } else {
             mipsCodes.add(new Li(Registers.V0, new Immediate(10)));
@@ -647,8 +646,8 @@ public class CodeGen {
     private void storeGlobalBackBeforeFuncCall() {
         for (Reg reg : registers.getTempRegs()) {
             if (reg.isAlloced() && reg.getVarName().isGlobalVar()) {
-                curAR.regUnmapVar(reg);
                 storeBack(reg, reg.getVarName());
+                curAR.regUnmapVar(reg);
             }
         }
     }

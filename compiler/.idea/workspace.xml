@@ -7,42 +7,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="efa5aa63-31f4-4d04-bbdd-682ed7f941b3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/error.txt" beforeDir="false" afterPath="$PROJECT_DIR$/error.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ir.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mips.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mips.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/backend/ActivationRcd.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/backend/ActivationRcd.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/backend/mipsCode/global/GlobalVar.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/backend/mipsCode/global/GlobalVar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/backend/mipsCode/instruction/Store.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/backend/mipsCode/instruction/Store.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/VarSymbol.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/VarSymbol.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/visitor/Visitor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/visitor/Visitor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/FuncDefBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/FuncDefBlock.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/VarName.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/VarName.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/PutOut.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/PutOut.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/array/GlobalArray.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/array/GlobalArray.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/FParaCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/FParaCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/RParaCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/function/RParaCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/Immediate.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/Immediate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/LValOpd.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/primaryOpd/LValOpd.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/src.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/ActivationRcd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/ActivationRcd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/CodeGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/CodeGen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/mipsCode/global/GlobalVar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/mipsCode/global/GlobalVar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/mipsCode/instruction/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/mipsCode/instruction/Store.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/symbol/VarSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/symbol/VarSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/visitor/Visitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/visitor/Visitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/FuncDefBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/FuncDefBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/VarName.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/VarName.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/PutOut.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/PutOut.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/array/GlobalArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/array/GlobalArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/function/FParaCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/function/FParaCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/function/RParaCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/function/RParaCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/Immediate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/Immediate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/LValOpd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/LValOpd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/testfile.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../duipai.py" beforeDir="false" afterPath="$PROJECT_DIR$/../duipai.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -156,8 +120,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mips.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="55" column="7" lean-forward="true" selection-start-line="55" selection-start-column="7" selection-end-line="55" selection-end-column="7" />
+            <state relative-caret-position="287">
+              <caret line="57" column="13" lean-forward="true" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -430,7 +394,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1669383354877" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1669383431342" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
@@ -1157,8 +1121,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mips.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="55" column="7" lean-forward="true" selection-start-line="55" selection-start-column="7" selection-end-line="55" selection-end-column="7" />
+        <state relative-caret-position="287">
+          <caret line="57" column="13" lean-forward="true" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
         </state>
       </provider>
     </entry>

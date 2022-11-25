@@ -1,105 +1,26 @@
-const str str_0 = "\n"
-const str str_3 = "g1="
-const str str_5 = ", c3="
-const str str_6 = "d="
-const str str_2 = "a="
-const str str_1 = "fun1()="
-const str str_4 = "c2="
-var int g1 = 55
-int fun0()
-para int a@1
-t0@1 = 7-a@1
-RET t0@1
-int fun1()
-RET 7
-int fun2()
-para int a@1
-para int b@1
-para int c@1
-para int d@1
-para int e@1
-para int f@1
-t0@1 = b@1*c@1
-t1@1 = a@1+t0@1
-t2@1 = d@1/e@1
-t3@1 = t2@1%f@1
-t4@1 = t1@1-t3@1
-var int gg@1 = t4@1
-RET gg@1
-int fun3()
-para int a0@1
-para int a1@1
-para int a2@1
-para int a3@1
-para int a4@1
-para int a5@1
-para int a6@1
-para int a7@1
-para int a8@1
-t0@1 = a0@1*a1@1
-t1@1 = t0@1*a2@1
-g1 = t1@1/a3@1
-g1 = -g1
-printf g1
-printf str_0
-call fun1
-t4@1 = a4@1*a7@1
-t5@1 = RET+t4@1
-var int g2@1 = t5@1
-RET g2@1
+a[4096]
+c[4096]
+b[4096]
+int f1()
+para int* b@1
+a[5] = 4000
+a[4000] = 3
+a[4095] = 7
+t0@1 = a[2216]
+t1@1 = t0@1+9
+t2@1 = a[4095]
+b@1[t2@1] = t1@1
+t3@1 = a[5]
+RET a
 int main()
-printf str_1
-call fun1
+c[0] = 1
+c[1] = 2
+c[4] = 3
+c[5] = 4
+c[8] = 0
+push c[0]
+call f1
 printf RET
-printf str_0
-call fun1
-call fun1
-t0@1 = RET+2
-push g1
-push g1
-push g1
-push RET
-push g1
-push t0@1
-call fun2
-var int a@1 = RET
-printf str_2
-printf a@1
-printf str_0
-var int b@1 = 5
-var int b2@1 = 77
-var int b3@1 = 5
-t1@1 = b@1*2
-var int c@1 = t1@1
-call fun1
-t2@1 = RET*3
-t3@1 = b2@1+t2@1
-var int c2@1 = t3@1
-push 10
-call fun0
-t4@1 = RET
-call fun1
-t5@1 = t4@1*RET
-var int c3@1 = t5@1
-push a@1
-push b@1
-push c@1
-push b2@1
-push c2@1
-push b3@1
-push c3@1
-push 4
-push 7
-call fun3
-var int d@1 = RET
-printf str_3
-printf g1
-printf str_0
-printf str_4
-printf c2@1
-printf str_5
-printf c3@1
-printf str_0
-printf str_6
-printf d@1
-printf str_0
+printf 10
+printf c[8]
+RET c

@@ -2,16 +2,17 @@ package middle.quartercode.function;
 
 import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
+import middle.quartercode.operand.Operand;
 
 public class FParaCode implements MiddleCode {
     private VarName name;
     private boolean isAddr;
-    private int num;
+    private Operand offset; // 对于变量,offset为null;对于一维数组,offset为Immediate(0);对于二维数组 colNum
 
-    public FParaCode(VarName name, boolean isAddr, int num) {
+    public FParaCode(VarName name, boolean isAddr, Operand offset) {
         this.name = name;
         this.isAddr = isAddr;
-        this.num = num;
+        this.offset = offset;
     }
 
     @Override
@@ -24,12 +25,12 @@ public class FParaCode implements MiddleCode {
         this.name = name;
     }
 
-    public int getNum() {
-        return num;
-    }
-
     public boolean isAddr() {
         return isAddr;
+    }
+
+    public Operand getOffset() {
+        return offset;
     }
 
     @Override

@@ -6,9 +6,11 @@ import middle.quartercode.operand.Operand;
 
 public class RParaCode implements MiddleCode {
     private Operand operand;
+    private boolean isAddr;
 
-    public RParaCode(Operand operand) {
+    public RParaCode(Operand operand, boolean isAddr) {
         this.operand = operand;
+        this.isAddr = isAddr;
     }
 
     @Override
@@ -30,6 +32,10 @@ public class RParaCode implements MiddleCode {
         return operand;
     }
 
+    public boolean isAddr() {
+        return isAddr;
+    }
+
     @Override
     public boolean isGlobalVar() {
         return getVarName().getDepth() == 0;
@@ -37,6 +43,6 @@ public class RParaCode implements MiddleCode {
 
     @Override
     public String toString() {
-        return "push " + operand.getVarName() + "\n";
+        return "push " + operand.toString() + "\n";
     }
 }

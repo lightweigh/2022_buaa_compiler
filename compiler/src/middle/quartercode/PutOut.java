@@ -38,6 +38,6 @@ public class PutOut implements MiddleCode {
 
     @Override
     public String toString() {
-        return "printf " + operand.getVarName() + "\n";
+        return "printf " + operand.toString() + "\n";
     }
 }

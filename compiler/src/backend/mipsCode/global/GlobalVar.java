@@ -8,11 +8,13 @@ import java.util.ArrayList;
 public class GlobalVar implements MipsCode {
     private VarName name;
     private int type;
+    private int size;
     private ArrayList<Integer> values;
 
-    public GlobalVar(VarName name, int type, ArrayList<Integer> values) {
+    public GlobalVar(VarName name, int type,int size, ArrayList<Integer> values) {
         this.name = name;
         this.type = type;
+        this.size = size;
         this.values = values;
     }
 
@@ -28,10 +30,7 @@ public class GlobalVar implements MipsCode {
                 sb.append("0");
             }
         } else {
-            sb.append(".space ").append(4 * values.size());
-            for (Integer value : values) {
-                sb.append(" ").append(value);
-            }
+            sb.append(".space ").append(4 * size);
         }
         sb.append("\n");
         return sb.toString();

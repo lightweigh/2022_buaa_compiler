@@ -1,6 +1,7 @@
 package backend;
 
 import backend.register.Reg;
+import frontend.symbol.VarSymbol;
 import middle.VarName;
 import middle.quartercode.array.ArrayDef;
 import middle.quartercode.operand.Operand;
@@ -26,11 +27,6 @@ public class ActivationRcd {
     // 动态栈
     public ActivationRcd(ActivationRcd parent/*, int addrBase*//*, ActivationRcd arInBasicBlock*/) {
         this.parent = parent;
-        // this.addrBase = addrBase;   // todo 感觉这个addrBase是无效的， 确实
-        // this.isInFunc = isInFunc;
-        // this.localVars.putAll(arInBasicBlock.getLocalVars());
-        // this.offsets.putAll(arInBasicBlock.getOffsets());
-        // this.curOffset = arInBasicBlock.getCapacity();
     }
 
     public ActivationRcd() {
@@ -77,7 +73,7 @@ public class ActivationRcd {
         return varMap2Reg.getOrDefault(varName, null);
     }
 
-    public void varUnmapReg(String varName) {
+    public void varUnmapReg(VarName varName) {
         Reg reg = varMap2Reg.get(varName);
         reg.setVarName(null);
         reg.setAlloced(false);
@@ -107,8 +103,8 @@ public class ActivationRcd {
             varsOnMem.put(name.getDepth(), new HashMap<>());
         }
         varsOnMem.get(name.getDepth()).put(name.toString(), name);
-        offsets.put(name.toString(), curOffset);
         curOffset = curOffset + size * 4;
+        offsets.put(name.toString(), curOffset);    // 数组名指向空间底部, 向上增长
         varOccupiedSpace = varOccupiedSpace + size * 4;
     }
 

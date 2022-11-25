@@ -38,6 +38,10 @@ public class LValOpd implements PrimaryOpd {
         return getVarName().getDepth() == 0;
     }
 
+    public boolean isArray() {
+        return idx != null;
+    }
+
     @Override
     public String toString() {
         return name + (idx != null ? "[" + idx.getVarName() + "]" : "");

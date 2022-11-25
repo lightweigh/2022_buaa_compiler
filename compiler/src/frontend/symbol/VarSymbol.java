@@ -25,10 +25,13 @@ public class VarSymbol extends Symbol {
         this.values = values;
     }
 
-    public VarSymbol(String symName, int dimension) {
+    public VarSymbol(String symName, int dimension, int colNum) {
+        // 函数参数
+        // (dimension, colNum) = (0, 0) , (1, 0), (2, colNum)
         super(symName);
         this.dimension = dimension;
         this.isFuncFParam = true;
+        this.colNum = colNum;
     }
 
     public boolean isFuncFParam() {
@@ -47,6 +50,12 @@ public class VarSymbol extends Symbol {
         return colNum;
     }
 
+    /**
+     * 全局初始化、常量取值
+     *
+     * @param idx
+     * @return
+     */
     public int getValue(int idx) {
         return values.get(idx);
     }

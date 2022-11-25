@@ -44,4 +44,18 @@ public class GlobalArray implements MiddleCode {
     public CodeType getCodeType() {
         return CodeType.GLOBAL_ARRAY;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(name.toString());
+        sb.append("[").append(size).append("]");
+        if (!values.isEmpty()) {
+            sb.append(": ");
+            for (int value : values) {
+                sb.append(value).append(" ");
+            }
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
 }

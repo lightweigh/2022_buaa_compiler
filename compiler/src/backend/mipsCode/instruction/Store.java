@@ -33,7 +33,7 @@ public class Store implements Instruction {
         this.label = label;
         this.content = "sw " + src.getName() + ", " +
                 label +
-                ((offset != null && offset.getValue() != 0) ? "+ " + offset : "") + "\n";
+                ((offset != null && offset.getValue() != 0) ? " + " + offset : "") + "\n";
     }
 
     // sw $t1, label($t2)

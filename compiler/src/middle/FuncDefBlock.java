@@ -16,6 +16,8 @@ public class FuncDefBlock {
     // private HashMap<String, VarName> localVars = new HashMap<>();
     // depth -> (name, name@depth)
     private HashMap<Integer, HashMap<String, VarName>> localVars = new HashMap<>();
+    private HashMap<Integer, HashMap<String, VarName>> symVars = new HashMap<>();   // 高级语言里的变量
+    private HashMap<Integer, HashMap<String, VarName>> tmpVars = new HashMap<>();   // 中间代码里的临时变量
 
     private ArrayList<Reg> generalRegsUsed = null;
     private BasicBlock startBb;
@@ -65,12 +67,19 @@ public class FuncDefBlock {
         return generalRegsUsed;
     }
 
-    public void addLocalVar(Operand operand) {
+    public void addLocalVar(Operand operand, boolean isTmp) {
         VarName varName = operand.getVarName();
         if (!localVars.containsKey(varName.getDepth())) {
             localVars.put(varName.getDepth(), new HashMap<>());
+            symVars.put(varName.getDepth(), new HashMap<>());
+            tmpVars.put(varName.getDepth(), new HashMap<>());
         }
         localVars.get(varName.getDepth()).put(varName.getLocalName(), varName);
+        if (isTmp) {
+            tmpVars.get(varName.getDepth()).put(varName.getLocalName(), varName);
+        } else {
+            symVars.get(varName.getDepth()).put(varName.getLocalName(), varName);
+        }
     }
 
     public VarName getLocalVar(String localName, int curDepth) {

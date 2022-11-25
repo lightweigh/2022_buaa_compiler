@@ -8,6 +8,8 @@ public class VarName {
     private String localName;
     private boolean dirty = false;    // 针对全局变量的
 
+    private int colNum; // 主要是用来 二维数组做参数,确定地址?  // 一维数组设为0  // 0维设置为-1
+
     public VarName(String name, int depth) {
         this.localName = name;
         if (depth <= 0) {
@@ -16,6 +18,22 @@ public class VarName {
             this.name = name + "@" + depth;
         }
         this.depth = depth;
+        this.colNum = -1;
+    }
+
+    public VarName(String name, int depth, int colNum) {
+        this.localName = name;
+        if (depth <= 0) {
+            this.name = name;
+        } else {
+            this.name = name + "@" + depth;
+        }
+        this.depth = depth;
+        this.colNum = colNum;
+    }
+
+    public boolean isArray() {
+        return colNum >= 0;
     }
 
     public boolean isDirty() {
@@ -28,6 +46,10 @@ public class VarName {
 
     public String getLocalName() {
         return localName;
+    }
+
+    public int getColNum() {
+        return colNum;
     }
 
     public int getDepth() {

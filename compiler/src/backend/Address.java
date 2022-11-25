@@ -2,7 +2,7 @@ package backend;
 
 public class Address {
     private int addr;
-    private boolean isRelative;
+    private boolean isRelative; // todo 应该是没有绝对的
 
     public Address(int addr, boolean isRelative) {
         this.addr = addr;

@@ -1,110 +1,49 @@
 .data
-g1: .word 55
-str_0: .asciiz "\n"
-str_3: .asciiz "g1="
-str_5: .asciiz ", c3="
-str_6: .asciiz "d="
-str_2: .asciiz "a="
-str_1: .asciiz "fun1()="
-str_4: .asciiz "c2="
+a: .space 16384
+c: .space 16384
+b: .space 16384
 .text
 j main
 
-fun0:
+f1:
 move $fp, $sp
-li $t0, 7
-sub $t1, $t0, $a0
-move $v0, $t1
-
-fun0_ret_:
-jr $ra
-
-fun1:
-move $fp, $sp
+li $v0, 4000
+sw $v0, a + 20
+li $v0, 3
+sw $v0, a + 16000
 li $v0, 7
+sw $v0, a + 16380
+lw $t0, a+ 8864
+add $t1, $t0, 9
+lw $t2, a+ 16380
+sll $at, $t2, 2
+add $at, $at, $a0
+sw $t1, ($at)
+lw $t3, a+ 20
+la $t4, a
+move $v0, $t4
 
-fun1_ret_:
-jr $ra
-
-fun2:
-move $fp, $sp
-sub $sp, $sp, 8
-mul $t0, $a1, $a2
-add $t1, $a0, $t0
-lw $t2, -4($fp)
-div $t3, $a3, $t2
-lw $t4, -8($fp)
-div $t3, $t4
-mfhi $t5
-sub $t6, $t1, $t5
-move $t7, $t6
-move $v0, $t7
-
-fun2_ret_:
-add $sp, $sp, 8
-jr $ra
-
-fun3:
-move $fp, $sp
-sub $sp, $sp, 20
-sub $sp, $sp, 4
-sw $ra, ($sp)
-mul $t0, $a0, $a1
-mul $t1, $t0, $a2
-div $t2, $t1, $a3
-neg $t2, $t2
-move $t3, $a0
-move $a0, $t2
-li $v0, 1
-syscall
-
-la $a0, str_0
-li $v0, 4
-syscall
-
-sw $t2, g1
-sub $sp, $sp, 4
-sw $fp, ($sp)
-sub $sp, $sp, 24
-sw $t0, ($sp)
-sw $t1, 4($sp)
-sw $t3, 8($sp)
-sw $a1, 12($sp)
-sw $a2, 16($sp)
-sw $a3, 20($sp)
-jal fun1
-move $sp, $fp
-lw $t0, ($sp)
-lw $t1, 4($sp)
-lw $t3, 8($sp)
-lw $a1, 12($sp)
-lw $a2, 16($sp)
-lw $a3, 20($sp)
-add $sp, $sp, 24
-lw $fp, ($sp)
-add $sp, $sp, 4
-lw $t2, -4($fp)
-lw $t4, -16($fp)
-mul $t5, $t2, $t4
-add $t6, $v0, $t5
-move $t7, $t6
-move $v0, $t7
-
-fun3_ret_:
-lw $ra, ($sp)
-add $sp, $sp, 4
-add $sp, $sp, 20
+f1_ret_:
+sw $t4, a
 jr $ra
 
 main:
 move $fp, $sp
-la $a0, str_1
+li $v0, 1
+sw $v0, c
+li $v0, 2
+sw $v0, c + 4
+li $v0, 3
+sw $v0, c + 16
 li $v0, 4
-syscall
-
+sw $v0, c + 20
+li $v0, 0
+sw $v0, c + 32
 sub $sp, $sp, 4
 sw $fp, ($sp)
-jal fun1
+la $a0, c
+add $a0, $a0, 0
+jal f1
 move $sp, $fp
 lw $fp, ($sp)
 add $sp, $sp, 4
@@ -112,242 +51,12 @@ move $a0, $v0
 li $v0, 1
 syscall
 
-la $a0, str_0
-li $v0, 4
-syscall
-
-sub $sp, $sp, 4
-sw $fp, ($sp)
-jal fun1
-move $sp, $fp
-lw $fp, ($sp)
-add $sp, $sp, 4
-sub $sp, $sp, 4
-sw $fp, ($sp)
-jal fun1
-move $sp, $fp
-lw $fp, ($sp)
-add $sp, $sp, 4
-add $t0, $v0, 2
-sub $sp, $sp, 4
-sw $fp, ($sp)
-sub $sp, $sp, 4
-sw $t0, ($sp)
-lw $t0, g1
-move $a0, $t0
-lw $t0, g1
-move $a1, $t0
-lw $t0, g1
-move $a2, $t0
-move $a3, $v0
-lw $t0, g1
-sw $t0, -4($sp)
-sw $t0, -8($sp)
-jal fun2
-move $sp, $fp
-lw $t0, ($sp)
-add $sp, $sp, 4
-lw $fp, ($sp)
-add $sp, $sp, 4
-move $t1, $v0
-la $a0, str_2
-li $v0, 4
-syscall
-
-move $a0, $t1
-li $v0, 1
-syscall
-
-la $a0, str_0
-li $v0, 4
-syscall
-
-li $t2, 5
-li $t3, 77
-li $t4, 5
-mul $t5, $t2, 2
-move $t6, $t5
-sub $sp, $sp, 4
-sw $fp, ($sp)
-sub $sp, $sp, 28
-sw $t0, ($sp)
-sw $t1, 4($sp)
-sw $t2, 8($sp)
-sw $t3, 12($sp)
-sw $t4, 16($sp)
-sw $t5, 20($sp)
-sw $t6, 24($sp)
-jal fun1
-move $sp, $fp
-lw $t0, ($sp)
-lw $t1, 4($sp)
-lw $t2, 8($sp)
-lw $t3, 12($sp)
-lw $t4, 16($sp)
-lw $t5, 20($sp)
-lw $t6, 24($sp)
-add $sp, $sp, 28
-lw $fp, ($sp)
-add $sp, $sp, 4
-mul $t7, $v0, 3
-add $t8, $t3, $t7
-move $t9, $t8
-sub $sp, $sp, 4
-sw $fp, ($sp)
-sub $sp, $sp, 40
-sw $t0, ($sp)
-sw $t1, 4($sp)
-sw $t2, 8($sp)
-sw $t3, 12($sp)
-sw $t4, 16($sp)
-sw $t5, 20($sp)
-sw $t6, 24($sp)
-sw $t7, 28($sp)
-sw $t8, 32($sp)
-sw $t9, 36($sp)
 li $a0, 10
-jal fun0
-move $sp, $fp
-lw $t0, ($sp)
-lw $t1, 4($sp)
-lw $t2, 8($sp)
-lw $t3, 12($sp)
-lw $t4, 16($sp)
-lw $t5, 20($sp)
-lw $t6, 24($sp)
-lw $t7, 28($sp)
-lw $t8, 32($sp)
-lw $t9, 36($sp)
-add $sp, $sp, 40
-lw $fp, ($sp)
-add $sp, $sp, 4
-move $v1, $v0
-sub $sp, $sp, 4
-sw $fp, ($sp)
-sub $sp, $sp, 44
-sw $t0, ($sp)
-sw $t1, 4($sp)
-sw $t2, 8($sp)
-sw $t3, 12($sp)
-sw $t4, 16($sp)
-sw $t5, 20($sp)
-sw $t6, 24($sp)
-sw $t7, 28($sp)
-sw $t8, 32($sp)
-sw $t9, 36($sp)
-sw $v1, 40($sp)
-jal fun1
-move $sp, $fp
-lw $t0, ($sp)
-lw $t1, 4($sp)
-lw $t2, 8($sp)
-lw $t3, 12($sp)
-lw $t4, 16($sp)
-lw $t5, 20($sp)
-lw $t6, 24($sp)
-lw $t7, 28($sp)
-lw $t8, 32($sp)
-lw $t9, 36($sp)
-lw $v1, 40($sp)
-add $sp, $sp, 44
-lw $fp, ($sp)
-add $sp, $sp, 4
-sub $sp, $sp, 4
-sw $t0, -4($fp)
-mul $t0, $v1, $v0
-sub $sp, $sp, 4
-sw $t1, -8($fp)
-move $t1, $t0
-sub $sp, $sp, 4
-sw $fp, ($sp)
-sub $sp, $sp, 44
-sw $t0, ($sp)
-sw $t1, 4($sp)
-sw $t2, 8($sp)
-sw $t3, 12($sp)
-sw $t4, 16($sp)
-sw $t5, 20($sp)
-sw $t6, 24($sp)
-sw $t7, 28($sp)
-sw $t8, 32($sp)
-sw $t9, 36($sp)
-sw $v1, 40($sp)
-lw $t0, -8($fp)
-move $a0, $t0
-move $a1, $t2
-move $a2, $t6
-move $a3, $t3
-sw $t9, -4($sp)
-sw $t4, -8($sp)
-sw $t1, -12($sp)
-li $at, 4
-sw $at, -16($sp)
-li $at, 7
-sw $at, -20($sp)
-jal fun3
-move $sp, $fp
-lw $t0, ($sp)
-lw $t1, 4($sp)
-lw $t2, 8($sp)
-lw $t3, 12($sp)
-lw $t4, 16($sp)
-lw $t5, 20($sp)
-lw $t6, 24($sp)
-lw $t7, 28($sp)
-lw $t8, 32($sp)
-lw $t9, 36($sp)
-lw $v1, 40($sp)
-add $sp, $sp, 44
-lw $fp, ($sp)
-add $sp, $sp, 4
-sub $sp, $sp, 4
-sw $t2, -12($fp)
-move $t2, $v0
-la $a0, str_3
-li $v0, 4
-syscall
-
-sub $sp, $sp, 4
-sw $t3, -16($fp)
-lw $t3, g1
-move $a0, $t3
 li $v0, 1
 syscall
 
-la $a0, str_0
-li $v0, 4
-syscall
-
-la $a0, str_4
-li $v0, 4
-syscall
-
-move $a0, $t9
+lw $a0, c+ 32
 li $v0, 1
-syscall
-
-la $a0, str_5
-li $v0, 4
-syscall
-
-move $a0, $t1
-li $v0, 1
-syscall
-
-la $a0, str_0
-li $v0, 4
-syscall
-
-la $a0, str_6
-li $v0, 4
-syscall
-
-move $a0, $t2
-li $v0, 1
-syscall
-
-la $a0, str_0
-li $v0, 4
 syscall
 
 

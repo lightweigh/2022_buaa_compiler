@@ -14,30 +14,38 @@ public class Immediate implements PrimaryOpd {
         return value;
     }
 
-    public void procValue(String op, Immediate immediate) {
+    /**
+     * 不可变对象
+     * @param op
+     * @param value
+     * @return
+     */
+    public Immediate procValue(String op, int value) {
+        Immediate res = new Immediate(this.value);
         switch (op) {
             case "*":
-                this.value *= immediate.value;
+                res.value = this.value * value;
                 break;
             case "/":
-                this.value /= immediate.value;
+                res.value = this.value / value;
                 break;
             case "%":
-                this.value %= immediate.value;
+                res.value = this.value % value;
                 break;
             case "+":
-                this.value += immediate.value;
+                res.value = this.value + value;
                 break;
             case "-":
-                this.value -= immediate.value;
+                res.value = this.value - value;
                 break;
             default:
                 break;
         }
+        return res;
     }
 
-    public void procValue(boolean isNeg) {
-        this.value = isNeg ? -this.value : this.value;
+    public Immediate procValue(boolean isNeg) {
+        return isNeg ? new Immediate(-this.value) : new Immediate(this.value);
     }
 
     @Override

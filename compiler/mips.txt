@@ -1,64 +1,61 @@
 .data
-a: .space 16384
-c: .space 16384
-b: .space 16384
+str_1: .asciiz "\n"
+str_0: .asciiz "a[1]="
 .text
 j main
 
-f1:
+foo:
 move $fp, $sp
-li $v0, 4000
-sw $v0, a + 20
-li $v0, 3
-sw $v0, a + 16000
-li $v0, 7
-sw $v0, a + 16380
-lw $t0, a+ 8864
-add $t1, $t0, 9
-lw $t2, a+ 16380
-sll $at, $t2, 2
-add $at, $at, $a0
-sw $t1, ($at)
-lw $t3, a+ 20
-la $t4, a
-move $v0, $t4
+move $t0, $a0
+la $a0, str_0
+li $v0, 4
+syscall
 
-f1_ret_:
-sw $t4, a
+lw $a0, 4($t0)
+li $v0, 1
+syscall
+
+la $a0, str_1
+li $v0, 4
+syscall
+
+move $v0, $t0
+
+foo_ret_:
 jr $ra
 
 main:
 move $fp, $sp
-li $v0, 1
-sw $v0, c
-li $v0, 2
-sw $v0, c + 4
-li $v0, 3
-sw $v0, c + 16
-li $v0, 4
-sw $v0, c + 20
-li $v0, 0
-sw $v0, c + 32
+sub $sp, $sp, 16
+li $t0, 11
+sub $t1, $fp, 16
+sw $t0, ($t1)
+li $t2, 22
+sw $t2, 4($t1)
+li $t3, 10
+sw $t3, 8($t1)
+li $t4, 21
+sw $t4, 12($t1)
 sub $sp, $sp, 4
 sw $fp, ($sp)
-la $a0, c
-add $a0, $a0, 0
-jal f1
+sub $sp, $sp, 20
+sw $t0, ($sp)
+sw $t1, 4($sp)
+sw $t2, 8($sp)
+sw $t3, 12($sp)
+sw $t4, 16($sp)
+sub $a0, $fp, 16
+add $a0, $a0, 8
+jal foo
 move $sp, $fp
+lw $t0, ($sp)
+lw $t1, 4($sp)
+lw $t2, 8($sp)
+lw $t3, 12($sp)
+lw $t4, 16($sp)
+add $sp, $sp, 20
 lw $fp, ($sp)
 add $sp, $sp, 4
-move $a0, $v0
-li $v0, 1
-syscall
-
-li $a0, 10
-li $v0, 1
-syscall
-
-lw $a0, c+ 32
-li $v0, 1
-syscall
-
 
 main_ret_:
 li $v0, 10

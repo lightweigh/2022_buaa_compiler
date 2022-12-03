@@ -19,6 +19,8 @@ public class LVal {
     private int dimension = 0;
     private ArrayList<Exp> exps = new ArrayList<>();
 
+    private boolean addrNotValue = false;
+
     public LVal(Ident ident, ArrayList<Token> bracks,
                 int dimension, ArrayList<Exp> exps) {
         this.ident = ident;
@@ -41,6 +43,14 @@ public class LVal {
 
     public ArrayList<Exp> getExps() {
         return exps;
+    }
+
+    public boolean isAddrNotValue() {
+        return addrNotValue;
+    }
+
+    public void setAddrNotValue(boolean addrNotValue) {
+        this.addrNotValue = addrNotValue;
     }
 
     public void print(BufferedWriter output) throws IOException {

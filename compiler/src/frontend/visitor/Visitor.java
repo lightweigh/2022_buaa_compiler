@@ -420,17 +420,18 @@ public class Visitor {
                         FParamSymbol fParamSym = (FParamSymbol) fParamSymIter.next();
                         Exp rParamExp = rParamExpIter.next();
                         int rParamType = -1;
-                        UnaryExp rParam = funcCall.getFuncRParams().getRParamUnaryExp(rParamExp);
+                        UnaryExp rParamUnary = funcCall.getFuncRParams().getRParamUnaryExp(rParamExp);
                         //  UnaryExp → PrimaryExp | FuncCall | UnaryOp UnaryExp
-                        if (rParam == null) {
+                        if (rParamUnary == null) {
                             rParamType = 0;
                         } else {
-                            while (rParam.getType() == 2) {
-                                rParam = rParam.getUnaryExp();
+                            while (rParamUnary.getType() == 2) {
+                                rParamUnary = rParamUnary.getUnaryExp();
                             }
-                            if (rParam.getType() == 0) {
-                                PrimaryExp primaryExp = rParam.getPrimaryExp();
+                            if (rParamUnary.getType() == 0) {
+                                PrimaryExp primaryExp = rParamUnary.getPrimaryExp();
                                 //  PrimaryExp → '(' Exp ')' | LVal | Num
+                                assert primaryExp.getType() != 0;
                                 if (primaryExp.getType() == 1) {
                                     LVal lVal = primaryExp.getlVal();
                                     VarSymbol varSymbol = (VarSymbol) getSymbol(lVal.getIdent().getContent());
@@ -443,9 +444,9 @@ public class Visitor {
                                 } else if (primaryExp.getType() == 2) {
                                     rParamType = 0;
                                 }
-                            } else if (rParam.getType() == 1) {
+                            } else if (rParamUnary.getType() == 1) {
                                 // funcCall 对应函数返回类型    // todo call void ?
-                                FuncCall rFuncCall = rParam.getFuncCall();
+                                FuncCall rFuncCall = rParamUnary.getFuncCall();
                                 Symbol funcSymbol = getSymbol(rFuncCall.getIdent().getContent());
                                 if (!(funcSymbol instanceof FuncSymbol)) {
                                     Error.errorTable.add(new Error(Error.ErrorType.NAME_UNDEF,
@@ -472,11 +473,14 @@ public class Visitor {
         }
     }
 
-    private int getRParamType(VarSymbol varSymbol, LVal fParam) {
-        int fParamDim = fParam.getDimension();
+    private int getRParamType(VarSymbol varSymbol, LVal rParam) {
+        int rParamDim = rParam.getDimension();
         int symDim = varSymbol.getDimension();
-        assert symDim >= fParamDim;
-        return symDim - fParamDim;
+        assert symDim >= rParamDim;
+        if (symDim == 2 && rParamDim == 1) {
+            rParam.setAddrNotValue(true);
+        }
+        return symDim - rParamDim;
     }
 
     private Symbol getSymbol(String symName) {
@@ -604,11 +608,16 @@ public class Visitor {
         for (Expression expression : expressions) {
             operands = analyseExpression(expression);
             lastOne = getLast(operands);
-            if (isConst || isGlobalVisit()) {
-                // 常数组，直接就是立即数  // 全局数组,直接获得立即数
+            if (isGlobalVisit()) {
+                // 全局数组,直接获得立即数
                 assert operands.size() == 1;
                 values.add(((Immediate) lastOne).getValue());
             } else {
+                if (isConst) {
+                    // 局部常数组
+                    assert operands.size() == 1;
+                    values.add(((Immediate) lastOne).getValue());
+                }
                 if (lastOne instanceof PrimaryOpd) {
                     operands.remove(lastOne);
                 }
@@ -892,7 +901,8 @@ public class Visitor {
                         assert symbol instanceof VarSymbol;
                         operands.add(new Immediate(((VarSymbol) symbol).getValue(((Immediate) lastOne).getValue())));
                     } else {
-                        if (symbol instanceof VarSymbol && ((VarSymbol) symbol).isConst()) {
+                        if (symbol instanceof VarSymbol && ((VarSymbol) symbol).isConst()
+                                && !lVal.isAddrNotValue()/*非二维常量数组传一维参数*/) {
                             operands.add(new Immediate(((VarSymbol) symbol).getValue(((Immediate) lastOne).getValue())));
                         } else {
                             operands.add(new LValOpd(getVarName(lVal.getIdent().getContent()), lastOne));

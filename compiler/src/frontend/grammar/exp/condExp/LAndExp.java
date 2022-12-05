@@ -18,6 +18,10 @@ public class LAndExp implements CondExp {
         this.seperators = seperators;
     }
 
+    public ArrayList<EqExp> getEqExps() {
+        return eqExps;
+    }
+
     @Override
     public void print(BufferedWriter output) throws IOException {
         Iterator<EqExp> iter = eqExps.iterator();

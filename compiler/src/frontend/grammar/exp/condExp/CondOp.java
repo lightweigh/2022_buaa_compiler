@@ -13,6 +13,10 @@ public class CondOp implements CondExp {
         this.condOp = condOp;
     }
 
+    public Token getCondOp() {
+        return condOp;
+    }
+
     @Override
     public void print(BufferedWriter output) throws IOException {
         output.write(condOp.toString());

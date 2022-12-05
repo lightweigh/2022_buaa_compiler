@@ -1,5 +1,6 @@
 package frontend.visitor;
 
+import com.sun.org.apache.bcel.internal.generic.BREAKPOINT;
 import frontend.Error;
 import frontend.grammar.*;
 import frontend.grammar.decl.Decl;
@@ -8,18 +9,21 @@ import frontend.grammar.decl.def.Variable;
 import frontend.grammar.decl.def.init.Init;
 import frontend.grammar.decl.def.init.Vector;
 import frontend.grammar.exp.*;
+import frontend.grammar.exp.condExp.*;
 import frontend.grammar.funcDef.FuncDef;
 import frontend.grammar.funcDef.FuncFParam;
-import frontend.grammar.funcDef.FuncFParams;
 import frontend.grammar.funcDef.FuncType;
 import frontend.grammar.stmt.*;
 import frontend.symbol.*;
+import frontend.token.Token;
 import middle.BasicBlock;
 import middle.FuncDefBlock;
 import middle.MiddleTn;
 import middle.VarName;
 import middle.quartercode.*;
 import middle.quartercode.array.*;
+import middle.quartercode.branch.JumpCmp;
+import middle.quartercode.branch.SaveCmp;
 import middle.quartercode.function.FParaCode;
 import middle.quartercode.function.FuncCallCode;
 import middle.quartercode.function.FuncDefCode;
@@ -58,7 +62,7 @@ public class Visitor {
         this.curSymTable = new SymTable(null);
         this.globalSymTable = curSymTable;
 
-        this.curBBlock = new BasicBlock("global_", false, blockDepth);
+        this.curBBlock = new BasicBlock("global_", BasicBlock.BBType.GLOBAL, blockDepth);
         this.globalBlock = curBBlock;
 
         this.globalVars = new HashMap<>();
@@ -83,7 +87,7 @@ public class Visitor {
     private void visitMainFuncDef(MainFuncDef mainFuncDef) {
         blockDepth = 1;
         // curBBlock.setDirectBb(newBb);
-        curBBlock = new BasicBlock("main", true, blockDepth);
+        curBBlock = new BasicBlock("main", BasicBlock.BBType.MAINFUNC, blockDepth);
         FuncDefBlock funcDefBlock = new FuncDefBlock("main", curBBlock);
         funcDefBBlocksMap.put(funcDefBlock.getLable(), funcDefBlock);
         funcDefBlocks.add(funcDefBlock);
@@ -103,7 +107,7 @@ public class Visitor {
     private void visitFuncDef(FuncDef funcDef) {
         blockDepth = 1;
         // curBBlock.setDirectBb(newBb);
-        curBBlock = new BasicBlock(funcDef.getName(), true, blockDepth);
+        curBBlock = new BasicBlock(funcDef.getName(), BasicBlock.BBType.FUNC, blockDepth);
         FuncDefBlock funcDefBlock = new FuncDefBlock(funcDef.getName(), curBBlock);
         funcDefBBlocksMap.put(funcDefBlock.getLable(), funcDefBlock);
         funcDefBlocks.add(funcDefBlock);
@@ -158,8 +162,8 @@ public class Visitor {
             } else {
                 String bbLabel = null;
                 if (blockItem.getStmt() instanceof Block) {
-                    // 只担心和函数名重名, 这样就好啦
-                    bbLabel = "int_";
+                    // 只担心和函数名重名
+                    bbLabel = "BASIC_";
                 }
                 visitStmt(blockItem.getStmt(), isInwhile, bbLabel);
             }
@@ -170,24 +174,19 @@ public class Visitor {
     private void visitStmt(Stmt stmt, boolean isInwhile, String bbLabel) {
         // middleTn.clear();
         if (stmt instanceof Block) {
-            if (bbLabel != null) {
-                // 新建一个basicBlock
-                blockDepth++;
-                BasicBlock newBb = new BasicBlock(bbLabel, false, blockDepth);
-                curBBlock.setDirectBb(newBb);
-                curBBlock = newBb;
-                curFuncDefBb.addBb(curBBlock);
-            }
+            assert bbLabel != null;
+            // 新建一个basicBlock
+            /*blockDepth++;
+            BasicBlock newBb = new BasicBlock(bbLabel, BasicBlock.BBType.BASIC, blockDepth);
+            curBBlock.setDirectBb(newBb);
+            curBBlock = newBb;
+            curFuncDefBb.addBb(curBBlock);*/
+            createNewCurBlock(bbLabel, 1, BasicBlock.BBType.BASIC);
+
             SymTable newTable = new SymTable(curSymTable);
             visitBlock((Block) stmt, newTable, isInwhile);
-            if (bbLabel != null) {
-                blockDepth--;
-                // block出来之后要新建一个bb
-                BasicBlock newBb = new BasicBlock(bbLabel + "next_", false, blockDepth);
-                curBBlock.setDirectBb(newBb);
-                curBBlock = newBb;
-                curFuncDefBb.addBb(curBBlock);
-            }
+            // block出来之后要新建一个bb
+            createNewCurBlock(bbLabel + "NEXT_", -1, BasicBlock.BBType.BASIC);
 
         } else if (stmt instanceof ExpStmt && ((ExpStmt) stmt).getExp() != null) {
             AddExp addExp = ((ExpStmt) stmt).getExp().getAddExp();
@@ -275,7 +274,7 @@ public class Visitor {
             }
         } else if (stmt instanceof WhileStmt) {
             blockDepth++;
-            BasicBlock newBb = new BasicBlock("while_", false, blockDepth);
+            BasicBlock newBb = new BasicBlock("WHILE_", BasicBlock.BBType.LOOP, blockDepth);
             curBBlock.setDirectBb(newBb);
             curBBlock = newBb;
             curFuncDefBb.addBb(curBBlock);
@@ -289,8 +288,20 @@ public class Visitor {
             }
         } else if (stmt instanceof IfStmt) {
             // todo 这儿也有一个基本块
+            createNewCurBlock("IF_", 1, BasicBlock.BBType.BRANCH);
+            // analyseLOrExp(LOrExp lOrExp, BasicBlock ifStmtBlock, BasicBlock elseStmtBlock, BasicBlock endIfBlock)
+            BasicBlock ifStmtBlock = new BasicBlock("IF_STMT_", BasicBlock.BBType.BASIC, curBBlock.getDepth());
+            BasicBlock elseStmtBlock = null;
+            if (((IfStmt) stmt).hasElse()) {
+                elseStmtBlock = new BasicBlock("ELSE_", BasicBlock.BBType.BRANCH, curBBlock.getDepth());    //todo if 和 else 的基本块深度相同,考虑"相同"变量我是怎么找的
+            }
+            BasicBlock endIfBlock = new BasicBlock("END_IF_", BasicBlock.BBType.BASIC, curBBlock.getDepth() - 1);
+
+            analyseLOrExp(((IfStmt) stmt).getCond().getlOrExp(), ifStmtBlock, elseStmtBlock, endIfBlock);
+
             visitStmt(((IfStmt) stmt).getStmt(), isInwhile, null);
             if (((IfStmt) stmt).hasElse()) {
+                curBBlock.append(new JumpCmp(null, null, JumpCmp.JumpType.GOTO, endIfBlock.getLable()));
                 visitStmt(((IfStmt) stmt).getElseStmt(), isInwhile, null);
             }
         } else if (stmt instanceof PrintfStmt) {
@@ -351,6 +362,265 @@ public class Visitor {
                 curBBlock.append(new RetCode(null));
             }
         }
+    }
+
+    private void createNewCurBlock(String bbLabel, int step, BasicBlock.BBType bbType) {
+        blockDepth = blockDepth + step;
+        BasicBlock newBb = new BasicBlock(bbLabel, bbType, blockDepth);
+        switch2DirectNextBlock(newBb);
+    }
+
+    private void switch2DirectNextBlock(BasicBlock directNext) {
+        curBBlock.setDirectBb(directNext);
+        curBBlock = directNext;
+        curFuncDefBb.addBb(curBBlock);
+    }
+
+    private void analyseCond(Cond cond) {
+        LOrExp lOrExp = cond.getlOrExp();
+
+    }
+
+    private void analyseLOrExp(LOrExp lOrExp, BasicBlock ifStmtBlock, BasicBlock elseStmtBlock, BasicBlock endIfBlock) {
+        //  LOrExp → LAndExp | LOrExp '||' LAndExp
+
+        Iterator<LAndExp> lAndExpIter = lOrExp.getlAndExps().iterator();
+        while (lAndExpIter.hasNext()) {
+            LAndExp lAndExp = lAndExpIter.next();
+            BasicBlock nextCondOrBlock = lAndExpIter.hasNext() ?    // hasOr ?
+                    new BasicBlock("COND_OR_", BasicBlock.BBType.BRANCH, blockDepth) :
+                    null;
+
+            analyseLAndExp(lAndExp, nextCondOrBlock, ifStmtBlock, elseStmtBlock, endIfBlock);
+            // if (nextCondOrBlock != null) {
+            //     // 循环继续
+            //     createNewCurBlock("JUMP_", 0, BasicBlock.BBType.BRANCHGOTO);
+            //     curBBlock.append(new JumpCmp(null, null, JumpCmp.JumpType.GOTO, ifStmtBlock.getLable()));
+            //     switch2DirectNextBlock(nextCondOrBlock);
+            // }
+        }
+    }
+
+    private void analyseLAndExp(LAndExp lAndExp, BasicBlock nextCondOrBlock, BasicBlock ifStmtBlock, BasicBlock elseStmtBlock, BasicBlock endIfBlock) {
+        //   LAndExp → EqExp | LAndExp '&&' EqExp
+        Iterator<EqExp> eqExpIter = lAndExp.getEqExps().iterator();
+        while (eqExpIter.hasNext()) {
+            EqExp eqExp = eqExpIter.next();
+            BasicBlock nextCondAndBlock = eqExpIter.hasNext() ?
+                    new BasicBlock("COND_AND_", BasicBlock.BBType.BRANCH, blockDepth) :
+                    null;
+
+            BasicBlock unSatisfiedJump = nextCondOrBlock != null ? nextCondOrBlock :
+                    elseStmtBlock != null ? elseStmtBlock :
+                            endIfBlock;
+            analyseEqExp(eqExp, unSatisfiedJump);
+            if (nextCondAndBlock != null) {
+                // 循环继续
+                switch2DirectNextBlock(nextCondAndBlock);
+            }
+        }
+        // LAndCond 条件满足, 执行 ifStmt
+        if (nextCondOrBlock != null) {
+            // Cond未解析完, 需要跳转
+            createNewCurBlock("JUMP_", 0, BasicBlock.BBType.BRANCHGOTO);
+            curBBlock.append(new JumpCmp(null, null, JumpCmp.JumpType.GOTO, ifStmtBlock.getLable()));
+            switch2DirectNextBlock(nextCondOrBlock);
+        }
+    }
+
+    private void analyseEqExp(EqExp eqExp, BasicBlock jump) {
+        //  EqExp → RelExp | EqExp ('==' | '!=') RelExp
+
+        ArrayList<RelExp> relExps = eqExp.getRelExps();
+        Iterator<RelExp> relExpIter = relExps.iterator();
+        Iterator<CondOp> condOpIter = eqExp.getCondOps().iterator();
+        CondOp condOp;
+        RelExp relExp = relExpIter.next();
+
+        ArrayList<Operand> operands1 = new ArrayList<>(analyseRelExp(relExp));
+        Operand left = getLast(operands1), right;
+        if (left instanceof PrimaryOpd) {
+            operands1.remove(left);
+        }
+
+        if (!relExpIter.hasNext()) {
+            if (left instanceof PrimaryOpd) {
+                operands1.add(new JumpCmp(left, null, JumpCmp.JumpType.BEQZ, jump.getLable()));
+            } else if (left instanceof SaveCmp) {
+                operands1.remove(left);
+                SaveCmp saveCmp = (SaveCmp) left;
+                JumpCmp.JumpType jumpType;
+                switch (((SaveCmp) left).getCmpType()) {
+                    case SLT:
+                    case SLTI:
+                        jumpType = JumpCmp.JumpType.BGT;
+                        break;
+                    case SLE:
+                        jumpType = JumpCmp.JumpType.BGE;
+                        break;
+                    case SEG:
+                        jumpType = JumpCmp.JumpType.BLE;
+                        break;
+                    case SGT:
+                        jumpType = JumpCmp.JumpType.BLT;
+                        break;
+                    default:
+                        jumpType = null;
+                        break;
+                }
+                operands1.add(new JumpCmp(saveCmp.getCmpOp1(), saveCmp.getCmpOp2(), jumpType, jump.getLable()));
+            }
+        }
+
+        for (Operand operand : operands1) {
+            curBBlock.append((MiddleCode) operand);
+        }
+        ArrayList<Operand> operands2;
+        while (relExpIter.hasNext()) {
+            // gen right
+            relExp = relExpIter.next();
+            operands2 = new ArrayList<>(analyseRelExp(relExp));
+            right = getLast(operands2);
+            if (right instanceof PrimaryOpd) {
+                operands2.remove(right);
+            }
+            for (Operand operand : operands2) {
+                curBBlock.append((MiddleCode) operand);
+            }
+            // get condOp
+            condOp = condOpIter.next();
+            Token.Type type = condOp.getCondOp().getRefType();
+
+            // JumpCmp
+            if (left instanceof Immediate && right instanceof Immediate) {
+                // 直接计算结果
+                boolean lEqR = ((Immediate) left).getValue() == ((Immediate) right).getValue();
+                boolean condFalse = false;
+                if (type == Token.Type.EQL && !lEqR || type == Token.Type.NEQ && lEqR) {
+                    condFalse = true;
+                }
+                if (!condOpIter.hasNext()) {
+                    if (condFalse) {
+                        // 条件不满足, 跳转
+                        curBBlock.append(new JumpCmp(null, null, JumpCmp.JumpType.GOTO, jump.getLable()));
+                    }
+                } else {
+                    left = new Immediate(condFalse ? 0 : 1);
+                }
+            } else {
+                if (left instanceof Immediate) {
+                    Operand tmp = left;
+                    left = right;
+                    right = tmp;
+                }
+
+                if (condOpIter.hasNext()) {
+                    // SaveCmp
+                    Operand t1 = new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()));
+                    curFuncDefBb.addLocalVar(t1, true);
+
+                    SaveCmp.CmpType cmpType = type == Token.Type.EQL ? SaveCmp.CmpType.SEQ : SaveCmp.CmpType.SNE;
+                    t1 = new SaveCmp(t1, left, right, cmpType);
+                    curBBlock.append((MiddleCode) t1);
+                    left = t1;
+                } else {
+                    JumpCmp.JumpType jumpType = type == Token.Type.EQL ? JumpCmp.JumpType.BNE : JumpCmp.JumpType.BEQ;
+                    curBBlock.append(new JumpCmp(left, right, jumpType, jump.getLable()));
+                }
+            }
+        }
+    }
+
+    private ArrayList<Operand> analyseRelExp(RelExp relExp) {
+        // RelExp → AddExp | RelExp ('<' | '>' | '<=' | '>=') AddExp
+        ArrayList<Operand> operands = new ArrayList<>();
+
+        assert relExp.getCondExps().size() > 1;
+        Iterator<CondExp> condExpIter = relExp.getCondExps().iterator();
+        Iterator<CondOp> condOpIter = relExp.getCondOps().iterator();
+        ArrayList<Operand> operands1 = analyseAddExp((AddExp) condExpIter.next());
+        Operand left = getLast(operands1);
+        if (left instanceof PrimaryOpd) {
+            operands1.remove(left);
+        }
+        operands.addAll(operands1);
+
+        ArrayList<Operand> operands2;
+        Operand right;
+        while (condOpIter.hasNext()) {
+            // gen right
+            operands2 = analyseAddExp((AddExp) condExpIter.next());
+            right = getLast(operands2);
+            if (right instanceof PrimaryOpd) {
+                operands2.remove(right);
+            }
+            operands.addAll(operands2);
+            // get op
+            CondOp condOp = condOpIter.next();
+            Operand t1;
+
+            if (left instanceof Immediate && right instanceof Immediate) {
+                // 直接计算结果
+                switch (condOp.getCondOp().getRefType()) {
+                    case LEQ:
+                        t1 = new Immediate(((Immediate) left).getValue() <= ((Immediate) right).getValue() ? 1 : 0);
+                        break;
+                    case LSS:
+                        t1 = new Immediate(((Immediate) left).getValue() < ((Immediate) right).getValue() ? 1 : 0);
+                        break;
+                    case GEQ:
+                        t1 = new Immediate(((Immediate) left).getValue() >= ((Immediate) right).getValue() ? 1 : 0);
+                        break;
+                    case GRE:
+                        t1 = new Immediate(((Immediate) left).getValue() > ((Immediate) right).getValue() ? 1 : 0);
+                        break;
+                    default:
+                        t1 = null;
+                        break;
+                }
+                if (!condExpIter.hasNext()) {
+                    operands.add(t1);
+                }
+            } else {
+                boolean rightIsImm = false;
+                boolean swapped = false;
+                if (left instanceof Immediate) {
+                    Operand tmp = left;
+                    left = right;
+                    right = tmp;
+                    swapped = true;
+                }
+                if (right instanceof Immediate) {
+                    rightIsImm = true;
+                }
+                // SaveCmp
+                t1 = new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()));
+                curFuncDefBb.addLocalVar(t1, true);
+
+                SaveCmp.CmpType cmpType;
+                switch (condOp.getCondOp().getRefType()) {
+                    case LEQ:   // <=
+                        cmpType = swapped ? SaveCmp.CmpType.SEG : SaveCmp.CmpType.SLE;
+                        break;
+                    case GEQ:   // >=
+                        cmpType = swapped ? SaveCmp.CmpType.SLE : SaveCmp.CmpType.SEG;
+                        break;
+                    case LSS:   // <
+                        cmpType = rightIsImm ? (swapped ? SaveCmp.CmpType.SGT : SaveCmp.CmpType.SLTI) : SaveCmp.CmpType.SLT;
+                        break;
+                    case GRE:   // >
+                        cmpType = swapped ? SaveCmp.CmpType.SLTI : SaveCmp.CmpType.SGT;
+                        break;
+                    default:
+                        cmpType = null;
+                        break;
+                }
+                operands.add(new SaveCmp(t1, left, right, cmpType));
+            }
+            // left = SaveCmp:t1
+            left = t1;
+        }
+        return operands;
     }
 
     private void visitLVal(LVal lval, boolean isLeft) {

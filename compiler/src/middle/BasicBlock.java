@@ -1,9 +1,6 @@
 package middle;
 
-import backend.ActivationRcd;
-import backend.register.Reg;
 import middle.quartercode.operand.MiddleCode;
-import middle.quartercode.operand.Operand;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -17,35 +14,56 @@ public class BasicBlock {
     // private boolean isFunc;
     private boolean hasFuncCall = false;
 
-    private HashMap<String, BasicBlock> bbIn = new HashMap<>();
-    private HashMap<String, BasicBlock> bbOut = new HashMap<>();
+    private HashMap<String, BasicBlock> prevBlocks = new HashMap<>();
+    private HashMap<String, BasicBlock> followBlocks = new HashMap<>();
     private BasicBlock directBb = null;
     private ArrayList<MiddleCode> middleCodes = new ArrayList<>();
 
-    private static int  blockCount = 0; // 计数，用于label命名唯一
+    private static int blockCount = 0; // 计数，用于label命名唯一
 
-    public BasicBlock(String label, boolean isFuncDef, int depth) {
+    public enum BBType {
+        GLOBAL, // 全局部分,非基本块
+        FUNC,   // 函数体
+        MAINFUNC, // main函数
+        BRANCH, // 分支
+        // BRANCHOR,
+        // BRANCHAND,
+        BRANCHGOTO, // 分支无条件跳转
+        LOOP,   // 循环
+        BASIC   // 普通的 {}
+    }
+
+    private BBType bbType;
+
+    public BasicBlock(String label, BBType bbType, int depth) {
         this.lable = label;
-        if (!isFuncDef) {
+        if (bbType != BBType.FUNC) {
             this.lable += blockCount++;
         }
         this.depth = depth;
-    }
-
-    public void addBlockIn(BasicBlock bb) {
-        bbIn.put(bb.getLable(),bb);
-    }
-
-    public void addBlockOut(BasicBlock bb) {
-        bbOut.put(bb.getLable(), bb);
+        this.bbType = bbType;
     }
 
     public BasicBlock getDirectBb() {
         return directBb;
     }
 
+    public BBType getBbType() {
+        return bbType;
+    }
+
     public void setDirectBb(BasicBlock directBb) {
         this.directBb = directBb;
+        this.addFollowBlock(directBb);
+        directBb.addPrevBlock(this);
+    }
+
+    private void addPrevBlock(BasicBlock bb) {
+        prevBlocks.put(bb.getLable(), bb);
+    }
+
+    private void addFollowBlock(BasicBlock bb) {
+        followBlocks.put(bb.getLable(), bb);
     }
 
     public void append(MiddleCode middleCode) {
@@ -64,12 +82,12 @@ public class BasicBlock {
         return middleCodes;
     }
 
-    public HashMap<String, BasicBlock> getBbIn() {
-        return bbIn;
+    public HashMap<String, BasicBlock> getPrevBlocks() {
+        return prevBlocks;
     }
 
-    public HashMap<String, BasicBlock> getBbOut() {
-        return bbOut;
+    public HashMap<String, BasicBlock> getFollowBlocks() {
+        return followBlocks;
     }
 
     // main 不会调用这个方法

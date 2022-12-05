@@ -19,6 +19,14 @@ public class RelExp implements CondExp {
         this.condOps = condOps;
     }
 
+    public ArrayList<CondExp> getCondExps() {
+        return condExps;
+    }
+
+    public ArrayList<CondOp> getCondOps() {
+        return condOps;
+    }
+
     @Override
     public void print(BufferedWriter output) throws IOException {
         Iterator<CondExp> iter = condExps.iterator();

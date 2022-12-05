@@ -18,6 +18,10 @@ public class LOrExp implements CondExp {
         this.seperators = seperators;
     }
 
+    public ArrayList<LAndExp> getlAndExps() {
+        return lAndExps;
+    }
+
     @Override
     public void print(BufferedWriter output) throws IOException {
         Iterator<LAndExp> iter = lAndExps.iterator();

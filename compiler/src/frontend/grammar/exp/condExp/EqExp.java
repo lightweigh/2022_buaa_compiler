@@ -17,6 +17,14 @@ public class EqExp implements CondExp {
         this.seperators = seperators;
     }
 
+    public ArrayList<RelExp> getRelExps() {
+        return relExps;
+    }
+
+    public ArrayList<CondOp> getCondOps() {
+        return seperators;
+    }
+
     @Override
     public void print(BufferedWriter output) throws IOException {
         Iterator<RelExp> iter = relExps.iterator();

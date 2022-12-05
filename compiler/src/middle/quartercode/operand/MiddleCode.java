@@ -42,7 +42,9 @@ public interface MiddleCode extends Operand {
         CONSTVAR,
         PRINT,
         SCANF,
-        RET
+        RET,
+        SAVECMP,
+        JUMPCMP
     }
 
     // 代码生成part

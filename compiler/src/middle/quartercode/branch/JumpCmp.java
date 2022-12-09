@@ -10,23 +10,34 @@ public class JumpCmp implements MiddleCode {
     private Operand cmpOp2;
 
     public enum JumpType {
-        BEQ,    // op1 == op2
-        BEQZ,   // op1 == 0
+        BEQ("beq "),    // op1 == op2
+        BEQZ("beqz "),   // op1 == 0
 
-        BNE,    // op1 != op2
-        BNEZ,   // op1 != 0
+        BNE("bne "),    // op1 != op2
+        BNEZ("bnez "),   // op1 != 0
 
-        BGE,    // op1 >= op2
-        BGEZ,   // op1 >= 0
-        BGT,    // op1 >  op2
-        BGTZ,   // op1 >  0
+        BGE("bge "),    // op1 >= op2
+        BGEZ("bgez "),   // op1 >= 0
+        BGT("bgt "),    // op1 >  op2
+        BGTZ("bgtz "),   // op1 >  0
 
-        BLE,    // op1 <= op2
-        BLEZ,   // op1 <= 0
-        BLT,    // op1 <  op2
-        BLTZ,   // op1 <  0
+        BLE("ble "),    // op1 <= op2
+        BLEZ("blez "),   // op1 <= 0
+        BLT("blt "),    // op1 <  op2
+        BLTZ("bltz "),   // op1 <  0
 
-        GOTO,      // op1 = 1 instance of Immediate
+        GOTO("j ");      // op1 = 1 instance of Immediate
+
+        String content;
+
+        JumpType(String content) {
+            this.content = content;
+        }
+
+        @Override
+        public String toString() {
+            return content;
+        }
     }
 
     private JumpType jumpType;
@@ -63,8 +74,8 @@ public class JumpCmp implements MiddleCode {
     @Override
     public String toString() {
         return jumpType +
-                (cmpOp1 != null ? cmpOp1.getVarName().toString() : "") +
-                (cmpOp2 != null ? cmpOp2.getVarName().toString() : "") +
-                jumpTgtLabel;
+                (cmpOp1 != null ? cmpOp1.getVarName().toString() + ", " : "") +
+                (cmpOp2 != null ? cmpOp2.getVarName().toString() + ", " : "") +
+                jumpTgtLabel + "\n";
     }
 }

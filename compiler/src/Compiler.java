@@ -57,7 +57,7 @@ public class Compiler {
             e.printStackTrace();
         }
 
-        try {
+        /*try {
             BufferedWriter output = new BufferedWriter(new FileWriter("mips.txt"));
 
             CodeGen codeGen = new CodeGen(visitor.getConstStr(), visitor.getGlobalBlock(),
@@ -69,6 +69,6 @@ public class Compiler {
             output.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

@@ -1,7 +1,7 @@
 package middle;
 
 import backend.register.Reg;
-import middle.quartercode.operand.MiddleCode;
+import frontend.symbol.Symbol;
 import middle.quartercode.operand.Operand;
 
 import java.io.BufferedWriter;
@@ -13,26 +13,30 @@ public class FuncDefBlock {
     private String lable;
 
     // 第一个key是 varName.toString() ，第二个是对应的 varName
-    // private HashMap<String, VarName> localVars = new HashMap<>();
+    // private HashMap<String, VarName> varTable = new HashMap<>();
     // depth -> (name, name@depth)
-    private HashMap<Integer, HashMap<String, VarName>> localVars = new HashMap<>();
+    private int curDepth = 0;
+    private BasicBlock curBblock = null;    // 栈顶部分
+    private HashMap<Integer, HashMap<String, VarName>> varTable = new HashMap<>();  // 栈式符号表
     private HashMap<Integer, HashMap<String, VarName>> symVars = new HashMap<>();   // 高级语言里的变量
     private HashMap<Integer, HashMap<String, VarName>> tmpVars = new HashMap<>();   // 中间代码里的临时变量
 
     private ArrayList<Reg> generalRegsUsed = null;
-    private BasicBlock startBb;
-    private ArrayList<BasicBlock> restBb;
+    private BasicBlock lastBb;  // 也是编译程序所处的当前的基本块
+    private ArrayList<BasicBlock> basicBlocks;
 
     private boolean raNeedSave = false;
 
     public FuncDefBlock(String lable, BasicBlock startBb) {
         this.lable = lable;
-        this.startBb = startBb;
-        this.restBb = new ArrayList<>();
+        this.lastBb = startBb;
+        this.basicBlocks = new ArrayList<>();
+        basicBlocks.add(startBb);
     }
 
     public void addBb(BasicBlock bb) {
-        restBb.add(bb);
+        lastBb = bb;
+        basicBlocks.add(bb);
     }
 
     public String getLable() {
@@ -40,10 +44,7 @@ public class FuncDefBlock {
     }
 
     public boolean isRaNeedSave() {
-        if (startBb.hasFuncCall()) {
-            return true;
-        }
-        for (BasicBlock bb : restBb) {
+        for (BasicBlock bb : basicBlocks) {
             if (bb.hasFuncCall()) {
                 return true;
             }
@@ -52,11 +53,11 @@ public class FuncDefBlock {
     }
 
     public BasicBlock getStartBb() {
-        return startBb;
+        return basicBlocks.get(0);
     }
 
-    public ArrayList<BasicBlock> getRestBb() {
-        return restBb;
+    public ArrayList<BasicBlock> getBasicBlocks() {
+        return basicBlocks;
     }
 
     public ArrayList<Reg> getGeneralRegsUsed() {
@@ -69,37 +70,46 @@ public class FuncDefBlock {
 
     public void addLocalVar(Operand operand, boolean isTmp) {
         VarName varName = operand.getVarName();
-        if (!localVars.containsKey(varName.getDepth())) {
-            localVars.put(varName.getDepth(), new HashMap<>());
-            symVars.put(varName.getDepth(), new HashMap<>());
-            tmpVars.put(varName.getDepth(), new HashMap<>());
-        }
-        localVars.get(varName.getDepth()).put(varName.getLocalName(), varName);
-        if (isTmp) {
-            tmpVars.get(varName.getDepth()).put(varName.getLocalName(), varName);
-        } else {
-            symVars.get(varName.getDepth()).put(varName.getLocalName(), varName);
-        }
-    }
-
-    public VarName getLocalVar(String localName, int curDepth) {
-        if (localVars.containsKey(curDepth) &&
-                localVars.get(curDepth).containsKey(localName)) {
-            return localVars.get(curDepth).get(localName);
-        } else {
-            for (int depth = curDepth - 1; depth > 0; depth--) {
-                if (localVars.containsKey(depth) &&
-                        localVars.get(depth).containsKey(localName)) {
-                    return localVars.get(depth).get(localName);
-                }
+        lastBb.addLocalVar(operand, isTmp);
+        /*if (curDepth >= varName.getDepth()) {
+            for (int i = varName.getDepth();i <= curDepth; i++) {
+                varTable.remove(i);
             }
         }
+        curDepth = varName.getDepth();
+        varTable.put(varName.getDepth(), new HashMap<>());
+        varTable.get(varName.getDepth()).put(varName.getLocalName(), varName);*/
+    }
+
+    public VarName getLocalVar(Symbol symbol) {
+        VarName res;
+        if ((res = lastBb.getLocalVar(symbol.getSymName())) != null) {
+            assert lastBb.getDepth() == symbol.getDepth();
+            return res;
+        }
+        for (int i = basicBlocks.size() - 2; i >= 0; i--) {
+            if (basicBlocks.get(i).getDepth() == symbol.getDepth() &&
+                    (res = basicBlocks.get(i).getLocalVar(symbol.getSymName())) != null) {
+                return res;
+            }
+        }
+        /*if (varTable.containsKey(curDepth) &&
+                varTable.get(curDepth).containsKey(localName)) {
+            assert this.curDepth == curDepth;
+            return varTable.get(curDepth).get(localName);
+        } else {
+            for (int depth = curDepth - 1; depth > 0; depth--) {
+                assert varTable.containsKey(depth);
+                if (varTable.get(depth).containsKey(localName)) {
+                    return varTable.get(depth).get(localName);
+                }
+            }
+        }*/
         return null;
     }
 
     public void output(BufferedWriter out) throws IOException {
-        startBb.output(out);
-        for (BasicBlock bb : restBb) {
+        for (BasicBlock bb : basicBlocks) {
             bb.output(out);
         }
     }

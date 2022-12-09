@@ -16,8 +16,8 @@ public class VarSymbol extends Symbol {
     private boolean isFuncFParam = false;
 
     public VarSymbol(String symName, boolean isConst, int dimension,
-                     int size, int colNum, ArrayList<Integer> values) {
-        super(symName);
+                     int size, int colNum, ArrayList<Integer> values, int depth) {
+        super(symName, depth);
         this.isConst = isConst;
         this.dimension = dimension;
         this.size = size;
@@ -25,10 +25,10 @@ public class VarSymbol extends Symbol {
         this.values = values;
     }
 
-    public VarSymbol(String symName, int dimension, int colNum) {
+    public VarSymbol(String symName, int dimension, int colNum, int depth) {
         // 函数参数
         // (dimension, colNum) = (0, 0) , (1, 0), (2, colNum)
-        super(symName);
+        super(symName, depth);
         this.dimension = dimension;
         this.isFuncFParam = true;
         this.colNum = colNum;

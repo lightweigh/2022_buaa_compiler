@@ -11,13 +11,24 @@ public class SaveCmp implements MiddleCode {
     private Operand cmpOp2;
 
     public enum CmpType {
-        SLT,    // t1 = 1 if op1 <  op2
-        SLTI,   // t1 = 1 if op1 <  op2 and op2 instance of Immediate
-        SLE,    // t1 = 1 if op1 <= op2
-        SEG,    // t1 = 1 if op1 >= op2
-        SGT,    // t1 = 1 if op1 >  op2
-        SEQ,    // t1 = 1 if op1 == op2
-        SNE,    // t1 = 1 if op1 != op2
+        SLT("slt "),    // t1 = 1 if op1 <  op2
+        SLTI("slti "),   // t1 = 1 if op1 <  op2 and op2 instance of Immediate
+        SLE("sle "),    // t1 = 1 if op1 <= op2
+        SEG("seg "),    // t1 = 1 if op1 >= op2
+        SGT("sgt "),    // t1 = 1 if op1 >  op2
+        SEQ("seq "),    // t1 = 1 if op1 == op2
+        SNE("sne ");    // t1 = 1 if op1 != op2
+
+        String content;
+
+        CmpType(String content) {
+            this.content = content;
+        }
+
+        @Override
+        public String toString() {
+            return content;
+        }
     }
 
     private CmpType cmpType;
@@ -67,8 +78,8 @@ public class SaveCmp implements MiddleCode {
 
     @Override
     public String toString() {
-        return cmpType + t1.getVarName().toString() +
-                (cmpOp1 != null ? cmpOp1.getVarName().toString():"") +
-                (cmpOp2 != null ? cmpOp2.getVarName().toString():"\n");
+        return cmpType + t1.getVarName().toString() + ", " +
+                (cmpOp1 != null ? cmpOp1.getVarName().toString() + ", " : "") +
+                (cmpOp2 != null ? cmpOp2.getVarName().toString() : "\n");
     }
 }

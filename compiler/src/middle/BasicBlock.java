@@ -1,6 +1,7 @@
 package middle;
 
 import middle.quartercode.operand.MiddleCode;
+import middle.quartercode.operand.Operand;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -18,6 +19,9 @@ public class BasicBlock {
     private HashMap<String, BasicBlock> followBlocks = new HashMap<>();
     private BasicBlock directBb = null;
     private ArrayList<MiddleCode> middleCodes = new ArrayList<>();
+
+    private HashMap<String, VarName> symVars = new HashMap<>();   // 局部变量
+    private HashMap<String, VarName> tmpVars = new HashMap<>();   // 中间代码里的临时变量
 
     private static int blockCount = 0; // 计数，用于label命名唯一
 
@@ -37,7 +41,7 @@ public class BasicBlock {
 
     public BasicBlock(String label, BBType bbType, int depth) {
         this.lable = label;
-        if (bbType != BBType.FUNC) {
+        if (bbType != BBType.FUNC && bbType != BBType.MAINFUNC) {
             this.lable += blockCount++;
         }
         this.depth = depth;
@@ -68,6 +72,25 @@ public class BasicBlock {
 
     public void append(MiddleCode middleCode) {
         middleCodes.add(middleCode);
+    }
+
+    public void addLocalVar(Operand operand, boolean isTmp) {
+        VarName varName = operand.getVarName();
+        if (isTmp) {
+            tmpVars.put(varName.getLocalName(), varName);
+        } else {
+            symVars.put(varName.getLocalName(), varName);
+        }
+    }
+
+    public VarName getLocalVar(String localName) {
+        if (tmpVars.containsKey(localName)) {
+            return tmpVars.get(localName);
+        }
+        if (symVars.containsKey(localName)) {
+            return symVars.get(localName);
+        }
+        return null;
     }
 
     public void remove(MiddleCode middleCode) {
@@ -104,6 +127,7 @@ public class BasicBlock {
     }
 
     public void output(BufferedWriter out) throws IOException {
+        out.write(this.lable + ":\n");
         for (MiddleCode middleCode : middleCodes) {
             out.write(middleCode.toString());
         }

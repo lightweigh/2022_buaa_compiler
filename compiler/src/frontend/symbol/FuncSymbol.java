@@ -10,7 +10,7 @@ public class FuncSymbol extends Symbol {
 
 
     public FuncSymbol(FuncType funcType, String symName) {
-        super(symName);
+        super(symName, 0);
         this.funcType = funcType;
     }
 

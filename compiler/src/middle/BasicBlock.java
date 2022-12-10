@@ -28,11 +28,11 @@ public class BasicBlock {
     public enum BBType {
         GLOBAL, // 全局部分,非基本块
         FUNC,   // 函数体
-        MAINFUNC, // main函数
         BRANCH, // 分支
         // BRANCHOR,
         // BRANCHAND,
         BRANCHGOTO, // 分支无条件跳转
+        FOLLOWGOTO, // 无条件跳转后紧跟的代码, 为死代码
         LOOP,   // 循环
         BASIC   // 普通的 {}
     }
@@ -41,7 +41,7 @@ public class BasicBlock {
 
     public BasicBlock(String label, BBType bbType, int depth) {
         this.lable = label;
-        if (bbType != BBType.FUNC && bbType != BBType.MAINFUNC) {
+        if (bbType != BBType.FUNC) {
             this.lable += blockCount++;
         }
         this.depth = depth;
@@ -127,7 +127,9 @@ public class BasicBlock {
     }
 
     public void output(BufferedWriter out) throws IOException {
-        out.write(this.lable + ":\n");
+        if (this.bbType != BBType.BASIC) {
+            out.write(this.lable + ":\n");
+        }
         for (MiddleCode middleCode : middleCodes) {
             out.write(middleCode.toString());
         }

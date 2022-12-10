@@ -56,13 +56,13 @@ public class Visitor {
     private HashMap<String, VarName> globalName2VarName;
     private int constStringCnt = 0;
 
-    private int blockDepth = 0;
+    // private int blockDepth = 0;
 
     public Visitor() {
         this.curSymTable = new SymTable(null);
         this.globalSymTable = curSymTable;
 
-        this.curBBlock = new BasicBlock("GLOBAL_", BasicBlock.BBType.GLOBAL, blockDepth);
+        this.curBBlock = new BasicBlock("GLOBAL_", BasicBlock.BBType.GLOBAL, 0);
         this.globalBlock = curBBlock;
 
         this.globalVars = new HashMap<>();
@@ -85,9 +85,10 @@ public class Visitor {
     }
 
     private void visitMainFuncDef(MainFuncDef mainFuncDef) {
-        blockDepth = 1;
+        // blockDepth = 1;
         // curBBlock.setDirectBb(newBb);
-        curBBlock = new BasicBlock("main", BasicBlock.BBType.MAINFUNC, blockDepth);
+        // curBBlock = new BasicBlock("main", BasicBlock.BBType.FUNC, blockDepth);
+        curBBlock = new BasicBlock("main", BasicBlock.BBType.FUNC, 1);
         FuncDefBlock funcDefBlock = new FuncDefBlock("main", curBBlock);
         funcDefBBlocksMap.put(funcDefBlock.getLable(), funcDefBlock);
         funcDefBlocks.add(funcDefBlock);
@@ -101,13 +102,13 @@ public class Visitor {
         }
         SymTable newTable = new SymTable(curSymTable);
         curBBlock.append(new FuncDefCode(new VarName("main", 0), new FuncType(mainFuncDef.getIntTK())));
-        visitBlock(mainFuncDef.getBlock(), newTable, false);
+        visitBlock(mainFuncDef.getBlock(), newTable, null, null);
     }
 
     private void visitFuncDef(FuncDef funcDef) {
-        blockDepth = 1;
+        // blockDepth = 1;
         // curBBlock.setDirectBb(newBb);
-        curBBlock = new BasicBlock(funcDef.getName(), BasicBlock.BBType.FUNC, blockDepth);
+        curBBlock = new BasicBlock(funcDef.getName(), BasicBlock.BBType.FUNC, 1);
         FuncDefBlock funcDefBlock = new FuncDefBlock(funcDef.getName(), curBBlock);
         funcDefBBlocksMap.put(funcDefBlock.getLable(), funcDefBlock);
         funcDefBlocks.add(funcDefBlock);
@@ -133,7 +134,7 @@ public class Visitor {
                 assert operands.size() == 1;
                 colNum = ((Immediate) operands.get(0)).getValue();
             }
-            VarSymbol varSymbol = new VarSymbol(funcFParam.getIdent().getContent(), funcFParam.getType(), colNum, blockDepth);
+            VarSymbol varSymbol = new VarSymbol(funcFParam.getIdent().getContent(), funcFParam.getType(), colNum, 1);
             if (newSymTable.hasSymbol(funcFParam.getIdent().getContent())) {
                 Error.errorTable.add(new Error(Error.ErrorType.NAME_REDEF,
                         funcFParam.getIdent().getRow()));
@@ -141,17 +142,17 @@ public class Visitor {
                 newSymTable.addSymbol(varSymbol);
             }
             funcSymbol.addFParam(new FParamSymbol(funcFParam.getIdent().getContent(),
-                    funcFParam.getType(), colNum, blockDepth));
+                    funcFParam.getType(), colNum, curBBlock.getDepth()));
 
             FParaCode fParaCode = new FParaCode(new VarName(funcFParam.getIdent().getContent(), curBBlock.getDepth()),
                     funcFParam.getType() != 0, new Immediate(colNum));
             curBBlock.append(fParaCode);
             curFuncDefBb.addLocalVar(fParaCode, false);
         }
-        visitBlock(funcDef.getBlock(), newSymTable, false);
+        visitBlock(funcDef.getBlock(), newSymTable, null, null);
     }
 
-    private void visitBlock(Block block, SymTable newTable, boolean isInwhile) {
+    private void visitBlock(Block block, SymTable newTable, String loopBegin, String loopEnd) {
         //  Block → '{' { BlockItem } '}'
         middleTn.clear();
         curSymTable = newTable;
@@ -162,7 +163,7 @@ public class Visitor {
                 if (blockItem.getStmt() instanceof Block) {
                     createNewCurBlock("BASIC_", 1, BasicBlock.BBType.BASIC);
                 }
-                visitStmt(blockItem.getStmt(), isInwhile);
+                visitStmt(blockItem.getStmt(), loopBegin, loopEnd);
                 if (blockItem.getStmt() instanceof Block) {
                     createNewCurBlock("BASIC_NEXT_", -1, BasicBlock.BBType.BASIC);
                 }
@@ -171,11 +172,11 @@ public class Visitor {
         curSymTable = curSymTable.getParent();
     }
 
-    private void visitStmt(Stmt stmt, boolean isInwhile) {
+    private void visitStmt(Stmt stmt, String loopBeginLabel, String loopEndLabel) {
         // middleTn.clear();
         if (stmt instanceof Block) {
             SymTable newTable = new SymTable(curSymTable);
-            visitBlock((Block) stmt, newTable, isInwhile);
+            visitBlock((Block) stmt, newTable, loopBeginLabel, loopEndLabel);
             // block出来之后要新建一个bb
 
         } else if (stmt instanceof ExpStmt && ((ExpStmt) stmt).getExp() != null) {
@@ -263,37 +264,46 @@ public class Visitor {
                 }
             }
         } else if (stmt instanceof WhileStmt) {
-            blockDepth++;
-            BasicBlock newBb = new BasicBlock("WHILE_", BasicBlock.BBType.LOOP, blockDepth);
-            curBBlock.setDirectBb(newBb);
-            curBBlock = newBb;
-            curFuncDefBb.addBb(curBBlock);
-            visitStmt(((WhileStmt) stmt).getStmt(), true);
-            // 分析完之后，退出while基本块 todo 然后紧接着新的基本块
-            // blockDepth--;
+            createNewCurBlock("LOOP_", 1, BasicBlock.BBType.LOOP);
+            BasicBlock loopBegin = curBBlock;
+            BasicBlock whileStmtBlock = new BasicBlock("WHILE_STMT_", BasicBlock.BBType.BRANCH, curBBlock.getDepth());
+            BasicBlock loopEndStmt = new BasicBlock("LOOP_END_", BasicBlock.BBType.BRANCH, curBBlock.getDepth()-1);
+
+            analyseLOrExp(((WhileStmt) stmt).getCond().getlOrExp(), whileStmtBlock, null, loopEndStmt);
+
+            // 分析 whileStmt
+            switch2DirectNextBlock(whileStmtBlock);
+            visitStmt(((WhileStmt) stmt).getStmt(), loopBegin.getLable(), loopEndStmt.getLable());
+            curBBlock.append(new JumpCmp(null, null, JumpCmp.JumpType.GOTO, loopBegin.getLable()));
+            // while 结束
+            switch2DirectNextBlock(loopEndStmt);
         } else if (stmt instanceof BreakOrContinueStmt) {
             // todo 这儿也有一个基本块
-            if (!isInwhile) {
+            if (loopBeginLabel == null) {
                 Error.errorTable.add(new Error(Error.ErrorType.WRONG_BREAK_CONTINUE, ((BreakOrContinueStmt) stmt).getRow()));
+            } else {
+                String jumpLabel = ((BreakOrContinueStmt) stmt).isBreak() ? loopEndLabel : loopBeginLabel;
+                curBBlock.append(new JumpCmp(null, null, JumpCmp.JumpType.GOTO, jumpLabel));
+                createNewCurBlock("FOLLOW_GOTO_", 0, BasicBlock.BBType.FOLLOWGOTO);
             }
         } else if (stmt instanceof IfStmt) {
             // todo 这儿也有一个基本块
             createNewCurBlock("IF_", 1, BasicBlock.BBType.BRANCH);
             // analyseLOrExp(LOrExp lOrExp, BasicBlock ifStmtBlock, BasicBlock elseStmtBlock, BasicBlock endIfBlock)
-            BasicBlock ifStmtBlock = new BasicBlock("IF_STMT_", BasicBlock.BBType.BASIC, curBBlock.getDepth());
+            BasicBlock ifStmtBlock = new BasicBlock("IF_STMT_", BasicBlock.BBType.BRANCH, curBBlock.getDepth());
             BasicBlock elseStmtBlock = null;
             if (((IfStmt) stmt).hasElse()) {
                 elseStmtBlock = new BasicBlock("ELSE_", BasicBlock.BBType.BRANCH, curBBlock.getDepth());    //todo if 和 else 的基本块深度相同,考虑"相同"变量我是怎么找的
             }
-            BasicBlock endIfBlock = new BasicBlock("END_IF_", BasicBlock.BBType.BASIC, curBBlock.getDepth() - 1);
+            BasicBlock endIfBlock = new BasicBlock("END_IF_", BasicBlock.BBType.BRANCH, curBBlock.getDepth() - 1);
 
             analyseLOrExp(((IfStmt) stmt).getCond().getlOrExp(), ifStmtBlock, elseStmtBlock, endIfBlock);
             switch2DirectNextBlock(ifStmtBlock);    // 之前在IF_ 下
-            visitStmt(((IfStmt) stmt).getStmt(), isInwhile);
+            visitStmt(((IfStmt) stmt).getStmt(), loopBeginLabel, loopEndLabel);
             if (((IfStmt) stmt).hasElse()) {
                 curBBlock.append(new JumpCmp(null, null, JumpCmp.JumpType.GOTO, endIfBlock.getLable()));
                 switch2DirectNextBlock(elseStmtBlock);
-                visitStmt(((IfStmt) stmt).getElseStmt(), isInwhile);
+                visitStmt(((IfStmt) stmt).getElseStmt(), loopBeginLabel, loopEndLabel);
             }
             switch2DirectNextBlock(endIfBlock);
         } else if (stmt instanceof PrintfStmt) {
@@ -357,8 +367,7 @@ public class Visitor {
     }
 
     private void createNewCurBlock(String bbLabel, int step, BasicBlock.BBType bbType) {
-        blockDepth = blockDepth + step;
-        BasicBlock newBb = new BasicBlock(bbLabel, bbType, blockDepth);
+        BasicBlock newBb = new BasicBlock(bbLabel, bbType, curBBlock.getDepth() + step);
         switch2DirectNextBlock(newBb);
     }
 
@@ -380,7 +389,7 @@ public class Visitor {
         while (lAndExpIter.hasNext()) {
             LAndExp lAndExp = lAndExpIter.next();
             BasicBlock nextCondOrBlock = lAndExpIter.hasNext() ?    // hasOr ?
-                    new BasicBlock("COND_OR_", BasicBlock.BBType.BRANCH, blockDepth) :
+                    new BasicBlock("COND_OR_", BasicBlock.BBType.BRANCH, curBBlock.getDepth()) :
                     null;
 
             analyseLAndExp(lAndExp, nextCondOrBlock, ifStmtBlock, elseStmtBlock, endIfBlock);
@@ -399,7 +408,7 @@ public class Visitor {
         while (eqExpIter.hasNext()) {
             EqExp eqExp = eqExpIter.next();
             BasicBlock nextCondAndBlock = eqExpIter.hasNext() ?
-                    new BasicBlock("COND_AND_", BasicBlock.BBType.BRANCH, blockDepth) :
+                    new BasicBlock("COND_AND_", BasicBlock.BBType.BRANCH, curBBlock.getDepth()) :
                     null;
 
             BasicBlock unSatisfiedJump = nextCondOrBlock != null ? nextCondOrBlock :
@@ -846,7 +855,7 @@ public class Visitor {
                     curFuncDefBb.addLocalVar(arrayDef, false);    // 局部数组加进来
                 }
                 VarSymbol arraySymbol = new VarSymbol(variable.getIdent().getContent(),
-                        isConst, variable.getDimension(), size, colNum, values, blockDepth);
+                        isConst, variable.getDimension(), size, colNum, values, curBBlock.getDepth());
                 if (init != null) {
                     int cnt = 0;
                     if (init.getDimension() == 1) {
@@ -862,7 +871,7 @@ public class Visitor {
         }
 
         curSymTable.addSymbol(new VarSymbol(variable.getIdent().getContent(),
-                isConst, variable.getDimension(), size, colNum, values, blockDepth));
+                isConst, variable.getDimension(), size, colNum, values, curBBlock.getDepth()));
     }
 
     private void genArrayInit(boolean isConst, Vector vector, ArrayList<Integer> values, Symbol arraySymbol, int cnt) {

@@ -1,21 +1,15 @@
 GLOBAL_0:
 main:
 int main()
-var int a@1
-var int b@1 = 3
-var int c@1
-var int d@1
-IF_1:
-ble c@1, b@1, ELSE_3
-IF_STMT_2:
+var int a@1 = 1
+LOOP_1:
+ble a@1, 0, LOOP_END_3
+WHILE_STMT_2:
 var int a@2 = 1
-j END_IF_4
-ELSE_3:
-a@1 = 21
-IF_5:
-beqz a@1, END_IF_7
-IF_STMT_6:
-a@1 = 2
-END_IF_7:
-END_IF_4:
+j LOOP_1
+FOLLOW_GOTO_5:
+var int c@3 = 0
+j LOOP_1
+LOOP_END_3:
+var int b@1
 RET 0

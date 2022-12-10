@@ -1,0 +1,21 @@
+.data
+.text
+j main
+
+main:
+move $fp, $sp
+li $t0, 1
+
+LOOP_1:
+ble $t0, 0, LOOP_END_3
+WHILE_STMT_2:
+li $t1, 1
+j LOOP_1
+j LOOP_1
+
+LOOP_END_3:
+
+main_ret_:
+li $v0, 10
+syscall
+

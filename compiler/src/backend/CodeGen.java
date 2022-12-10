@@ -7,6 +7,8 @@ import backend.mipsCode.global.GlobalStr;
 import backend.mipsCode.global.GlobalVar;
 import backend.mipsCode.global.Text;
 import backend.mipsCode.instruction.*;
+import backend.mipsCode.instruction.branch.Cmp;
+import backend.mipsCode.instruction.branch.Jump;
 import backend.register.Reg;
 import backend.register.Registers;
 import middle.BasicBlock;
@@ -17,6 +19,8 @@ import middle.quartercode.array.ArrayDef;
 import middle.quartercode.array.ArrayLoad;
 import middle.quartercode.array.ArrayStore;
 import middle.quartercode.array.GlobalArray;
+import middle.quartercode.branch.JumpCmp;
+import middle.quartercode.branch.SaveCmp;
 import middle.quartercode.function.FParaCode;
 import middle.quartercode.function.FuncCallCode;
 import middle.quartercode.function.RParaCode;
@@ -41,6 +45,8 @@ public class CodeGen {
     private Registers registers;
 
     private ArrayList<GlobalArray> globalArrays = new ArrayList<>();
+
+    private boolean prevCodeIsGoto = false;
 
     public CodeGen(HashMap<String, ConstStrCode> constStrs, BasicBlock globalBlock, HashMap<String, FuncDefBlock> funcDefBbMap, ArrayList<FuncDefBlock> funcDefBlocks) {
         this.constStrs = constStrs;
@@ -173,10 +179,35 @@ public class CodeGen {
             /*if (!blockCapacity.containsKey(curBlock.getDepth())) {
                 blockCapacity.put(curBlock.getDepth(), curAR.getCapacity());
             }*/
-
+            if (curBlock.getBbType() != BasicBlock.BBType.BASIC &&
+                    curBlock.getBbType() != BasicBlock.BBType.FUNC) {
+                System.out.println(curBlock.getLable());
+                mipsCodes.add(new Label2Jump(curBlock.getLable()));
+            }
             while (middleCodeIter.hasNext()) {
                 middleCode = middleCodeIter.next();
                 switch (middleCode.getCodeType()) {
+                    case SAVECMP:
+                        SaveCmp saveCmp = (SaveCmp) middleCode;
+                        Reg dst = getOrAllocReg4Var(saveCmp.getVarName(), false);
+                        Reg op1 = getOrAllocReg4Var(saveCmp.getCmpOp1().getVarName(), true);
+                        Reg op2 = null;
+                        Immediate op2Imm = null;
+                        if (!(saveCmp.getCmpOp2() instanceof Immediate)) {
+                            op2 = getOrAllocReg4Var(saveCmp.getCmpOp2().getVarName(), true);
+                        } else {
+                            op2Imm = (Immediate) saveCmp.getCmpOp2();
+                        }
+                        mipsCodes.add(new Cmp(saveCmp.getCmpType(), dst, op1, op2, op2Imm));
+                        break;
+                    case JUMPCMP:
+                        JumpCmp jumpCmp = (JumpCmp) middleCode;
+                        op1 = jumpCmp.getCmpOp1() == null ? null : getOrAllocReg4Var(jumpCmp.getCmpOp1().getVarName(), true);
+                        op2 = (jumpCmp.getCmpOp2() == null || jumpCmp.getCmpOp2() instanceof Immediate) ? null :
+                                getOrAllocReg4Var(jumpCmp.getCmpOp1().getVarName(), true);
+                        op2Imm = (jumpCmp.getCmpOp2() == null || op2 != null) ? null : (Immediate) jumpCmp.getCmpOp2();
+                        mipsCodes.add(new Jump(jumpCmp.getJumpType(), op1, op2, op2Imm, jumpCmp.getJumpTgtLabel()));
+                        break;
                     case ARRAY_DEF:
                         curAR.arrSetToMem(middleCode.getVarName(), ((ArrayDef) middleCode).getSize());
                         mipsCodes.add(new Sub(Registers.SP, Registers.SP, new Immediate(((ArrayDef) middleCode).getSize() * 4)));
@@ -489,6 +520,9 @@ public class CodeGen {
                 }
             }*/
             curBlock = curBlock.getDirectBb();
+            while (curBlock != null && curBlock.getBbType() == BasicBlock.BBType.FOLLOWGOTO) {
+                curBlock = curBlock.getDirectBb();
+            }
             if (curBlock != null) {
                 middleCodeIter = curBlock.getMiddleCodes().iterator();
             }

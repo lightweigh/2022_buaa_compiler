@@ -17,6 +17,10 @@ public class BreakOrContinueStmt extends Stmt {
         semicon = Error.errorDetect(Token.Type.SEMICN);
     }
 
+    public boolean isBreak() {
+        return breakOrContinue.getRefType() == Token.Type.BREAKTK;
+    }
+
     public int getRow() {
         return breakOrContinue.getRow();
     }

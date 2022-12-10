@@ -50,6 +50,22 @@ public class JumpCmp implements MiddleCode {
         this.jumpTgtLabel = jumpTgtLabel;
     }
 
+    public Operand getCmpOp1() {
+        return cmpOp1;
+    }
+
+    public Operand getCmpOp2() {
+        return cmpOp2;
+    }
+
+    public JumpType getJumpType() {
+        return jumpType;
+    }
+
+    public String getJumpTgtLabel() {
+        return jumpTgtLabel;
+    }
+
     @Override
     public CodeType getCodeType() {
         return CodeType.JUMPCMP;

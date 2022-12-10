@@ -11,30 +11,22 @@
       <change beforePath="$PROJECT_DIR$/ir.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ir.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mips.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mips.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/compiler/Compiler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/Compiler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/Cond.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/Cond.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/CondOp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/CondOp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/EqExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/EqExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/LAndExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/LAndExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/LOrExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/LOrExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/RelExp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/exp/condExp/RelExp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/FParamSymbol.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/FParamSymbol.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/FuncSymbol.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/FuncSymbol.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/Symbol.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/Symbol.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/VarSymbol.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/symbol/VarSymbol.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/backend/CodeGen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/backend/register/Reg.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/backend/register/Reg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/stmt/BreakOrContinueStmt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/grammar/stmt/BreakOrContinueStmt.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/visitor/Visitor$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/visitor/Visitor$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/compiler/frontend/visitor/Visitor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/frontend/visitor/Visitor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/BasicBlock$BBType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/BasicBlock$BBType.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/BasicBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/BasicBlock.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/FuncDefBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/FuncDefBlock.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/MiddleCode$CodeType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/operand/MiddleCode$CodeType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/branch/JumpCmp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/compiler/middle/quartercode/branch/JumpCmp.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compiler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/symbol/FParamSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/symbol/FParamSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/symbol/FuncSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/symbol/FuncSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/symbol/Symbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/symbol/Symbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/symbol/VarSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/symbol/VarSymbol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/CodeGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/CodeGen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/register/Reg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/register/Reg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/grammar/stmt/BreakOrContinueStmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/grammar/stmt/BreakOrContinueStmt.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/visitor/Visitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/visitor/Visitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/middle/BasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/BasicBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/FuncDefBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/FuncDefBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/middle/quartercode/branch/JumpCmp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/branch/JumpCmp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middle/quartercode/branch/SaveCmp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/middle/quartercode/branch/SaveCmp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/testfile.txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -47,6 +39,77 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/compiler$Compiler.ic" NAME="Compiler Coverage Results" MODIFIED="1667550043019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/src/middle/quartercode/branch/SaveCmp.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="812">
+                    <caret line="84" column="1" selection-start-line="84" selection-start-column="1" selection-end-line="84" selection-end-column="1" />
+                    <folding>
+                      <element signature="imports" expanded="true" />
+                      <element signature="e#795#796#0" expanded="true" />
+                      <element signature="e#841#842#0" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/branch/Jump.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="836">
+                    <caret line="33" column="41" lean-forward="true" selection-start-line="33" selection-start-column="41" selection-end-line="33" selection-end-column="41" />
+                    <folding>
+                      <element signature="imports" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/testfile.txt">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="189">
+                    <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/ir.txt">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="243">
+                    <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+    <window id="2">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/mips.txt">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="432">
+                    <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="compiler" />
   </component>
@@ -55,110 +118,76 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="1263" selection-start-line="1263" selection-end-line="1263" />
+            <state relative-caret-position="210">
+              <caret line="301" column="77" selection-start-line="301" selection-start-column="77" selection-end-line="301" selection-end-column="77" />
               <folding>
-                <element signature="e#25546#27087#1" />
-                <element signature="e#33799#34061#0" />
-                <element signature="e#33998#33999#0" expanded="true" />
-                <element signature="e#40965#40966#0" expanded="true" />
-                <element signature="e#57389#57390#0" expanded="true" />
-                <element signature="e#57478#57479#0" expanded="true" />
-                <element signature="e#57571#57572#0" expanded="true" />
-                <element signature="e#57678#57679#0" expanded="true" />
+                <element signature="e#34927#34928#0" expanded="true" />
+                <element signature="e#41914#41915#0" expanded="true" />
+                <element signature="e#58338#58339#0" expanded="true" />
+                <element signature="e#58427#58428#0" expanded="true" />
+                <element signature="e#58520#58521#0" expanded="true" />
+                <element signature="e#58627#58628#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/middle/quartercode/ConstVar.java">
+        <entry file="file://$PROJECT_DIR$/src/frontend/grammar/stmt/BreakOrContinueStmt.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/middle/VarName.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="27">
-              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/frontend/symbol/Symbol.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-88">
-              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+            <state relative-caret-position="189">
+              <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
               <folding>
-                <element signature="e#245#246#0" expanded="true" />
-                <element signature="e#275#276#0" expanded="true" />
-                <element signature="e#304#305#0" expanded="true" />
-                <element signature="e#332#333#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/frontend/token/Token.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
-              <caret line="89" selection-start-line="89" selection-end-line="89" />
-              <folding>
-                <element signature="e#2230#2231#0" expanded="true" />
-                <element signature="e#2262#2263#0" expanded="true" />
-                <element signature="e#2292#2293#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/frontend/grammar/LVal.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="97">
-              <caret line="32" selection-start-line="32" selection-end-line="32" />
-              <folding>
-                <element signature="e#833#834#0" expanded="true" />
-                <element signature="e#1167#1168#0" expanded="true" />
-                <element signature="e#1215#1216#0" expanded="true" />
+                <element signature="e#486#487#0" expanded="true" />
+                <element signature="e#559#560#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/testfile.txt">
+        <entry file="file://$PROJECT_DIR$/src/backend/CodeGen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ir.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-22">
-              <caret lean-forward="true" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/middle/FuncDefBlock.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="90" column="48" selection-start-line="90" selection-start-column="48" selection-end-line="90" selection-end-column="48" />
+            <state relative-caret-position="729">
+              <caret line="222" column="24" selection-start-line="222" selection-start-column="24" selection-end-line="222" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1504#1505#0" expanded="true" />
-                <element signature="e#1534#1535#0" expanded="true" />
+                <element signature="e#37519#37520#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/J.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="54">
+              <caret line="2" column="13" lean-forward="true" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/backend/register/Registers.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="185">
+              <caret line="132" selection-start-line="132" selection-end-line="132" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/backend/register/Reg.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="40">
+              <caret line="26" selection-start-line="26" selection-end-line="26" />
+              <folding>
+                <element signature="e#514#515#0" expanded="true" />
+                <element signature="e#792#793#0" expanded="true" />
+                <element signature="e#878#879#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -167,12 +196,46 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/middle/BasicBlock.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="85" column="26" lean-forward="true" selection-start-line="85" selection-start-column="26" selection-end-line="85" selection-end-column="26" />
+            <state relative-caret-position="27">
+              <caret line="34" column="40" selection-start-line="34" selection-start-column="40" selection-end-line="34" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2428#2429#0" expanded="true" />
-                <element signature="e#2456#2457#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Compiler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1539">
+              <caret line="71" column="9" lean-forward="true" selection-start-line="71" selection-start-column="9" selection-end-line="71" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/backend/ActivationRcd.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="203">
+              <caret line="50" selection-start-line="50" selection-end-line="50" />
+              <folding>
+                <element signature="e#1844#1845#0" expanded="true" />
+                <element signature="e#1883#1884#0" expanded="true" />
+                <element signature="e#2206#2207#0" expanded="true" />
+                <element signature="e#2267#2268#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/middle/VarName.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="130">
+              <caret line="73" selection-start-line="73" selection-end-line="73" />
+              <folding>
+                <element signature="e#1649#1650#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -190,13 +253,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>RetOpd</find>
-      <find>FuncCall</find>
-      <find>middleTn.genTemporyName()</find>
-      <find>PRIN</find>
-      <find>.proc</find>
-      <find>System.out</find>
-      <find>FUNCC</find>
       <find>Addr</find>
       <find>isArray</find>
       <find>FuncCallCode</find>
@@ -207,7 +263,6 @@
       <find>.AT</find>
       <find>Assign</find>
       <find>middleT</find>
-      <find>new BasicBlock</find>
       <find>cre</find>
       <find>getVar</find>
       <find>add</find>
@@ -218,8 +273,16 @@
       <find>s</find>
       <find>lVal.getIdent().getContent()</find>
       <find>symbol = getSymbol(lVal.getIdent().getContent())</find>
-      <find>ifs</find>
       <find>analysePrimary</find>
+      <find>ifs</find>
+      <find>jumpc</find>
+      <find>blockdepth</find>
+      <find>new BasicBlock</find>
+      <find>blockDepth</find>
+      <find>WHILES</find>
+      <find>visitStmt</find>
+      <find>J</find>
+      <find>JUMPCMP</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -228,10 +291,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/middle/quartercode/array/ArrayDef.java" />
-        <option value="$PROJECT_DIR$/src/middle/quartercode/array/ArrayLoad.java" />
-        <option value="$PROJECT_DIR$/src/middle/quartercode/array/ArrayStore.java" />
-        <option value="$PROJECT_DIR$/src/middle/quartercode/AssignCode.java" />
         <option value="$PROJECT_DIR$/src/middle/quartercode/BinaryCode.java" />
         <option value="$PROJECT_DIR$/src/middle/quartercode/UnaryCode.java" />
         <option value="$PROJECT_DIR$/src/middle/quartercode/RetCode.java" />
@@ -241,7 +300,6 @@
         <option value="$PROJECT_DIR$/src/middle/quartercode/ReadIn.java" />
         <option value="$PROJECT_DIR$/src/middle/quartercode/function/FuncDefCode.java" />
         <option value="$PROJECT_DIR$/src/backend/mipsCode/instruction/Neg.java" />
-        <option value="$PROJECT_DIR$/ir.txt" />
         <option value="$PROJECT_DIR$/src/backend/mipsCode/instruction/Load.java" />
         <option value="$PROJECT_DIR$/src/backend/register/Registers.java" />
         <option value="$PROJECT_DIR$/src/frontend/grammar/FuncRParams.java" />
@@ -258,7 +316,6 @@
         <option value="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/Immediate.java" />
         <option value="$PROJECT_DIR$/mips.txt" />
         <option value="$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/LValOpd.java" />
-        <option value="$PROJECT_DIR$/src/backend/CodeGen.java" />
         <option value="$PROJECT_DIR$/src/frontend/grammar/LVal.java" />
         <option value="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/Cond.java" />
         <option value="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/LOrExp.java" />
@@ -269,23 +326,29 @@
         <option value="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/EqExp.java" />
         <option value="$PROJECT_DIR$/src/frontend/grammar/exp/condExp/LAndExp.java" />
         <option value="$PROJECT_DIR$/src/middle/quartercode/branch/SaveCmp.java" />
-        <option value="$PROJECT_DIR$/src/middle/quartercode/branch/JumpCmp.java" />
-        <option value="$PROJECT_DIR$/src/Compiler.java" />
         <option value="$PROJECT_DIR$/src/frontend/symbol/Symbol.java" />
         <option value="$PROJECT_DIR$/src/frontend/symbol/FParamSymbol.java" />
         <option value="$PROJECT_DIR$/src/frontend/symbol/FuncSymbol.java" />
         <option value="$PROJECT_DIR$/src/frontend/symbol/VarSymbol.java" />
-        <option value="$PROJECT_DIR$/src/frontend/visitor/Visitor.java" />
-        <option value="$PROJECT_DIR$/src/middle/BasicBlock.java" />
         <option value="$PROJECT_DIR$/src/middle/FuncDefBlock.java" />
+        <option value="$PROJECT_DIR$/src/backend/register/Reg.java" />
+        <option value="$PROJECT_DIR$/src/backend/mipsCode/instruction/branch/Cmp.java" />
+        <option value="$PROJECT_DIR$/src/backend/mipsCode/instruction/branch/Jump.java" />
+        <option value="$PROJECT_DIR$/src/middle/quartercode/branch/JumpCmp.java" />
+        <option value="$PROJECT_DIR$/src/Compiler.java" />
+        <option value="$PROJECT_DIR$/src/frontend/grammar/stmt/BreakOrContinueStmt.java" />
+        <option value="$PROJECT_DIR$/src/frontend/visitor/Visitor.java" />
+        <option value="$PROJECT_DIR$/ir.txt" />
+        <option value="$PROJECT_DIR$/src/middle/BasicBlock.java" />
+        <option value="$PROJECT_DIR$/src/backend/CodeGen.java" />
         <option value="$PROJECT_DIR$/testfile.txt" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="70" />
-    <option name="width" value="1495" />
-    <option name="height" value="1039" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="340" />
+    <option name="width" value="1193" />
+    <option name="height" value="1038" />
   </component>
   <component name="ProjectId" id="2EeQeYZpkw0xLCP2ngHvXHvuR04" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -329,6 +392,15 @@
               <item name="backend" type="462c0819:PsiDirectoryNode" />
               <item name="mipsCode" type="462c0819:PsiDirectoryNode" />
               <item name="instruction" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="compiler" type="b2602c69:ProjectViewProjectNode" />
+              <item name="compiler" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="backend" type="462c0819:PsiDirectoryNode" />
+              <item name="mipsCode" type="462c0819:PsiDirectoryNode" />
+              <item name="instruction" type="462c0819:PsiDirectoryNode" />
+              <item name="branch" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="compiler" type="b2602c69:ProjectViewProjectNode" />
@@ -411,7 +483,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1670606594081" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1670640741899" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
@@ -486,10 +558,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="588" y="0" width="954" height="830" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49889135" visible="true" weight="0.18766756" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49889135" visible="true" weight="0.3861607" />
       <window_info id="Structure" order="1" sideWeight="0.50110865" side_tool="true" weight="0.19108762" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -498,8 +570,8 @@
       <window_info id="Favorites" order="6" sideWeight="0.50110865" side_tool="true" weight="0.19108762" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32294616" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.499391" visible="true" weight="0.32577905" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4036827" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.499391" visible="true" weight="0.3295129" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4025788" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
@@ -535,39 +607,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java</url>
-          <line>788</line>
+          <line>797</line>
           <properties />
           <option name="timeStamp" value="141" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/backend/CodeGen.java</url>
-          <line>191</line>
+          <line>222</line>
           <properties />
           <option name="timeStamp" value="147" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/backend/CodeGen.java</url>
-          <line>178</line>
-          <properties />
-          <option name="timeStamp" value="151" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java</url>
-          <line>1166</line>
+          <line>1175</line>
           <properties />
           <option name="timeStamp" value="154" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java</url>
-          <line>704</line>
+          <line>713</line>
           <properties />
           <option name="timeStamp" value="155" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/middle/quartercode/branch/JumpCmp.java</url>
-          <line>76</line>
-          <properties />
-          <option name="timeStamp" value="166" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/middle/FuncDefBlock.java</url>
@@ -577,33 +637,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java</url>
-          <line>1262</line>
+          <line>1271</line>
           <properties />
           <option name="timeStamp" value="176" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java</url>
-          <line>1114</line>
+          <url>file://$PROJECT_DIR$/src/backend/ActivationRcd.java</url>
+          <line>50</line>
           <properties />
-          <option name="timeStamp" value="177" />
+          <option name="timeStamp" value="181" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java</url>
-          <line>1048</line>
+          <url>file://$PROJECT_DIR$/src/backend/CodeGen.java</url>
+          <line>204</line>
           <properties />
-          <option name="timeStamp" value="178" />
+          <option name="timeStamp" value="183" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java</url>
-          <line>1135</line>
+          <url>file://$PROJECT_DIR$/src/backend/register/Registers.java</url>
+          <line>134</line>
           <properties />
-          <option name="timeStamp" value="179" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/middle/FuncDefBlock.java</url>
-          <line>90</line>
-          <properties />
-          <option name="timeStamp" value="180" />
+          <option name="timeStamp" value="184" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -673,77 +727,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/function/FuncCallCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="35" column="5" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/Add.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="14" column="11" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/function/RParaCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding>
-            <element signature="e#353#354#0" expanded="true" />
-            <element signature="e#396#397#0" expanded="true" />
-            <element signature="e#744#745#0" expanded="true" />
-            <element signature="e#773#774#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/Sll.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="11" column="11" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/Mul.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="19" column="12" lean-forward="true" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/ActivationRcd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="72" selection-start-line="72" selection-end-line="72" />
-          <folding>
-            <element signature="e#2267#2268#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/register/Reg.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
-          <folding>
-            <element signature="e#514#515#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/register/Registers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="132" selection-start-line="132" selection-end-line="132" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/middle/quartercode/array/ArrayStore.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
@@ -776,13 +759,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mips.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/middle/quartercode/array/GlobalArray.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1134">
@@ -801,21 +777,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
           <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/LValOpd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="10" column="11" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
-          <folding>
-            <element signature="e#492#493#0" expanded="true" />
-            <element signature="e#519#520#0" expanded="true" />
-            <element signature="e#636#637#0" expanded="true" />
-            <element signature="e#662#663#0" expanded="true" />
-            <element signature="e#712#713#0" expanded="true" />
-            <element signature="e#763#764#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -900,37 +861,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/branch/SaveCmp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="84" column="1" selection-start-line="84" selection-start-column="1" selection-end-line="84" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#754#755#0" expanded="true" />
-            <element signature="e#800#801#0" expanded="true" />
-            <element signature="e#757#758#0" expanded="true" />
-            <element signature="e#795#796#0" expanded="true" />
-            <element signature="e#1185#1186#0" expanded="true" />
-            <element signature="e#1210#1211#0" expanded="true" />
-            <element signature="e#1244#1245#0" expanded="true" />
-            <element signature="e#1273#1274#0" expanded="true" />
-            <element signature="e#1307#1308#0" expanded="true" />
-            <element signature="e#1336#1337#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/frontend/grammar/Block.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="25" selection-start-line="25" selection-end-line="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compiler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="59" column="15" lean-forward="true" selection-start-line="59" selection-start-column="15" selection-end-line="59" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -960,16 +894,6 @@
           <caret line="20" selection-start-line="20" selection-end-line="20" />
           <folding>
             <element signature="e#661#662#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/CodeGen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="794">
-          <caret line="127" column="63" selection-start-line="127" selection-start-column="63" selection-end-line="127" selection-end-column="63" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1020,16 +944,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="18" column="79" selection-start-line="18" selection-start-column="79" selection-end-line="18" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/branch/JumpCmp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="76" selection-start-line="76" selection-end-line="76" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1105,32 +1019,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/ConstVar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/middle/VarName.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/middle/BasicBlock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="85" column="26" lean-forward="true" selection-start-line="85" selection-start-column="26" selection-end-line="85" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2428#2429#0" expanded="true" />
-            <element signature="e#2456#2457#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/frontend/symbol/Symbol.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-88">
@@ -1144,46 +1032,217 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java">
+    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/ConstVar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="1263" selection-start-line="1263" selection-end-line="1263" />
+        <state relative-caret-position="293">
+          <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/Div.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/branch/Cmp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-136">
+          <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
           <folding>
-            <element signature="e#25546#27087#1" />
-            <element signature="e#33799#34061#0" />
-            <element signature="e#33998#33999#0" expanded="true" />
-            <element signature="e#40965#40966#0" expanded="true" />
-            <element signature="e#57389#57390#0" expanded="true" />
-            <element signature="e#57478#57479#0" expanded="true" />
-            <element signature="e#57571#57572#0" expanded="true" />
-            <element signature="e#57678#57679#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/branch/Jump.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="836">
+          <caret line="33" column="41" lean-forward="true" selection-start-line="33" selection-start-column="41" selection-end-line="33" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/branch/SaveCmp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="812">
+          <caret line="84" column="1" selection-start-line="84" selection-start-column="1" selection-end-line="84" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#795#796#0" expanded="true" />
+            <element signature="e#841#842#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/middle/FuncDefBlock.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="90" column="48" selection-start-line="90" selection-start-column="48" selection-end-line="90" selection-end-column="48" />
+        <state relative-caret-position="68">
+          <caret line="90" selection-start-line="90" selection-end-line="90" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1504#1505#0" expanded="true" />
-            <element signature="e#1534#1535#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/branch/JumpCmp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="53" selection-start-line="53" selection-end-line="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1383#1384#0" expanded="true" />
+            <element signature="e#1417#1418#0" expanded="true" />
+            <element signature="e#1446#1447#0" expanded="true" />
+            <element signature="e#1483#1484#0" expanded="true" />
+            <element signature="e#1514#1515#0" expanded="true" />
+            <element signature="e#1553#1554#0" expanded="true" />
+            <element signature="e#1588#1589#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/middle/quartercode/operand/primaryOpd/LValOpd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#519#520#0" expanded="true" />
+            <element signature="e#636#637#0" expanded="true" />
+            <element signature="e#662#663#0" expanded="true" />
+            <element signature="e#712#713#0" expanded="true" />
+            <element signature="e#763#764#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/middle/VarName.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="73" selection-start-line="73" selection-end-line="73" />
+          <folding>
+            <element signature="e#1649#1650#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/register/Reg.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="26" selection-start-line="26" selection-end-line="26" />
+          <folding>
+            <element signature="e#514#515#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
+            <element signature="e#878#879#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/register/Registers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="132" selection-start-line="132" selection-end-line="132" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/ActivationRcd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="50" selection-start-line="50" selection-end-line="50" />
+          <folding>
+            <element signature="e#1844#1845#0" expanded="true" />
+            <element signature="e#1883#1884#0" expanded="true" />
+            <element signature="e#2206#2207#0" expanded="true" />
+            <element signature="e#2267#2268#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compiler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1539">
+          <caret line="71" column="9" lean-forward="true" selection-start-line="71" selection-start-column="9" selection-end-line="71" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frontend/grammar/stmt/BreakOrContinueStmt.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
+          <folding>
+            <element signature="e#486#487#0" expanded="true" />
+            <element signature="e#559#560#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frontend/visitor/Visitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="301" column="77" selection-start-line="301" selection-start-column="77" selection-end-line="301" selection-end-column="77" />
+          <folding>
+            <element signature="e#34927#34928#0" expanded="true" />
+            <element signature="e#41914#41915#0" expanded="true" />
+            <element signature="e#58338#58339#0" expanded="true" />
+            <element signature="e#58427#58428#0" expanded="true" />
+            <element signature="e#58520#58521#0" expanded="true" />
+            <element signature="e#58627#58628#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/middle/BasicBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="34" column="40" selection-start-line="34" selection-start-column="40" selection-end-line="34" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ir.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-22">
-          <caret lean-forward="true" />
+        <state relative-caret-position="243">
+          <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/mipsCode/instruction/J.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="2" column="13" lean-forward="true" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mips.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/CodeGen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="729">
+          <caret line="222" column="24" selection-start-line="222" selection-start-column="24" selection-end-line="222" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#37519#37520#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testfile.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+        <state relative-caret-position="189">
+          <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
         </state>
       </provider>
     </entry>

@@ -38,4 +38,9 @@ public class Reg {
     public void setVarName(VarName varName) {
         this.varName = varName;
     }
+
+    @Override
+    public String toString() {
+        return name + " " + (varName != null ? "->" + varName.toString() : "");
+    }
 }

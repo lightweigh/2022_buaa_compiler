@@ -1,15 +1,32 @@
+const str str_0 = "cur i="
+const str str_1 = "\n"
 GLOBAL_0:
-main:
-int main()
-var int a@1 = 1
+printI:
+void printI()
+para int n@1
+var int i@1
+i@1 = 0
 LOOP_1:
-ble a@1, 0, LOOP_END_3
+bge i@1, n@1, LOOP_END_3
 WHILE_STMT_2:
-var int a@2 = 1
-j LOOP_1
-FOLLOW_GOTO_5:
-var int c@3 = 0
+printf const str str_0 = "cur i="
+
+printf i@1
+printf const str str_1 = "\n"
+
+i@1 = i@1+1
+IF_4:
+bne i@1, n@1, END_IF_6
+IF_STMT_5:
+j LOOP_END_3
+FOLLOW_GOTO_7:
+END_IF_6:
+varStore n@1
+varStore i@1
 j LOOP_1
 LOOP_END_3:
-var int b@1
+main:
+int main()
+push 2
+call printI
 RET 0

@@ -31,6 +31,7 @@ public interface MiddleCode extends Operand {
         ARRAY_LOAD,
         ARRAY_STORE,
         GLOBAL_ARRAY,
+        VARSTORE,
         FPARA,
         FUNCCALL,
         FUNCDEF,

@@ -1,19 +1,58 @@
 .data
+str_0: .asciiz "cur i="
+str_1: .asciiz "\n"
 .text
 j main
 
-main:
+printI:
 move $fp, $sp
-li $t0, 1
+li $t0, 0
 
 LOOP_1:
-ble $t0, 0, LOOP_END_3
+bge $t0, $a0, LOOP_END_3
 WHILE_STMT_2:
-li $t1, 1
-j LOOP_1
+move $t1, $a0
+la $a0, str_0
+li $v0, 4
+syscall
+
+move $a0, $t0
+li $v0, 1
+syscall
+
+la $a0, str_1
+li $v0, 4
+syscall
+
+add $t0, $t0, 1
+
+IF_4:
+bne $t0, $t1, END_IF_6
+IF_STMT_5:
+j LOOP_END_3
+
+END_IF_6:
+sub $sp, $sp, 4
+sw $t1, -4($fp)
+sub $sp, $sp, 4
+sw $t0, -8($fp)
 j LOOP_1
 
 LOOP_END_3:
+
+printI_ret_:
+add $sp, $sp, 8
+jr $ra
+
+main:
+move $fp, $sp
+sub $sp, $sp, 4
+sw $fp, ($sp)
+li $a0, 2
+jal printI
+move $sp, $fp
+lw $fp, ($sp)
+add $sp, $sp, 4
 
 main_ret_:
 li $v0, 10

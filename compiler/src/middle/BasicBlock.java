@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class BasicBlock {
     private String lable;
@@ -22,6 +23,8 @@ public class BasicBlock {
 
     private HashMap<String, VarName> symVars = new HashMap<>();   // 局部变量
     private HashMap<String, VarName> tmpVars = new HashMap<>();   // 中间代码里的临时变量
+
+    // private HashMap<>
 
     private static int blockCount = 0; // 计数，用于label命名唯一
 
@@ -81,6 +84,10 @@ public class BasicBlock {
         } else {
             symVars.put(varName.getLocalName(), varName);
         }
+    }
+
+    public HashMap<String, VarName> getSymVars() {
+        return symVars;
     }
 
     public VarName getLocalVar(String localName) {

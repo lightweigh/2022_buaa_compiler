@@ -11,13 +11,15 @@ public class SaveCmp implements MiddleCode {
     private Operand cmpOp2;
 
     public enum CmpType {
-        SLT("slt "),    // t1 = 1 if op1 <  op2
-        SLTI("slti "),   // t1 = 1 if op1 <  op2 and op2 instance of Immediate
-        SLE("sle "),    // t1 = 1 if op1 <= op2
-        SEG("seg "),    // t1 = 1 if op1 >= op2
-        SGT("sgt "),    // t1 = 1 if op1 >  op2
-        SEQ("seq "),    // t1 = 1 if op1 == op2
-        SNE("sne ");    // t1 = 1 if op1 != op2
+        SLT("slt "),    // if op1 <  op2
+        SLTI("slti "),   // if op1 <  op2 and op2 instance of Immediate
+        SLE("sle "),    // if op1 <= op2
+        SEG("seg "),    // if op1 >= op2
+        SGT("sgt "),    // if op1 >  op2
+        SEQ("seq "),    // if op1 == op2
+        SNE("sne "),    // if op1 != op2
+        ;
+
 
         String content;
 

@@ -35,10 +35,7 @@ import middle.quartercode.operand.Operand;
 import middle.quartercode.operand.primaryOpd.PrimaryOpd;
 import middle.quartercode.operand.primaryOpd.RetOpd;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 
 public class Visitor {
     private SymTable curSymTable;
@@ -57,6 +54,8 @@ public class Visitor {
     private int constStringCnt = 0;
 
     // private int blockDepth = 0;
+
+    private HashSet<VarName> varInWhileCond = new HashSet<>();
 
     public Visitor() {
         this.curSymTable = new SymTable(null);
@@ -128,7 +127,7 @@ public class Visitor {
             // todo modified 别改，出错了qwq
             // 如果函数的调用，实参是调用函数的参数就出bug
             int type = funcFParam.getType();
-            int colNum = 0;
+            int colNum = type == 0 ? -1 : 0;
             if (type == 2) {
                 ArrayList<Operand> operands = analyseExpression(funcFParam.getConstExp());
                 assert operands.size() == 1;
@@ -143,9 +142,8 @@ public class Visitor {
             }
             funcSymbol.addFParam(new FParamSymbol(funcFParam.getIdent().getContent(),
                     funcFParam.getType(), colNum, curBBlock.getDepth()));
-
-            FParaCode fParaCode = new FParaCode(new VarName(funcFParam.getIdent().getContent(), curBBlock.getDepth()),
-                    funcFParam.getType() != 0, new Immediate(colNum));
+            // middle part
+            FParaCode fParaCode = new FParaCode(new VarName(funcFParam.getIdent().getContent(), curBBlock.getDepth(), colNum));//new Immediate(colNum)));
             curBBlock.append(fParaCode);
             curFuncDefBb.addLocalVar(fParaCode, false);
         }
@@ -267,13 +265,17 @@ public class Visitor {
             createNewCurBlock("LOOP_", 1, BasicBlock.BBType.LOOP);
             BasicBlock loopBegin = curBBlock;
             BasicBlock whileStmtBlock = new BasicBlock("WHILE_STMT_", BasicBlock.BBType.BRANCH, curBBlock.getDepth());
-            BasicBlock loopEndStmt = new BasicBlock("LOOP_END_", BasicBlock.BBType.BRANCH, curBBlock.getDepth()-1);
-
+            BasicBlock loopEndStmt = new BasicBlock("LOOP_END_", BasicBlock.BBType.BRANCH, curBBlock.getDepth() - 1);
+            varInWhileCond = new HashSet<>();
             analyseLOrExp(((WhileStmt) stmt).getCond().getlOrExp(), whileStmtBlock, null, loopEndStmt);
-
+            HashSet<VarName> varStores = varInWhileCond;
             // 分析 whileStmt
             switch2DirectNextBlock(whileStmtBlock);
             visitStmt(((WhileStmt) stmt).getStmt(), loopBegin.getLable(), loopEndStmt.getLable());
+
+            for (VarName varName : varStores) {
+                curBBlock.append(new VarStore(varName));
+            }
             curBBlock.append(new JumpCmp(null, null, JumpCmp.JumpType.GOTO, loopBegin.getLable()));
             // while 结束
             switch2DirectNextBlock(loopEndStmt);
@@ -446,7 +448,15 @@ public class Visitor {
 
         if (!relExpIter.hasNext()) {
             if (left instanceof PrimaryOpd) {
-                operands1.add(new JumpCmp(left, null, JumpCmp.JumpType.BEQZ, jump.getLable()));
+                if (left instanceof Immediate) {
+                    assert operands1.size() == 0;
+                    if (((Immediate) left).getValue() == 0) {
+                        operands1.add(new JumpCmp(null, null, JumpCmp.JumpType.GOTO, jump.getLable()));
+                    } else {
+                        operands1.add(new JumpCmp(left, null, JumpCmp.JumpType.BEQZ, jump.getLable()));
+
+                    }
+                }
             } else if (left instanceof SaveCmp) {
                 operands1.remove(left);
                 SaveCmp saveCmp = (SaveCmp) left;
@@ -454,16 +464,22 @@ public class Visitor {
                 switch (((SaveCmp) left).getCmpType()) {
                     case SLT:
                     case SLTI:
-                        jumpType = JumpCmp.JumpType.BGT;
-                        break;
-                    case SLE:
                         jumpType = JumpCmp.JumpType.BGE;
                         break;
+                    case SLE:
+                        jumpType = JumpCmp.JumpType.BGT;
+                        break;
                     case SEG:
-                        jumpType = JumpCmp.JumpType.BLE;
+                        jumpType = JumpCmp.JumpType.BLT;
                         break;
                     case SGT:
-                        jumpType = JumpCmp.JumpType.BLT;
+                        jumpType = JumpCmp.JumpType.BLE;
+                        break;
+                    case SEQ:
+                        jumpType = JumpCmp.JumpType.BNE;
+                        break;
+                    case SNE:
+                        jumpType = JumpCmp.JumpType.BEQ;
                         break;
                     default:
                         jumpType = null;
@@ -471,7 +487,10 @@ public class Visitor {
                 }
                 operands1.add(new JumpCmp(saveCmp.getCmpOp1(), saveCmp.getCmpOp2(), jumpType, jump.getLable()));
             }
-        }
+        }/* else if (left instanceof Immediate) {
+            left = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()),left);
+            curFuncDefBb.addLocalVar(left, true);
+        }*/
 
         for (Operand operand : operands1) {
             curBBlock.append((MiddleCode) operand);
@@ -485,6 +504,12 @@ public class Visitor {
             if (right instanceof PrimaryOpd) {
                 operands2.remove(right);
             }
+            if (left instanceof RetOpd && right instanceof RetOpd) {
+                left = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), left);
+                curBBlock.append((MiddleCode) left);
+                curFuncDefBb.addLocalVar(left, true);
+            }
+
             for (Operand operand : operands2) {
                 curBBlock.append((MiddleCode) operand);
             }
@@ -541,7 +566,7 @@ public class Visitor {
         Iterator<CondOp> condOpIter = relExp.getCondOps().iterator();
         ArrayList<Operand> operands1 = analyseAddExp((AddExp) condExpIter.next());
         Operand left = getLast(operands1);
-        System.out.println(left);
+        // System.out.println(left);
         if (left instanceof PrimaryOpd && condOpIter.hasNext()) {
             operands1.remove(left);
         }
@@ -555,6 +580,11 @@ public class Visitor {
             right = getLast(operands2);
             if (right instanceof PrimaryOpd) {
                 operands2.remove(right);
+                if (left instanceof RetOpd && right instanceof RetOpd) {
+                    left = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), left);
+                    operands.add(left);
+                    curFuncDefBb.addLocalVar(left, true);
+                }
             }
             operands.addAll(operands2);
             // get op
@@ -1090,12 +1120,14 @@ public class Visitor {
                 break;
             case 2:
                 boolean isNeg = unaryExp.getUnaryOp().getOp().equals("-");
+                boolean isNot = unaryExp.getUnaryOp().getOp().equals("!");
+
                 UnaryExp subUnary = unaryExp.getUnaryExp();
-                while (subUnary.getType() == 2) {
+                /*while (subUnary.getType() == 2) {
                     // 异或一下
                     isNeg = isNeg ^ subUnary.getUnaryOp().getOp().equals("-");
                     subUnary = subUnary.getUnaryExp();
-                }
+                }*/
 
                 ArrayList<Operand> operands1 = analyseUnaryExp(subUnary); // recurrence
                 Operand lastOne = getLast(operands1);
@@ -1103,7 +1135,11 @@ public class Visitor {
                 // UnaryExp -> Num | UnaryOp UnaryExp
                 if (lastOne instanceof Immediate) {
                     assert operands1.size() == 1;   // 应该只有这一个Immediate
-                    lastOne = ((Immediate) lastOne).procValue(isNeg);
+                    if (isNeg) {
+                        lastOne = ((Immediate) lastOne).procValue(true);
+                    } else if (isNot) {
+                        lastOne = new Immediate(((Immediate) lastOne).getValue() == 0 ? 1 : 0);
+                    }
                     operands.add(lastOne);
                 } else {
                     // 其他 PrimaryOpd 情况或者 exp
@@ -1113,6 +1149,12 @@ public class Visitor {
                         UnaryCode unaryCode = new UnaryCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), lastOne, MiddleCode.Op.SUB);
                         operands.add(unaryCode);
                         curFuncDefBb.addLocalVar(unaryCode, true);
+                    } else if (isNot) {
+                        operands.remove(lastOne);
+                        LValOpd lValOpd = new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()));
+                        SaveCmp saveCmp = new SaveCmp(lValOpd, lastOne, new Immediate(0), SaveCmp.CmpType.SEQ);
+                        operands.add(saveCmp);
+                        curFuncDefBb.addLocalVar(lValOpd, true);
                     }
                 }
                 break;
@@ -1158,6 +1200,7 @@ public class Visitor {
                     } else {
                         /*lval可能是数组名，传参时出现,((VarSymbol) symbol).getDimension() != 0*/
                         operands.add(new LValOpd(getVarName(symbol), null));
+                        varInWhileCond.add(getVarName(symbol));
                     }
                 }
                 break;

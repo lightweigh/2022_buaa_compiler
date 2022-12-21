@@ -1,172 +1,306 @@
-const str str_3 = " "
-const str str_1 = "\n"
-const str str_2 = "19373479\n"
-const str str_0 = "print int : "
+const str str_2 = " "
+const str str_4 = ".\n"
+const str str_6 = "a < b and b < c are equal.\n"
+const str str_0 = "\n"
+const str str_5 = "The answer of quick_pow is: "
+const str str_1 = "20373649\n"
+const str str_3 = "The hash of the sorted array is "
+const str str_8 = "After a complex calculation: d = "
+const str str_7 = "The num I input is: "
 GLOBAL_0:
-const int singleConstDecl = 23
-const int singleConstDecl_0 = 13
-const int singleConstDecl_1 = 3
-var int singleVarDecl = -10
-var int singleVarDecl_0 = 23
-var int singleVarDecl_1 = 10
-var int singleVarDecl_2
-funcDef_void:
-void funcDef_void()
-funcDef_0:
-int funcDef_0()
-para int var@1
-#t0@1 = var@1*10
-var int ans@1 = #t0@1
-RET ans@1
-funcDef_1:
-int funcDef_1()
-para int var1@1
-para int var2@1
-#t0@1 = var1@1*var2@1
-var int a@1 = #t0@1
-var int b@1
-var int c@1
-IF_2:
-beq var2@1, 0, ELSE_4
-IF_STMT_3:
-#t0@2 = var1@1%var2@1
-b@1 = a@1+#t0@2
-c@1 = var1@1/var2@1
-j END_IF_5
-ELSE_4:
-b@1 = a@1+var1@1
-c@1 = var1@1/2
-END_IF_5:
-b@1 = b@1-a@1
-#t0@2 = a@1+b@1
-IF_8:
-bge a@1, 0, END_IF_10
-IF_STMT_9:
-a@1 = -a@1
-END_IF_10:
-#t3@1 = 1+a@1
-#t4@1 = b@1+c@1
-#t5@1 = #t3@1*#t4@1
-RET #t5@1
-printInt:
-void printInt()
-para int var@1
-printf const str str_0 = "print int : "
-
-printf var@1
-printf const str str_1 = "\n"
-
+const int SIZE = 1000
+const int qpow_MOD = 10089
+arr[1002]
+temp[1002]
+divide_and_conquer_sort:
+void divide_and_conquer_sort()
+para int n@1
+para int* a@1
+para int s@1
+IF_1:
+bne n@1, 1, ELSE_3
+IF_STMT_2:
 RET 
+j END_IF_4
+ELSE_3:
+IF_6:
+bne n@1, 2, ELSE_8
+IF_STMT_7:
+IF_10:
+#t0@4 = s@1+0
+#t1@4 = a@1
+#t2@4 = s@1+1
+ble #t1@4, #t3@4, END_IF_12
+IF_STMT_11:
+#t0@4 = s@1+0
+var int tmp@4 = a@1
+#t1@4 = s@1+1
+#t2@4 = s@1+0
+#t3@4 = a@1[#t1@4]
+a@1[#t2@4] = #t3@4
+#t4@4 = s@1+1
+a@1[#t4@4] = tmp@4
+END_IF_12:
+j END_IF_9
+ELSE_8:
+#t0@3 = n@1/2
+var int first_n@3 = #t0@3
+#t1@3 = n@1-first_n@3
+var int last_n@3 = #t1@3
+push first_n@3
+push a@1
+push s@1
+call divide_and_conquer_sort
+#t2@3 = s@1+first_n@3
+push last_n@3
+push a@1
+push #t2@3 = s@1+first_n@3
+
+call divide_and_conquer_sort
+var int tpos@3 = 0
+var int f_pos@3 = 0
+var int l_pos@3 = 0
+#t3@3 = s@1+first_n@3
+var int last_s@3 = #t3@3
+LOOP_13:
+WHILE_STMT_14:
+IF_16:
+#t0@5 = first_n@3-1
+bne f_pos@3, #t0@5, END_IF_18
+IF_STMT_17:
+IF_19:
+#t0@6 = last_n@3-1
+bne l_pos@3, #t0@6, END_IF_21
+IF_STMT_20:
+j LOOP_END_15
+FOLLOW_GOTO_22:
+END_IF_21:
+END_IF_18:
+IF_23:
+#t0@5 = first_n@3-1
+bne f_pos@3, #t0@5, ELSE_25
+IF_STMT_24:
+#t0@5 = last_s@3+l_pos@3
+#t1@5 = a@1[#t0@5]
+temp[tpos@3] = #t1@5
+tpos@3 = tpos@3+1
+l_pos@3 = l_pos@3+1
+j END_IF_26
+ELSE_25:
+IF_27:
+#t4@6 = last_n@3-1
+bne l_pos@3, #t4@6, ELSE_29
+IF_STMT_28:
+#t0@6 = s@1+f_pos@3
+#t1@6 = a@1[#t0@6]
+temp[tpos@3] = #t1@6
+tpos@3 = tpos@3+1
+f_pos@3 = f_pos@3+1
+j END_IF_30
+ELSE_29:
+IF_31:
+#t0@7 = s@1+f_pos@3
+#t1@7 = a@1
+#t2@7 = last_s@3+l_pos@3
+bge #t1@7, #t3@7, ELSE_33
+IF_STMT_32:
+#t0@7 = s@1+f_pos@3
+#t1@7 = a@1[#t0@7]
+temp[tpos@3] = #t1@7
+tpos@3 = tpos@3+1
+f_pos@3 = f_pos@3+1
+j END_IF_34
+ELSE_33:
+#t0@7 = last_s@3+l_pos@3
+#t1@7 = a@1[#t0@7]
+temp[tpos@3] = #t1@7
+tpos@3 = tpos@3+1
+l_pos@3 = l_pos@3+1
+END_IF_34:
+END_IF_30:
+END_IF_26:
+j LOOP_13
+LOOP_END_15:
+var int i@3 = 0
+LOOP_35:
+beq i@3, n@1, LOOP_END_37
+WHILE_STMT_36:
+#t0@4 = s@1+i@3
+#t1@4 = temp[i@3]
+a@1[#t0@4] = #t1@4
+i@3 = i@3+1
+j LOOP_35
+LOOP_END_37:
+END_IF_9:
+END_IF_4:
+RET 
+quick_pow:
+int quick_pow()
+para int a@1
+para int p@1
+para int mod@1
+var int pp@1 = p@1
+var int A@1 = a@1
+var int ans@1 = 1
+LOOP_39:
+beq pp@1, 0, LOOP_END_41
+WHILE_STMT_40:
+IF_42:
+#t0@3 = pp@1%2
+bne #t0@3, 1, END_IF_44
+IF_STMT_43:
+#t0@3 = ans@1*A@1
+ans@1 = #t0@3%mod@1
+END_IF_44:
+#t2@2 = A@1*A@1
+A@1 = #t2@2%mod@1
+pp@1 = pp@1/2
+j LOOP_39
+LOOP_END_41:
+RET ans@1
+hash:
+int hash()
+para int n@1
+para int* a@1
+const int Base@1 = 53
+const int MOD@1 = 9999973
+var int hash@1 = 0
+var int i@1 = 0
+LOOP_46:
+beq i@1, n@1, LOOP_END_48
+WHILE_STMT_47:
+#t0@2 = hash@1*53
+#t1@2 = a@1[i@1]
+#t2@2 = #t0@2+#t1@2
+hash@1 = #t2@2%9999973
+i@1 = i@1+1
+printf hash@1
+printf const str str_0 = "\n"
+
+j LOOP_46
+LOOP_END_48:
+RET hash@1
 main:
 int main()
-printf const str str_2 = "19373479\n"
+printf const str str_1 = "20373649\n"
 
-var int a@1 = 10
-var int b@1
-var int c@1
-var int d@1
-var int e@1
-scanf b@1
-scanf c@1
-scanf d@1
-scanf e@1
-IF_13:
-ble b@1, 5, END_IF_15
-IF_STMT_14:
-b@1 = 5
-END_IF_15:
-LOOP_16:
-beqz a@1, LOOP_END_18
-WHILE_STMT_17:
-a@1 = a@1-1
-IF_19:
-blt c@1, a@1, END_IF_21
-IF_STMT_20:
-#t0@3 = a@1+1
-#t1@3 = c@1/#t0@3
-c@1 = #t1@3+a@1
-END_IF_21:
-IF_22:
-bgt d@1, a@1, ELSE_24
-IF_STMT_23:
-d@1 = d@1*a@1
-j END_IF_25
-ELSE_24:
-#t0@3 = a@1+3
-d@1 = d@1%#t0@3
-END_IF_25:
-LOOP_26:
-bge e@1, d@1, LOOP_END_28
-WHILE_STMT_27:
-e@1 = e@1+a@1
-IF_29:
-bne e@1, b@1, END_IF_31
-IF_STMT_30:
-j LOOP_END_28
-FOLLOW_GOTO_32:
-END_IF_31:
-IF_33:
-beq e@1, c@1, END_IF_35
-IF_STMT_34:
-e@1 = c@1+e@1
-j LOOP_26
-FOLLOW_GOTO_36:
-END_IF_35:
-j LOOP_26
-LOOP_END_28:
-j LOOP_16
-LOOP_END_18:
-IF_37:
-bne a@1, 0, END_IF_39
-IF_STMT_38:
-push a@1
-call printInt
-END_IF_39:
-push b@1
-call printInt
-push c@1
-call printInt
-push d@1
-call printInt
-push e@1
-call printInt
-push e@1
-push d@1
-call funcDef_1
-var int f@1 = RET
-push c@1
-call funcDef_0
-push f@1
-push RET
-call funcDef_1
-var int g@1 = RET
-call funcDef_void
-push f@1
-call printInt
-push g@1
-call printInt
-printf singleVarDecl
-printf const str str_3 = " "
+var int cnt@1 = 0
+LOOP_50:
+beq cnt@1, 5, LOOP_END_52
+WHILE_STMT_51:
+var int n@2
+scanf n@2
+var int i@2 = 0
+LOOP_53:
+beq i@2, n@2, LOOP_END_55
+WHILE_STMT_54:
+scanf #t0@3
+arr[i@2] = #t0@3
+i@2 = i@2+1
+j LOOP_53
+LOOP_END_55:
+push n@2
+push arr
+push 0
+call divide_and_conquer_sort
+i@2 = 0
+LOOP_56:
+beq i@2, n@2, LOOP_END_58
+WHILE_STMT_57:
+printf arr[i@2]
+printf const str str_2 = " "
 
-printf singleVarDecl_2
-printf const str str_3 = " "
+i@2 = i@2+1
+j LOOP_56
+LOOP_END_58:
+printf const str str_0 = "\n"
 
-printf 13
-printf const str str_3 = " "
+push n@2
+push arr
+call hash
+#t1@2 = RET
+printf const str str_3 = "The hash of the sorted array is "
 
-printf 3
-printf const str str_1 = "\n"
+printf #t1@2 = RET
 
-push singleVarDecl
-push singleVarDecl_2
-call funcDef_1
+printf const str str_4 = ".\n"
+
+cnt@1 = cnt@1+1
+j LOOP_50
+LOOP_END_52:
+arr qpow_ans@1[4]
+push 34
+push 89
+push 10089
+call quick_pow
+qpow_ans@1[0] = RET
+push 59
+push 122
+push 10089
+call quick_pow
+qpow_ans@1[1] = RET
 push 13
-push 3
-call funcDef_1
-push RET
-push RET
-call funcDef_1
-singleVarDecl_2 = RET
-push singleVarDecl_2
-call printInt
+push 3444
+push 10089
+call quick_pow
+qpow_ans@1[2] = RET
+push 11
+push 987
+push 10089
+call quick_pow
+qpow_ans@1[3] = RET
+printf const str str_5 = "The answer of quick_pow is: "
+
+printf qpow_ans@1[0]
+printf const str str_2 = " "
+
+printf qpow_ans@1[1]
+printf const str str_2 = " "
+
+printf qpow_ans@1[2]
+printf const str str_2 = " "
+
+printf qpow_ans@1[3]
+printf const str str_4 = ".\n"
+
+var int a@1
+scanf a@1
+var int b@1
+scanf b@1
+var int c@1
+scanf c@1
+IF_59:
+slt #t6@2, a@1, b@1slt #t7@2, b@1, c@1bne #t6@2, #t7@2, END_IF_61
+IF_STMT_60:
+printf const str str_6 = "a < b and b < c are equal.\n"
+
+END_IF_61:
+var int tmp_val@1
+scanf tmp_val@1
+#t1@1 = tmp_val@1*8
+#t2@1 = #t1@1*16
+tmp_val@1 = #t2@1*256
+#t4@1 = tmp_val@1/8
+#t5@1 = #t4@1/16
+#t6@1 = #t5@1/256
+printf const str str_7 = "The num I input is: "
+
+printf #t6@1 = #t5@1/256
+
+printf const str str_0 = "\n"
+
+#t7@1 = 12*tmp_val@1
+#t8@1 = #t7@1/7
+#t9@1 = #t8@1*23
+#t10@1 = #t9@1-2222
+#t11@1 = #t10@1+34
+#t12@1 = #t11@1%6
+#t13@1 = #t12@1*999
+#t14@1 = #t13@1-1222
+var int d@1 = #t14@1
+printf const str str_8 = "After a complex calculation: d = "
+
+printf d@1
+printf const str str_0 = "\n"
+
 RET 0

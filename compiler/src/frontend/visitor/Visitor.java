@@ -318,31 +318,6 @@ public class Visitor {
             ArrayList<Operand> subBB = new ArrayList<>();
             ArrayList<Operand> printStrings = new ArrayList<>();
             ArrayList<Operand> printExps = new ArrayList<>();
-            int start = 0;
-            for (int end : formatChars) {
-                if (start != end) {
-                    ConstStrCode str;
-                    String sub = inner.substring(start, end);
-                    if (!constStr.containsKey(sub)) {
-                        str = new ConstStrCode(new VarName("str_" + constStringCnt++, 0), sub);
-                        constStr.put(sub, str);
-                    }
-                    str = constStr.get(sub);
-                    printStrings.add(new PutOut(str));
-                }
-                start = end + 2;
-            }
-            if (start < inner.length()) {
-                ConstStrCode str;
-                String sub = inner.substring(start);
-                if (!constStr.containsKey(sub)) {
-                    str = new ConstStrCode(new VarName("str_" + constStringCnt++, 0), sub);
-                    constStr.put(sub, str);
-                }
-                str = constStr.get(sub);
-                printStrings.add(new PutOut(str));
-            }
-
             for (int i = printfStmt.getExpNum() - 1; i >= 0; i--) {
                 ArrayList<Operand> operands = analyseExpression(printfStmt.getExps().get(i));
                 Operand lastOne = getLast(operands);
@@ -356,20 +331,31 @@ public class Visitor {
                 subBB.addAll(operands);
                 printExps.add(0, new PutOut(lastOne));
             }
-            Iterator<Operand> iterator = printExps.iterator();
-            if (!formatChars.isEmpty()) {
-                if (formatChars.get(0) == 0) {
-                    subBB.add(iterator.next());
-                }
-                for (Operand str : printStrings) {
-                    subBB.add(str);
-                    if (iterator.hasNext()) {
-                        subBB.add(iterator.next());
+            Iterator<Operand> printExpsIter = printExps.iterator();
+            int start = 0;
+            for (int end : formatChars) {
+                if (start != end) {
+                    ConstStrCode str;
+                    String sub = inner.substring(start, end);
+                    if (!constStr.containsKey(sub)) {
+                        str = new ConstStrCode(new VarName("str_" + constStringCnt++, 0), sub);
+                        constStr.put(sub, str);
                     }
+                    str = constStr.get(sub);
+                    subBB.add(new PutOut(str));
                 }
-            } else {
-                assert printStrings.size() == 1;
-                subBB.addAll(printStrings);
+                subBB.add(printExpsIter.next());
+                start = end + 2;
+            }
+            if (start < inner.length()) {
+                ConstStrCode str;
+                String sub = inner.substring(start);
+                if (!constStr.containsKey(sub)) {
+                    str = new ConstStrCode(new VarName("str_" + constStringCnt++, 0), sub);
+                    constStr.put(sub, str);
+                }
+                str = constStr.get(sub);
+                subBB.add(new PutOut(str));
             }
             /*assert expIter.hasNext();
             Exp exp = expIter.next();
@@ -628,6 +614,12 @@ public class Visitor {
         // System.out.println(left);
         if (left instanceof PrimaryOpd && condOpIter.hasNext()) {
             operands1.remove(left);
+            if (lValOpdIsArrayEle(left)) {
+                VarName varName = genVarName();
+                left= new AssignCode(varName, left);
+                operands1.add(left);
+                curFuncDefBb.addLocalVar(left, true);
+            }
         }
         operands.addAll(operands1);
 
@@ -643,6 +635,12 @@ public class Visitor {
                     left = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), left);
                     operands.add(left);
                     curFuncDefBb.addLocalVar(left, true);
+                }
+                if (lValOpdIsArrayEle(right)) {
+                    VarName varName = genVarName();
+                    right= new AssignCode(varName, right);
+                    operands1.add(right);
+                    curFuncDefBb.addLocalVar(right, true);
                 }
             }
             operands.addAll(operands2);
@@ -1158,16 +1156,22 @@ public class Visitor {
                 ArrayList<Operand> rParaCodes = new ArrayList<>();
                 FuncCall funcCall = unaryExp.getFuncCall();
                 FuncRParams funcRParams = funcCall.getFuncRParams();
-                // ArrayList<Symbol> fParamSyms = ((FuncSymbol) Objects.requireNonNull(getSymbol(funcCall.getIdent().getContent()))).getfParams();
-                Iterator<Symbol> fParamSymIter = ((FuncSymbol) Objects.requireNonNull(getSymbol(funcCall.getIdent().getContent()))).getfParams().iterator();
-                for (Exp exp : funcRParams.getExps()) {
+                ArrayList<Symbol> fparamSyms = ((FuncSymbol) Objects.requireNonNull(getSymbol(funcCall.getIdent().getContent()))).getfParams();
+                for (int i = funcRParams.getExps().size() - 1; i >= 0; i--) {
+                    // 逆序分析参数(从右往左)
+                    Exp exp = funcRParams.getExps().get(i);
                     operands.addAll(analyseAddExp(exp.getAddExp()));
                     Operand lastOne = getLast(operands);
                     if (lastOne instanceof PrimaryOpd) {
                         operands.remove(lastOne);
+                        if (lastOne instanceof RetOpd) {
+                            lastOne = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), lastOne);
+                            operands.add(lastOne);
+                        }
                     }
-                    FParamSymbol fParamSymbol = (FParamSymbol) fParamSymIter.next();
-                    rParaCodes.add(new RParaCode(lastOne, fParamSymbol.getType() > 0)); // 最后把参数一起push
+                    FParamSymbol fParamSymbol = (FParamSymbol) fparamSyms.get(i);
+                    // 但是参数的push是顺序的(否则改CodeGen)
+                    rParaCodes.add(0, new RParaCode(lastOne, fParamSymbol.getType() > 0)); // 最后把参数一起push
                 }
                 operands.addAll(rParaCodes);
                 // todo 这个FuncCallCode 的属性应该是要改一改的
@@ -1215,7 +1219,9 @@ public class Visitor {
                         operands.add(unaryCode);
                         curFuncDefBb.addLocalVar(unaryCode, true);
                     } else if (isNot) {
-                        operands.remove(lastOne);
+                        if (lastOne instanceof PrimaryOpd) {
+                            operands.remove(lastOne);
+                        }
                         LValOpd lValOpd = new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()));
                         SaveCmp saveCmp = new SaveCmp(lValOpd, lastOne, new Immediate(0), SaveCmp.CmpType.SEQ);
                         operands.add(saveCmp);
@@ -1391,6 +1397,13 @@ public class Visitor {
 
     public HashMap<String, FuncDefBlock> getFuncDefBBlocksMap() {
         return funcDefBBlocksMap;
+    }
+
+    public VarName genVarName() {
+        VarName varName = new VarName(middleTn.genTemporyName(), curBBlock.getDepth());
+        varName.addOrSubRef(1);
+        // curFuncDefBb.addLocalVar(varName, true); todo
+        return varName;
     }
 
     public VarName getVarName(Symbol symbol) {

@@ -464,6 +464,12 @@ public class CodeGen {
                     case RPARA:
                         // 交给 FunCall处理
                         break;
+                    case GLOBAL_ARRAY:
+                        break;
+                    case VARSTORE:
+                        break;
+                    case FPARA:
+                        break;
                     case FUNCCALL:
                         FuncCallCode funcCallCode = (FuncCallCode) middleCode;
                         // 把全局变量存回
@@ -491,16 +497,16 @@ public class CodeGen {
                         getReg(Registers.A2);
                         getReg(Registers.A3);*/
 
-                        // caller saved                 // push 的时候也会用到寄存器，最好保护
-                        ArrayList<Reg> tRegsUsed = registers.getUsedTmpRegs();
-                        regsStore(tRegsUsed);
+
 
                         for (int i = 0; i < rParaCodes.size(); i++) {
                             RParaCode rParaCode = (RParaCode) rParaCodes.get(i);
                             // 用于在需要push参数时的辅助寄存器, 参数push完之后释放
-                            Reg toolReg = Registers.T0;
-                            toolReg.setAlloced(true);
+                            Reg toolReg = Registers.V0;
+                            // toolReg.setAlloced(true);
                             dstReg = i == 0 ? Registers.A0 : i == 1 ? Registers.A1 : i == 2 ? Registers.A2 : i == 3 ? Registers.A3 : toolReg;
+                            getReg(dstReg);
+                            dstReg.setAlloced(true);
                             operand = rParaCode.getOperand();
                             if (rParaCode.isAddr()) {
                                 // 传地址
@@ -570,8 +576,8 @@ public class CodeGen {
                                         mipsCodes.add(new Store(dstReg, Registers.SP, new Immediate(-4 * (i - 3))));
                                     }
                                 } else {
-                                    srcReg = getOrTmpDesignateReg(rParaCodes.get(i).getVarName(), dstReg, null);
-                                    // srcReg = getOrAllocReg4Var(rParaCodes.get(i).getVarName(),true, dstReg, null);
+                                    // srcReg = getOrTmpDesignateReg(rParaCodes.get(i).getVarName(), dstReg, null);
+                                    srcReg = getOrAllocReg4Var(rParaCodes.get(i).getVarName(),true, dstReg, null);
                                     if (i >= 4) {
                                         mipsCodes.add(new Store(srcReg, Registers.SP, new Immediate(-4 * (i - 3))));
                                     } else {
@@ -579,10 +585,12 @@ public class CodeGen {
                                     }
                                 }
                             }
-
-                            toolReg.setAlloced(false);
+                            dstReg.setAlloced(false);
+                            // toolReg.setAlloced(false);
                         }
-
+                        // caller saved                 // push 的时候也会用到寄存器，最好保护
+                        ArrayList<Reg> tRegsUsed = registers.getUsedTmpRegs();
+                        regsStore(tRegsUsed);
                         mipsCodes.add(new Jal(funcCallCode.getVarName().toString()));
 
                         // 函数返回之后
@@ -592,6 +600,10 @@ public class CodeGen {
                         curAR.regsUnMapToMem(4);    // fp 空间的释放
                         mipsCodes.add(new Add(Registers.SP, Registers.SP, new Immediate(4)));
 
+                        break;
+                    case FUNCDEF:
+                        break;
+                    case CONSTSTR:
                         break;
                 }
             }
@@ -874,7 +886,7 @@ public class CodeGen {
 
     private void storeGlobalBackBeforeFuncCall() {
         for (Reg reg : registers.getTempRegs()) {
-            if (reg.isAlloced() && reg.getVarName().isGlobalVar()) {
+            if (reg.isAlloced() && reg.getVarName()!= null && reg.getVarName().isGlobalVar()) {
                 storeBack(reg, reg.getVarName());
                 curAR.regUnmapVar(reg);
             }
@@ -902,7 +914,6 @@ public class CodeGen {
         // 如果有映射到全局变量的寄存器，要存回
         for (Reg reg : registers.getTempRegs()) {
             if (reg.isAlloced()) {
-                reg.setAlloced(false);
                 VarName storeVar = curAR.regUnmapVar(reg);
                 // 把 storeVar 给 store 回去
                 if (storeVar.isGlobalVar()) {

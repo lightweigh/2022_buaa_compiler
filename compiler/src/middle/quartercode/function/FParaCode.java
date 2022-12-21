@@ -6,9 +6,13 @@ import middle.quartercode.operand.Operand;
 
 public class FParaCode implements MiddleCode {
     private VarName name;
+    private boolean isAddr;
+    private Operand offset; // 对于变量,offset为null;对于一维数组,offset为Immediate(0);对于二维数组 colNum
 
-    public FParaCode(VarName name) {
+    public FParaCode(VarName name, boolean isAddr, Operand offset) {
         this.name = name;
+        this.isAddr = isAddr;
+        this.offset = offset;
     }
 
     @Override

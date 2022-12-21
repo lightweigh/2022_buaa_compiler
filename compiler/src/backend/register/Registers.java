@@ -84,7 +84,7 @@ public class Registers {
         return res;
     }
 
-    public Reg freeOneTReg() {
+    public Reg getOneTReg2Free() {
         Reg reg = tempRegs.get(freeTgt);
         freeTgt = (freeTgt + 1) % tempRegs.size();
         return reg;

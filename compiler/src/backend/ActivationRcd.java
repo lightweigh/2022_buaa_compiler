@@ -113,8 +113,8 @@ public class ActivationRcd {
             varsOnMem.put(name.getDepth(), new HashMap<>());
         }
         varsOnMem.get(name.getDepth()).put(name.toString(), name);
-        offsets.put(name.toString(), curOffset);
         curOffset += 4;
+        offsets.put(name.toString(), curOffset);
         varOccupiedSpace += 4;
     }
 

@@ -7,12 +7,14 @@ public class Reg {
     private int num;
     private boolean isAlloced;
     private VarName varName;
+    private boolean isLocked;
 
     public Reg(String name, int num) {
         this.name = "$" + name;
         this.num = num;
         this.isAlloced = false;
         this.varName = null;
+        this.isLocked = false;
     }
 
     public String getName() {
@@ -37,6 +39,14 @@ public class Reg {
 
     public void setVarName(VarName varName) {
         this.varName = varName;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
     }
 
     @Override

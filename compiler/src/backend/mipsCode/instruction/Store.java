@@ -50,7 +50,8 @@ public class Store implements Instruction {
         this.src = src;
         this.addr = addr;
         if (addr.isRelative()) {
-            this.content = "sw " + src.getName() + ", " + (-4-addr.getAddr()) + "($fp)\n";
+            // this.content = "sw " + src.getName() + ", " + (-4-addr.getAddr()) + "($fp)\n";
+            this.content = "sw " + src.getName() + ", " + (-addr.getAddr()) + "($fp)\n";
         } else {
             this.content = "sw " + src.getName() + ", " + addr.getAddr() + "\n";
         }

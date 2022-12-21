@@ -24,6 +24,6 @@ public class Cmp implements Instruction {
     @Override
     public String toString() {
         return cmpType + dst.getName() + ", " + cmpOp1.getName() + ", " +
-                (cmpOp2 != null ? cmpOp2.getName() : cmpOpImm.toString());
+                (cmpOp2 != null ? cmpOp2.getName() : cmpOpImm.toString()) + "\n";
     }
 }

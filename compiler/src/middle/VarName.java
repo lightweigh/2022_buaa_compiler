@@ -9,6 +9,8 @@ public class VarName {
     private boolean dirty = false;    // 针对全局变量的
 
     private int colNum; // 是否是数组, 二维数组做参数,确定地址?  // 一维数组设为0  // 0维设置为-1
+    private boolean isPtr;    //  决定了代码生成时,取内存里面的值还是说计算在内存里的地址(fp+offset) // isArray=false & colNum!=-1时表示的是函数形参a[]或a[][colNum]
+    private int ref = 0;
 
     public VarName(String name, int depth) {
         this.localName = name;
@@ -19,9 +21,10 @@ public class VarName {
         }
         this.depth = depth;
         this.colNum = -1;
+        this.isPtr = false;
     }
 
-    public VarName(String name, int depth, int colNum) {
+    public VarName(String name, int depth, int colNum, boolean isPtr) {
         this.localName = name;
         if (depth <= 0) {
             this.name = name;
@@ -30,10 +33,15 @@ public class VarName {
         }
         this.depth = depth;
         this.colNum = colNum;
+        this.isPtr = isPtr;
     }
 
     public boolean isArray() {
         return colNum >= 0;
+    }
+
+    public boolean isPtr() {
+        return isPtr;
     }
 
     public boolean isDirty() {
@@ -42,6 +50,14 @@ public class VarName {
 
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
+    }
+
+    public int getRef() {
+        return ref;
+    }
+
+    public void addOrSubRef(int times) {
+        this.ref = ref + times;
     }
 
     public String getLocalName() {

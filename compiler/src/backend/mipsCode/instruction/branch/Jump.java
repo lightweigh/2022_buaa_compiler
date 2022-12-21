@@ -28,10 +28,10 @@ public class Jump implements Instruction {
         if (cmpOp2 == null) {
             return jumpType + cmpOp1.getName() + ", " +
                     (cmpOpImm2 != null ? cmpOpImm2.getValue() + ", " : "") +
-                    jumpLabel;
+                    jumpLabel + "\n";
         }
         return jumpType + cmpOp1.getName() + ", " +
                 cmpOp2.getName() + ", " +
-                jumpLabel;
+                jumpLabel + "\n";
     }
 }

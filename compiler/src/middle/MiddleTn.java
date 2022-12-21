@@ -4,7 +4,7 @@ public class MiddleTn {
     private int idx = 0;
 
     public String genTemporyName() {
-        return "t"+idx++;
+        return "#t"+idx++;
     }
 
     public void clear() {

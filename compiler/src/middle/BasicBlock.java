@@ -1,7 +1,12 @@
 package middle;
 
+import backend.mipsCode.MipsCode;
+import middle.quartercode.RetCode;
+import middle.quartercode.branch.JumpCmp;
 import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
+import middle.quartercode.operand.primaryOpd.Immediate;
+import middle.quartercode.operand.primaryOpd.RetOpd;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -24,6 +29,7 @@ public class BasicBlock {
     private HashMap<String, VarName> symVars = new HashMap<>();   // 局部变量
     private HashMap<String, VarName> tmpVars = new HashMap<>();   // 中间代码里的临时变量
 
+    private ArrayList<VarName> vars = new ArrayList<>();
     // private HashMap<>
 
     private static int blockCount = 0; // 计数，用于label命名唯一
@@ -75,6 +81,22 @@ public class BasicBlock {
 
     public void append(MiddleCode middleCode) {
         middleCodes.add(middleCode);
+        /*if (!(middleCode instanceof JumpCmp ||
+                middleCode instanceof RetOpd ||
+                middleCode instanceof Immediate ||
+                middleCode instanceof RetCode)) {
+            vars.add(middleCode.getVarName());
+        }*/
+    }
+
+    public void addUsedVars(VarName varName) {
+        if (!vars.contains(varName)) {
+            vars.add(varName);
+        }
+    }
+
+    public ArrayList<VarName> getVars() {
+        return vars;
     }
 
     public void addLocalVar(Operand operand, boolean isTmp) {
@@ -84,6 +106,7 @@ public class BasicBlock {
         } else {
             symVars.put(varName.getLocalName(), varName);
         }
+        addUsedVars(varName);
     }
 
     public HashMap<String, VarName> getSymVars() {
@@ -100,8 +123,10 @@ public class BasicBlock {
         return null;
     }
 
-    public void remove(MiddleCode middleCode) {
-        middleCodes.remove(middleCode);
+    public void reassignMiddleCode(MiddleCode middleCode, VarName varName) {
+        middleCode.rename(varName);
+        vars.remove(middleCode.getVarName());
+        vars.add(varName);
     }
 
     public String getLable() {

@@ -60,7 +60,8 @@ public class Load implements Instruction {
         this.dst = dst;
         this.addr = addr;
         if (addr.isRelative()) {
-            this.content = "lw " + dst.getName()+ ", " + (-4-addr.getAddr()) + "($fp)\n";
+            // this.content = "lw " + dst.getName()+ ", " + (-4-addr.getAddr()) + "($fp)\n";
+            this.content = "lw " + dst.getName()+ ", " + (-addr.getAddr()) + "($fp)\n";
         } else {
             this.content = "lw " + dst.getName() + ", " + addr.getAddr() + "\n";
         }

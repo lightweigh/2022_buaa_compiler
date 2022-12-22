@@ -1,0 +1,284 @@
+.data
+str_0: .asciiz "\n"
+.text
+j main
+
+printMyID:
+move $fp, $sp
+li $t0, 5
+# switch basic block. store back vars that are used---------------
+sub $sp, $sp, 4
+sw $a0, -8($fp)
+sw $t0, -4($fp)
+# vars store back done!---------------
+
+LOOP_1:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+lw $t0, -4($fp)
+blt $t0, 3, LOOP_END_3
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+WHILE_STMT_2:
+lw $t0, -8($fp)
+move $a0, $t0
+li $v0, 1
+syscall
+
+la $a0, str_0
+li $v0, 4
+syscall
+
+lw $t1, -4($fp)
+sub $t1, $t1, 1
+# switch basic block. store back vars that are used---------------
+sw $t0, -8($fp)
+sw $t1, -4($fp)
+# vars store back done!---------------
+j LOOP_1
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+LOOP_END_3:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+LOOP_4:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+lw $t0, -4($fp)
+ble $t0, 0, LOOP_END_6
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+WHILE_STMT_5:
+lw $t0, -8($fp)
+move $a0, $t0
+li $v0, 1
+syscall
+
+la $a0, str_0
+li $v0, 4
+syscall
+
+lw $t1, -4($fp)
+sub $t1, $t1, 1
+# switch basic block. store back vars that are used---------------
+sw $t0, -8($fp)
+sw $t1, -4($fp)
+# vars store back done!---------------
+j LOOP_4
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+LOOP_END_6:
+li $t0, 0
+# switch basic block. store back vars that are used---------------
+sw $t0, -12($fp)
+# vars store back done!---------------
+
+LOOP_7:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+lw $t0, -12($fp)
+bgt $t0, 3, LOOP_END_9
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+WHILE_STMT_8:
+lw $t0, -8($fp)
+move $a0, $t0
+li $v0, 1
+syscall
+
+la $a0, str_0
+li $v0, 4
+syscall
+
+lw $t1, -12($fp)
+add $t1, $t1, 1
+# switch basic block. store back vars that are used---------------
+sw $t0, -8($fp)
+sw $t1, -12($fp)
+# vars store back done!---------------
+j LOOP_7
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+LOOP_END_9:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+LOOP_10:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+lw $t0, -12($fp)
+bge $t0, 5, LOOP_END_12
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+WHILE_STMT_11:
+lw $t0, -8($fp)
+move $a0, $t0
+li $v0, 1
+syscall
+
+la $a0, str_0
+li $v0, 4
+syscall
+
+lw $t1, -12($fp)
+add $t1, $t1, 1
+# switch basic block. store back vars that are used---------------
+sw $t0, -8($fp)
+sw $t1, -12($fp)
+# vars store back done!---------------
+j LOOP_10
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+LOOP_END_12:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j printMyID_ret_
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+printMyID_ret_:
+jr $ra
+
+playID:
+move $fp, $sp
+li $t0, 0
+# switch basic block. store back vars that are used---------------
+sub $sp, $sp, 4
+sw $a0, -8($fp)
+sw $t0, -4($fp)
+# vars store back done!---------------
+
+LOOP_14:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+lw $t0, -4($fp)
+lw $t1, -8($fp)
+bge $t0, $t1, LOOP_END_16
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+WHILE_STMT_15:
+lw $t0, -4($fp)
+add $t0, $t0, 1
+# switch basic block. store back vars that are used---------------
+sw $t0, -4($fp)
+# vars store back done!---------------
+
+IF_17:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+lw $t0, -4($fp)
+bne $t0, 711, END_IF_19
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+IF_STMT_18:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j LOOP_14
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+END_IF_19:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+IF_21:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+lw $t0, -4($fp)
+bne $t0, 19182622, END_IF_23
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+IF_STMT_22:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j LOOP_END_16
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+END_IF_23:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j LOOP_14
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+LOOP_END_16:
+lw $v0, -4($fp)
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j playID_ret_
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+playID_ret_:
+jr $ra
+
+block:
+move $fp, $sp
+li $v0, 1
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j block_ret_
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+block_ret_:
+jr $ra
+
+main:
+move $fp, $sp
+li $a0, 19182622
+sub $sp, $sp, 4
+sw $fp, ($sp)
+jal printMyID
+move $sp, $fp
+lw $fp, ($sp)
+add $sp, $sp, 4
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+LOOP_27:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j LOOP_END_29
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+WHILE_STMT_28:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j LOOP_27
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+LOOP_END_29:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j main_ret_
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+main_ret_:
+li $v0, 10
+syscall
+

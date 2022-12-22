@@ -26,6 +26,7 @@ public class LValOpd implements PrimaryOpd {
 
     @Override
     public void rename(VarName name) {
+        this.name.addOrSubRef(-1);
         this.name = name;
     }
 

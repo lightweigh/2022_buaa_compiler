@@ -3,14 +3,15 @@ package middle.quartercode.array;
 import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
+import middle.quartercode.operand.primaryOpd.LValOpd;
 import middle.quartercode.operand.primaryOpd.PrimaryOpd;
 
 // 之前没有用ArrayLoad是把它合并到AssignCode里面去了
 public class ArrayLoad implements MiddleCode {
-    private PrimaryOpd primaryOpd;
     private Operand dst;
+    private PrimaryOpd primaryOpd;
 
-    public ArrayLoad(PrimaryOpd primaryOpd, Operand dst) {
+    public ArrayLoad(Operand dst, PrimaryOpd primaryOpd) {
         this.primaryOpd = primaryOpd;
         this.dst = dst;
     }

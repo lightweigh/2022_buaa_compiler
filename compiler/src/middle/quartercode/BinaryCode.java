@@ -3,17 +3,18 @@ package middle.quartercode;
 import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
+import middle.quartercode.operand.primaryOpd.LValOpd;
 
 public class BinaryCode implements MiddleCode {
     // // 双目运算
     // 对象本身就是dst
-    private VarName name;
+    private LValOpd dst;
     private Operand src1;
     private Operand src2;
     private Op op;
 
-    public BinaryCode(VarName name, Operand src1, Operand src2, String op) {
-        this.name = name;
+    public BinaryCode(LValOpd dst, Operand src1, Operand src2, String op) {
+        this.dst = dst;
         this.src1 = src1;
         this.src2 = src2;
         switch (op) {
@@ -49,12 +50,12 @@ public class BinaryCode implements MiddleCode {
 
     @Override
     public VarName getVarName() {
-        return name;
+        return dst.getVarName();
     }
 
     @Override
     public void rename(VarName name) {
-        this.name = name;
+        this.dst.rename(name);
     }
 
     @Override
@@ -69,6 +70,6 @@ public class BinaryCode implements MiddleCode {
 
     @Override
     public String toString() {
-        return name + " = " + src1.getVarName() + op.getName() + src2.getVarName() + "\n";
+        return dst + " = " + src1.getVarName() + op.getName() + src2.getVarName() + "\n";
     }
 }

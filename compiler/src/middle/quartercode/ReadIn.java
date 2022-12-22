@@ -3,22 +3,23 @@ package middle.quartercode;
 import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
+import middle.quartercode.operand.primaryOpd.LValOpd;
 
 public class ReadIn implements MiddleCode {
-    private VarName name = null;
+    private LValOpd name = null;
 
-    public ReadIn(VarName name) {
+    public ReadIn(LValOpd name) {
         this.name = name;
     }
 
     @Override
     public VarName getVarName() {
-        return name;
+        return name.getVarName();
     }
 
     @Override
     public void rename(VarName name) {
-        this.name = name;
+        this.name.rename(name);
     }
 
     @Override

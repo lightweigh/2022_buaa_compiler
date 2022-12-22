@@ -146,6 +146,7 @@ public class Visitor {
             FParaCode fParaCode = new FParaCode(new VarName(funcFParam.getIdent().getContent(), curBBlock.getDepth(), colNum, funcFParam.getType() != 0),   //todo array check
                     funcFParam.getType() != 0, new Immediate(colNum));
             curBBlock.append(fParaCode);
+            curBBlock.addUsedVars(fParaCode.getVarName());
             curFuncDefBb.addLocalVar(fParaCode, false);
         }
         visitBlock(funcDef.getBlock(), newSymTable, null, null);
@@ -201,7 +202,7 @@ public class Visitor {
                 visitAddExp(addExp);
                 // middle part
                 ArrayList<Operand> expOps = analyseAddExp(addExp);
-                ArrayList<Operand> lValOps = analyseLVal(lVal);
+                ArrayList<Operand> lValOps = analyseLVal(lVal, true);
 
                 // todo check primaryOpd
                 Operand lastOfExp = getLast(expOps);
@@ -219,18 +220,16 @@ public class Visitor {
                     curBBlock.append((MiddleCode) operand);
                 }
 
-                if (((LValOpd) lastOfLVal).getIdx() == null) {
-                    if (lastOfExp instanceof LValOpd && ((LValOpd) lastOfExp).getIdx() != null) {
-                        // b = a[t0];
-                        curBBlock.append(new ArrayLoad((PrimaryOpd) lastOfExp, lastOfLVal));
-                    } else if (lastOfExp instanceof PrimaryOpd/*不会是数组*/) {
-                        curBBlock.append(new AssignCode(lastOfLVal.getVarName(), lastOfExp));
+                if (!((LValOpd) lastOfLVal).isArray()) {
+                    if (lastOfExp instanceof PrimaryOpd/*不会是数组*/) {
+                        curBBlock.append(new AssignCode((LValOpd) lastOfLVal, lastOfExp));
                     } else {
                         // 删除 b = t0这样的式子，直接rename t0
                         curBBlock.reassignMiddleCode((MiddleCode) lastOfExp, lastOfLVal.getVarName());
                     }
                 } else {
-                    if (lastOfExp instanceof LValOpd && ((LValOpd) lastOfExp).getIdx() != null) {
+                    assert !lValOpdIsArrayEle(lastOfExp);
+                    /*if (lastOfExp instanceof LValOpd && ((LValOpd) lastOfExp).getIdx() != null) {
                         // b[t1] = a[t0];
                         // ->
                         // t2 = a[t0]
@@ -240,27 +239,27 @@ public class Visitor {
                         MiddleCode t2 = new ArrayLoad((PrimaryOpd) lastOfExp, dst);
                         curBBlock.append(t2);
                         curBBlock.append(new ArrayStore((PrimaryOpd) lastOfLVal, t2));
-                    } else {
-                        curBBlock.append(new ArrayStore((PrimaryOpd) lastOfLVal, lastOfExp));
-                    }
+                    } else {*/
+                    curBBlock.append(new ArrayStore((LValOpd) lastOfLVal, lastOfExp));
+                    // }
                 }
             } else {
-                MiddleCode t1 = new ReadIn(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()));
-                curFuncDefBb.addLocalVar(t1, true);
+                LValOpd read = genTmpVar();
+                MiddleCode t1 = new ReadIn(read);
                 curBBlock.append(t1);
-                ArrayList<Operand> lValOps = analyseLVal(lVal);
+                ArrayList<Operand> lValOps = analyseLVal(lVal, true);
                 Operand lastOfLVal = getLast(lValOps);
                 assert lastOfLVal instanceof LValOpd;
                 lValOps.remove(lastOfLVal);
                 for (Operand operand : lValOps) {
                     curBBlock.append((MiddleCode) operand);
                 }
-                if (((LValOpd) lastOfLVal).getIdx() == null) {
+                if (!((LValOpd) lastOfLVal).isArray()) {
                     // curBBlock.append(new AssignCode(lastOfLVal.getLocalName(), t1)); todo check
                     // t1.rename(lastOfLVal.getVarName());
                     curBBlock.reassignMiddleCode(t1, lastOfLVal.getVarName());
                 } else {
-                    curBBlock.append(new ArrayStore((PrimaryOpd) lastOfLVal, t1));
+                    curBBlock.append(new ArrayStore((LValOpd) lastOfLVal, t1));
                 }
             }
         } else if (stmt instanceof WhileStmt) {
@@ -268,9 +267,8 @@ public class Visitor {
             BasicBlock loopBegin = curBBlock;
             BasicBlock whileStmtBlock = new BasicBlock("WHILE_STMT_", BasicBlock.BBType.BRANCH, curBBlock.getDepth());
             BasicBlock loopEndStmt = new BasicBlock("LOOP_END_", BasicBlock.BBType.BRANCH, curBBlock.getDepth() - 1);
-            // varInWhileCond = new HashSet<>();
             analyseLOrExp(((WhileStmt) stmt).getCond().getlOrExp(), whileStmtBlock, null, loopEndStmt);
-            // HashSet<VarName> varStores = varInWhileCond;
+
             // 分析 whileStmt
             switch2DirectNextBlock(whileStmtBlock);
             visitStmt(((WhileStmt) stmt).getStmt(), loopBegin.getLable(), loopEndStmt.getLable());
@@ -314,19 +312,17 @@ public class Visitor {
             PrintfStmt printfStmt = (PrintfStmt) stmt;
             String inner = printfStmt.getFormatString().getInner();
             ArrayList<Integer> formatChars = printfStmt.getFormatString().getFormatChars();
-            Iterator<Exp> expIter = printfStmt.getExps().iterator();
             ArrayList<Operand> subBB = new ArrayList<>();
-            ArrayList<Operand> printStrings = new ArrayList<>();
             ArrayList<Operand> printExps = new ArrayList<>();
             for (int i = printfStmt.getExpNum() - 1; i >= 0; i--) {
                 ArrayList<Operand> operands = analyseExpression(printfStmt.getExps().get(i));
                 Operand lastOne = getLast(operands);
                 if (lastOne instanceof PrimaryOpd) {
                     operands.remove(lastOne);
-                    if (lastOne instanceof RetOpd) {
+                    /*if (lastOne instanceof RetOpd) {
                         lastOne = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), lastOne);
                         operands.add(lastOne);
-                    }
+                    }*/
                 }
                 subBB.addAll(operands);
                 printExps.add(0, new PutOut(lastOne));
@@ -469,11 +465,11 @@ public class Visitor {
         Operand left = getLast(operands1), right;
         if (left instanceof PrimaryOpd) {
             operands1.remove(left);
-            if (left instanceof LValOpd && ((LValOpd) left).isArray()) {
+            /*if (left instanceof LValOpd && ((LValOpd) left).isArray()) {
                 left = new ArrayLoad((PrimaryOpd) left, new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth())));
                 operands1.add(left);
                 curFuncDefBb.addLocalVar(left, true);
-            }
+            }*/
         }
 
         if (!relExpIter.hasNext()) {
@@ -490,7 +486,8 @@ public class Visitor {
                     curFuncDefBb.addLocalVar(middleCode, true);
                     operands1.add(new JumpCmp(middleCode, null, JumpCmp.JumpType.BEQZ, jump.getLable()));*/
                 } else {
-                    // left可能是RetOpd
+                    assert !(left instanceof RetOpd);
+                    // left只会是非数组的LValOpd
                     operands1.add(new JumpCmp(left, null, JumpCmp.JumpType.BEQZ, jump.getLable()));
                 }
             } else if (!(left instanceof SaveCmp)) {
@@ -528,8 +525,9 @@ public class Visitor {
                 operands1.add(new JumpCmp(saveCmp.getCmpOp1(), saveCmp.getCmpOp2(), jumpType, jump.getLable()));
             }
         }/* else if (left instanceof Immediate) {
-            left = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()),left);
-            curFuncDefBb.addLocalVar(left, true);
+            LValOpd tmpVar = genTmpVar();
+            left = new AssignCode(tmpVar, left);
+            operands1.add(left);
         }*/
 
         for (Operand operand : operands1) {
@@ -543,17 +541,16 @@ public class Visitor {
             right = getLast(operands2);
             if (right instanceof PrimaryOpd) {
                 operands2.remove(right);
-                if (right instanceof LValOpd && ((LValOpd) right).isArray()) {
+                /*if (right instanceof LValOpd && ((LValOpd) right).isArray()) {
                     right = new ArrayLoad((PrimaryOpd) right, new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth())));
                     operands2.add(right);
                     curFuncDefBb.addLocalVar(right, true);
-                }
+                }*/
             }
-            if (left instanceof RetOpd && right instanceof RetOpd) {
-                left = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), left);
+            assert !(left instanceof RetOpd) && !(right instanceof RetOpd);
+            /*left = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), left);
                 curBBlock.append((MiddleCode) left);
-                curFuncDefBb.addLocalVar(left, true);
-            }
+                curFuncDefBb.addLocalVar(left, true);*/
 
             for (Operand operand : operands2) {
                 curBBlock.append((MiddleCode) operand);
@@ -614,12 +611,12 @@ public class Visitor {
         // System.out.println(left);
         if (left instanceof PrimaryOpd && condOpIter.hasNext()) {
             operands1.remove(left);
-            if (lValOpdIsArrayEle(left)) {
+            /*if (lValOpdIsArrayEle(left)) {
                 VarName varName = genVarName();
-                left= new AssignCode(varName, left);
+                left = new AssignCode(varName, left);
                 operands1.add(left);
                 curFuncDefBb.addLocalVar(left, true);
-            }
+            }*/
         }
         operands.addAll(operands1);
 
@@ -631,17 +628,6 @@ public class Visitor {
             right = getLast(operands2);
             if (right instanceof PrimaryOpd) {
                 operands2.remove(right);
-                if (left instanceof RetOpd && right instanceof RetOpd) {
-                    left = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), left);
-                    operands.add(left);
-                    curFuncDefBb.addLocalVar(left, true);
-                }
-                if (lValOpdIsArrayEle(right)) {
-                    VarName varName = genVarName();
-                    right= new AssignCode(varName, right);
-                    operands1.add(right);
-                    curFuncDefBb.addLocalVar(right, true);
-                }
             }
             operands.addAll(operands2);
             // get op
@@ -683,8 +669,9 @@ public class Visitor {
                     rightIsImm = true;
                 }
                 // SaveCmp
-                t1 = new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()));
-                curFuncDefBb.addLocalVar(t1, true);
+                t1 = genTmpVar();
+                // t1 = new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()));
+                // curFuncDefBb.addLocalVar(t1, true);
 
                 SaveCmp.CmpType cmpType;
                 switch (condOp.getCondOp().getRefType()) {
@@ -986,10 +973,10 @@ public class Visitor {
                 }
                 if (lastOne instanceof Immediate) {
                     // dst[i] = 1
-                    lastOne = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), lastOne); // li t1, 1
-                    curFuncDefBb.addLocalVar(lastOne, true);
+                    LValOpd tmpVar = genTmpVar();
+                    lastOne = new AssignCode(tmpVar, lastOne); // li t1, 1
                     curBBlock.append((MiddleCode) lastOne);
-                } else if (lastOne instanceof LValOpd && lValOpdIsArrayEle(lastOne)) {
+                } /*else if (lastOne instanceof LValOpd && lValOpdIsArrayEle(lastOne)) {
                     // 把数组的值赋给它 ->
                     // t2 = src[t0]
                     // dst[i] = t2
@@ -997,12 +984,12 @@ public class Visitor {
                     lastOne = new ArrayLoad((PrimaryOpd) lastOne, dst);
                     curFuncDefBb.addLocalVar(dst, true);
                     curBBlock.append((MiddleCode) lastOne);
-                }
+                }*/
                 VarName arrayName = getVarName(arraySymbol);
                 arrayName.addOrSubRef(1);
-                PrimaryOpd arrayDst = new LValOpd(arrayName, new Immediate(cnt++));
-                curBBlock.append(new ArrayStore(arrayDst, lastOne));
                 curBBlock.addUsedVars(arrayName);
+                LValOpd arrayDst = new LValOpd(arrayName, new Immediate(cnt++));
+                curBBlock.append(new ArrayStore(arrayDst, lastOne));
             }
         }
     }
@@ -1012,8 +999,8 @@ public class Visitor {
     }
 
     private boolean lValOpdIsArrayEle(Operand operand) {
-        assert operand instanceof LValOpd;
-        return ((LValOpd) operand).getIdx() != null;
+        // assert operand instanceof LValOpd;
+        return (operand instanceof LValOpd && ((LValOpd) operand).getIdx() != null);
     }
 
     private ArrayList<Operand> analyseExpression(Expression expression) {
@@ -1042,42 +1029,25 @@ public class Visitor {
             mulExp = (MulExp) expIter.next();
             operands2 = analyseMulExp(mulExp);
             rightOne = getLast(operands2);
+            if (rightOne instanceof PrimaryOpd) {
+                operands2.remove(rightOne);
+            }
             if (leftOne instanceof Immediate && rightOne instanceof Immediate) {
                 // 如果是Immediate 的话，那么operands1、2 里面应该只能有一个元素。
-                assert operands1.size() == 1 && operands2.size() == 1;
+                // assert operands1.size() == 1 && operands2.size() == 1;
                 leftOne = ((Immediate) leftOne).procValue(op.getOp(), ((Immediate) rightOne).getValue());
                 operands.add(leftOne);
-            } else if (leftOne instanceof RetOpd && rightOne instanceof RetOpd) {
-                leftOne = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), leftOne);
-                operands.add(leftOne);
-                curFuncDefBb.addLocalVar(leftOne, true);
-                operands.addAll(operands2);
-                operands.remove(rightOne);
-                BinaryCode b = new BinaryCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), leftOne, rightOne, op.getOp());
-                operands.add(b);
-                curFuncDefBb.addLocalVar(b, true);
             } else {
-                if (leftOne instanceof LValOpd && lValOpdIsArrayEle(leftOne)) {
-                    Operand dst = new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), null);
-                    curFuncDefBb.addLocalVar(dst, true);
-                    leftOne = new ArrayLoad((PrimaryOpd) leftOne, dst);
+                operands.addAll(operands2);
+                if (leftOne instanceof Immediate) {
+                    // exp -> 1-a, left = 1
+                    LValOpd tmpVar = genTmpVar();
+                    leftOne = new AssignCode(tmpVar, leftOne);
                     operands.add(leftOne);
                 }
-
-                operands.addAll(operands2);
-                if (rightOne instanceof PrimaryOpd) {
-                    operands.remove(rightOne);
-                }
-                if (rightOne instanceof LValOpd && lValOpdIsArrayEle(rightOne)) {
-                    Operand dst = new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), null);
-                    curFuncDefBb.addLocalVar(dst, true);
-                    rightOne = new ArrayLoad((PrimaryOpd) rightOne, dst);
-                    operands.add(rightOne);
-                }
-
-                BinaryCode b = new BinaryCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), leftOne, rightOne, op.getOp());
+                LValOpd dst = genTmpVar();
+                BinaryCode b = new BinaryCode(dst, leftOne, rightOne, op.getOp());
                 operands.add(b);
-                curFuncDefBb.addLocalVar(b, true);
             }
         }
         return operands;
@@ -1103,40 +1073,24 @@ public class Visitor {
             unaryExp = (UnaryExp) expIter.next();
             operands2 = analyseUnaryExp(unaryExp);
             rightOne = getLast(operands2);
+            if (rightOne instanceof PrimaryOpd) {
+                operands2.remove(rightOne);
+            }
+
             if (leftOne instanceof Immediate && rightOne instanceof Immediate) {
                 // 如果是Immediate 的话，那么operands1、2 里面应该只能有一个元素。
                 leftOne = ((Immediate) leftOne).procValue(op.getOp(), ((Immediate) rightOne).getValue());
                 operands.add(leftOne);
-            } else if (leftOne instanceof RetOpd && rightOne instanceof RetOpd) {
-                leftOne = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), leftOne);
-                operands.add(leftOne);
-                curFuncDefBb.addLocalVar(leftOne, true);
-                operands.addAll(operands2);
-                operands.remove(rightOne);
-                BinaryCode b = new BinaryCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), leftOne, rightOne, op.getOp());
-                operands.add(b);
-                curFuncDefBb.addLocalVar(b, true);
             } else {
-                if (leftOne instanceof LValOpd && lValOpdIsArrayEle(leftOne)) {
-                    Operand dst = new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), null);
-                    curFuncDefBb.addLocalVar(dst, true);
-                    leftOne = new ArrayLoad((PrimaryOpd) leftOne, dst);
+                operands.addAll(operands2);
+                if (leftOne instanceof Immediate) {
+                    // exp -> 100/a, left = 100
+                    LValOpd tmpVar = genTmpVar();
+                    leftOne = new AssignCode(tmpVar, leftOne);
                     operands.add(leftOne);
                 }
-
-                operands.addAll(operands2);
-                if (rightOne instanceof PrimaryOpd) {
-                    operands.remove(rightOne);
-                }
-                if (rightOne instanceof LValOpd && lValOpdIsArrayEle(rightOne)) {
-                    Operand dst = new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), null);
-                    curFuncDefBb.addLocalVar(dst, true);
-                    rightOne = new ArrayLoad((PrimaryOpd) rightOne, dst);
-                    operands.add(rightOne);
-                }
-
-                BinaryCode dst = new BinaryCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), leftOne, rightOne, op.getOp());
-                curFuncDefBb.addLocalVar(dst, true);
+                LValOpd tmpVar = genTmpVar();
+                BinaryCode dst = new BinaryCode(tmpVar, leftOne, rightOne, op.getOp());
                 operands.add(dst);
             }
         }
@@ -1163,11 +1117,13 @@ public class Visitor {
                     operands.addAll(analyseAddExp(exp.getAddExp()));
                     Operand lastOne = getLast(operands);
                     if (lastOne instanceof PrimaryOpd) {
+                        assert !(lValOpdIsArrayEle(lastOne) || lastOne instanceof RetOpd);
                         operands.remove(lastOne);
-                        if (lastOne instanceof RetOpd) {
-                            lastOne = new AssignCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), lastOne);
+                        /*if (lastOne instanceof RetOpd) {
+                            LValOpd dst = genTmpVar();
+                            lastOne = new AssignCode(dst, lastOne);
                             operands.add(lastOne);
-                        }
+                        }*/
                     }
                     FParamSymbol fParamSymbol = (FParamSymbol) fparamSyms.get(i);
                     // 但是参数的push是顺序的(否则改CodeGen)
@@ -1181,7 +1137,8 @@ public class Visitor {
                 FuncSymbol funcSymbol = (FuncSymbol) getSymbol(funcName);
                 if (funcSymbol != null && funcSymbol.isInt()) {
                     // 错误处理之后不能处理这个null，还是要特判一下
-                    operands.add(new RetOpd());
+                    LValOpd dst = genTmpVar();
+                    operands.add(new AssignCode(dst, new RetOpd()));
                 }
                 break;
             case 2:
@@ -1201,7 +1158,6 @@ public class Visitor {
 
                 // UnaryExp -> Num | UnaryOp UnaryExp
                 if (lastOne instanceof Immediate) {
-                    assert operands1.size() == 1;   // 应该只有这一个Immediate
                     if (isNeg) {
                         lastOne = ((Immediate) lastOne).procValue(true);
                     } else if (isNot) {
@@ -1211,21 +1167,23 @@ public class Visitor {
                 } else {
                     // 其他 PrimaryOpd 情况或者 exp
                     operands.addAll(operands1);
+                    assert !lValOpdIsArrayEle(lastOne);
                     if (isNeg) {
                         if (lastOne instanceof PrimaryOpd) {
                             operands.remove(lastOne);
                         }
-                        UnaryCode unaryCode = new UnaryCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), lastOne, MiddleCode.Op.SUB);
+                        LValOpd dst = genTmpVar();
+                        UnaryCode unaryCode = new UnaryCode(dst, lastOne, MiddleCode.Op.SUB);
                         operands.add(unaryCode);
-                        curFuncDefBb.addLocalVar(unaryCode, true);
+                        // curFuncDefBb.addLocalVar(unaryCode, true);
                     } else if (isNot) {
                         if (lastOne instanceof PrimaryOpd) {
                             operands.remove(lastOne);
                         }
-                        LValOpd lValOpd = new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()));
+                        LValOpd lValOpd = genTmpVar();
                         SaveCmp saveCmp = new SaveCmp(lValOpd, lastOne, new Immediate(0), SaveCmp.CmpType.SEQ);
                         operands.add(saveCmp);
-                        curFuncDefBb.addLocalVar(lValOpd, true);
+                        // curFuncDefBb.addLocalVar(lValOpd, true);
                     }
                 }
                 break;
@@ -1242,7 +1200,7 @@ public class Visitor {
                 break;
             case 1:
                 // LVal
-                operands.addAll(analyseLVal(primaryExp.getlVal()));
+                operands.addAll(analyseLVal(primaryExp.getlVal(), false));
                 break;
             case 2:
                 // Num
@@ -1253,7 +1211,7 @@ public class Visitor {
     }
 
     // 最后一个元素是一个PrimaryOpd:LVal的体现，不是MiddleCode， 根据LVal在左边还是右边灵活使用。
-    private ArrayList<Operand> analyseLVal(LVal lVal) {
+    private ArrayList<Operand> analyseLVal(LVal lVal, boolean isleft) {
         ArrayList<Operand> operands = new ArrayList<>();
         Symbol symbol = getSymbol(lVal.getIdent().getContent());
         // System.out.println(lVal.getIdent().getContent());
@@ -1272,9 +1230,9 @@ public class Visitor {
                         /*lval可能是数组名，传参时出现,((VarSymbol) symbol).getDimension() != 0*/
                         VarName varName = getVarName(symbol);
                         varName.addOrSubRef(1);
-                        operands.add(new LValOpd(varName, null));
                         curBBlock.addUsedVars(varName);
-                        // varInWhileCond.add(getVarName(symbol));
+                        LValOpd tmpVar = new LValOpd(varName);
+                        operands.add(tmpVar);
                     }
                 }
                 break;
@@ -1296,26 +1254,39 @@ public class Visitor {
                         } else {
                             VarName varName = getVarName(symbol);
                             varName.addOrSubRef(1);
-                            operands.add(new LValOpd(varName, lastOne));
                             curBBlock.addUsedVars(varName);
+                            if (isleft) {
+                                operands.add(new LValOpd(varName, lastOne));
+                            } else {
+                                LValOpd dst = genTmpVar();
+                                ArrayLoad load = new ArrayLoad(dst, new LValOpd(varName, lastOne));
+                                operands.add(load);
+                            }
                         }
                     }
                 } else {
                     operands.addAll(operands1);
+                    assert !lValOpdIsArrayEle(lastOne);
                     if (lastOne instanceof PrimaryOpd) {
                         operands.remove(lastOne);
-                        if (lastOne instanceof LValOpd && ((LValOpd) lastOne).isArray()) {
+                        /*if (lastOne instanceof LValOpd && ((LValOpd) lastOne).isArray()) {
                             lastOne = new ArrayLoad((PrimaryOpd) lastOne, new LValOpd(new VarName(middleTn.genTemporyName(), curBBlock.getDepth())));
                             assert !isGlobalVisit();
                             curFuncDefBb.addLocalVar(lastOne, true);
                             operands.add(lastOne);
-                        }
+                        }*/
                     }
                     // 没有检查会不会数组越界
                     VarName varName = getVarName(symbol);
                     varName.addOrSubRef(1);
-                    operands.add(new LValOpd(varName, lastOne));
                     curBBlock.addUsedVars(varName);
+                    if (isleft) {
+                        operands.add(new LValOpd(varName, lastOne));
+                    } else {
+                        LValOpd dst = genTmpVar();
+                        ArrayLoad load = new ArrayLoad(dst, new LValOpd(varName, lastOne));
+                        operands.add(load);
+                    }
                 }
                 break;
             case 2:
@@ -1350,33 +1321,51 @@ public class Visitor {
                     } else {
                         VarName varName = getVarName(symbol);
                         varName.addOrSubRef(1);
-                        operands.add(new LValOpd(varName, idx));
                         curBBlock.addUsedVars(varName);
+                        if (isleft) {
+                            operands.add(new LValOpd(varName, idx));
+                        } else {
+                            LValOpd dst = genTmpVar();
+                            ArrayLoad load = new ArrayLoad(dst, new LValOpd(varName, idx));
+                            operands.add(load);
+                        }
                     }
                 } else if (x instanceof Immediate) {
                     x = ((Immediate) x).procValue("*", colNum);
                     operands.addAll(operands1);
                     operands.addAll(operands2);
-                    Operand t1 = new BinaryCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), x, y, "+");
+                    LValOpd dst = genTmpVar();
+                    Operand t1 = new BinaryCode(dst, x, y, "+");
                     operands.add(t1);
-                    curFuncDefBb.addLocalVar(t1, true);
+                    // curFuncDefBb.addLocalVar(t1, true);
                     VarName varName = getVarName(symbol);
                     varName.addOrSubRef(1);
-                    operands.add(new LValOpd(varName, t1));
                     curBBlock.addUsedVars(varName);
+                    if (isleft) {
+                        operands.add(new LValOpd(varName, t1));
+                    } else {
+                        dst = genTmpVar();
+                        ArrayLoad load = new ArrayLoad(dst, new LValOpd(varName, t1));
+                        operands.add(load);
+                    }
                 } else {
                     operands.addAll(operands1);
                     operands.addAll(operands2);
-                    Operand t1 = new BinaryCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), x, new Immediate(colNum), "*");
-                    Operand t2 = new BinaryCode(new VarName(middleTn.genTemporyName(), curBBlock.getDepth()), t1, y, "+");
+                    Operand t1 = new BinaryCode(genTmpVar(), x, new Immediate(colNum), "*");
+                    Operand t2 = new BinaryCode(genTmpVar(), t1, y, "+");
                     operands.add(t1);
                     operands.add(t2);
-                    curFuncDefBb.addLocalVar(t1, true);
-                    curFuncDefBb.addLocalVar(t2, true);
+                    // curFuncDefBb.addLocalVar(t1, true);
+                    // curFuncDefBb.addLocalVar(t2, true);
                     VarName varName = getVarName(symbol);
                     varName.addOrSubRef(1);
-                    operands.add(new LValOpd(getVarName(symbol), t2));
                     curBBlock.addUsedVars(varName);
+                    if (isleft) {
+                        operands.add(new LValOpd(varName, t2));
+                    } else {
+                        ArrayLoad load = new ArrayLoad(genTmpVar(), new LValOpd(varName, t2));
+                        operands.add(load);
+                    }
                 }
                 break;
         }
@@ -1399,10 +1388,18 @@ public class Visitor {
         return funcDefBBlocksMap;
     }
 
+    public LValOpd genTmpVar() {
+        // 生成 #tn
+        VarName tmpName = genVarName();
+        LValOpd tmpVar = new LValOpd(tmpName);
+        curFuncDefBb.addLocalVar(tmpVar, true);
+        return tmpVar;
+    }
+
     public VarName genVarName() {
         VarName varName = new VarName(middleTn.genTemporyName(), curBBlock.getDepth());
         varName.addOrSubRef(1);
-        // curFuncDefBb.addLocalVar(varName, true); todo
+        curBBlock.addUsedVars(varName); // 应该是加入到 def 集合中
         return varName;
     }
 

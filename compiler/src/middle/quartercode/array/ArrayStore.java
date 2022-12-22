@@ -3,13 +3,14 @@ package middle.quartercode.array;
 import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
+import middle.quartercode.operand.primaryOpd.LValOpd;
 import middle.quartercode.operand.primaryOpd.PrimaryOpd;
 
 public class ArrayStore implements MiddleCode {
-    private PrimaryOpd primaryOpd;
+    private LValOpd primaryOpd;
     private Operand src;
 
-    public ArrayStore(PrimaryOpd primaryOpd, Operand src) {
+    public ArrayStore(LValOpd primaryOpd, Operand src) {
         this.primaryOpd = primaryOpd;
         this.src = src;
     }

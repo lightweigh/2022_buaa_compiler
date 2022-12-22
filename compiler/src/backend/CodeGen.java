@@ -31,6 +31,7 @@ import middle.quartercode.operand.primaryOpd.Immediate;
 import middle.quartercode.operand.primaryOpd.LValOpd;
 import middle.quartercode.operand.primaryOpd.RetOpd;
 
+import javax.management.OperationsException;
 import java.util.*;
 
 public class CodeGen {
@@ -198,6 +199,7 @@ public class CodeGen {
                             op1 = getOneTReg(dst, null);
                             mipsCodes.add(new Li(op1, (Immediate) saveCmp.getCmpOp1()));
                         } else if (saveCmp.getCmpOp1() instanceof RetOpd) {
+                            assert false;
                             op1 = Registers.V0;
                         } else {
                             assert !(saveCmp.getCmpOp1() instanceof LValOpd && ((LValOpd) saveCmp.getCmpOp1()).isArray());
@@ -216,6 +218,12 @@ public class CodeGen {
                             op2 = getOrAllocReg4Var(saveCmp.getCmpOp2().getVarName(), true, dst, op1);
                         }
                         mipsCodes.add(new Cmp(saveCmp.getCmpType(), dst, op1, op2, op2Imm));
+                        if (op1 != null && op1 != Registers.V0) {
+                            curAR.regUnmapVar(op1);
+                        }
+                        if (op2 != null && op2 != Registers.V0) {
+                            curAR.regUnmapVar(op2);
+                        }
                         break;
                     case JUMPCMP:
                         storeVarsInCurBlock();
@@ -269,9 +277,10 @@ public class CodeGen {
                         ArrayStore arrayStore = (ArrayStore) middleCode;
                         Reg srcReg;
                         if (arrayStore.getSrc() instanceof Immediate) {
-                            srcReg = Registers.V0;
+                            srcReg = allocReg4Imm(null, null);
                             mipsCodes.add(new Li(srcReg, (Immediate) arrayStore.getSrc()));
                         } else if (arrayStore.getSrc() instanceof RetOpd) {
+                            assert false;
                             srcReg = Registers.V0;
                         } else {
                             srcReg = getOrAllocReg4Var(arrayStore.getSrc().getVarName(), true, null, null);
@@ -286,6 +295,7 @@ public class CodeGen {
                         } else if (assignCode.getOperand() instanceof RetOpd) {
                             mipsCodes.add(new Move(dstReg, Registers.V0));
                         } else if (assignCode.getOperand() instanceof LValOpd && ((LValOpd) assignCode.getOperand()).isArray()) {
+                            assert false;
                             loadOrStoreArray(dstReg, (LValOpd) assignCode.getOperand(), true);
                         } else {
                             srcReg = getOrAllocReg4Var(assignCode.getOperand().getVarName(), true, dstReg, null);
@@ -296,8 +306,7 @@ public class CodeGen {
                         BinaryCode binaryCode = (BinaryCode) middleCode;
                         Operand src1 = binaryCode.getSrc1();
                         Operand src2 = binaryCode.getSrc2();
-                        Reg immReg = null;
-                        if (src1 instanceof Immediate) {
+                        /*if (src1 instanceof Immediate) {
                             Immediate immediate = (Immediate) src1;
                             immReg = getOrAllocReg4Var(src1.getVarName(), false, null, null);
                             srcReg = immReg;    // 不能是AT啊
@@ -305,22 +314,22 @@ public class CodeGen {
                         } else if (src1 instanceof RetOpd) {
                             assert !(src2 instanceof RetOpd);
                             srcReg = Registers.V0;
-                        } /*else if (src1 instanceof LValOpd && ((LValOpd) src1).isArray()) {
+                        } *//*else if (src1 instanceof LValOpd && ((LValOpd) src1).isArray()) {
                             assert false;
-                        } */ else {
-                            assert !(src1 instanceof LValOpd && ((LValOpd) src1).isArray());
-                            srcReg = getOrAllocReg4Var(binaryCode.getSrc1().getVarName(), true, null, null);
-                        }
+                        } *//* else {*/
+                        assert !(src1 instanceof LValOpd && ((LValOpd) src1).isArray());
+                        srcReg = getOrAllocReg4Var(binaryCode.getSrc1().getVarName(), true, null, null);
+                        // }
                         Immediate immediate = null;
                         Reg srcReg2 = null;
                         boolean src2IsImm = false;
                         if (binaryCode.getSrc2() instanceof Immediate) {
                             immediate = (Immediate) binaryCode.getSrc2();
                             src2IsImm = true;
-                        } else if (binaryCode.getSrc2() instanceof RetOpd) {
+                        }/* else if (binaryCode.getSrc2() instanceof RetOpd) {
                             assert !(binaryCode.getSrc1() instanceof RetOpd);
                             srcReg2 = Registers.V0;
-                        } else {
+                        } */else {
                             assert !(src2 instanceof LValOpd && ((LValOpd) src2).isArray());
                             srcReg2 = getOrAllocReg4Var(binaryCode.getSrc2().getVarName(), true, srcReg, null);
                         }
@@ -365,19 +374,22 @@ public class CodeGen {
                                 mipsCodes.add(new Mfhi(dstReg));
                                 break;
                         }
-                        if (immReg != null) {
-                            curAR.regUnmapVar(immReg);
-                        }
                         break;
                     case CONSTVAR:
                         ConstVar constVar = (ConstVar) middleCode;
+                        if (!constVar.isConst()) {
+                            // 分配地址空间, 即使没有初始化
+                            curAR.varSetToMem(constVar.getVarName());
+                        }
                         if (!constVar.isConst() && constVar.isInit()) {
                             dstReg = getOrAllocReg4Var(constVar.getVarName(), false, null, null);
                             if (constVar.getOperand() instanceof Immediate) {
                                 mipsCodes.add(new Li(dstReg, (Immediate) constVar.getOperand()));
                             } else if (constVar.getOperand() instanceof RetOpd) {
+                                assert false;
                                 mipsCodes.add(new Move(dstReg, Registers.V0));
                             } else if (constVar.getOperand() instanceof LValOpd && ((LValOpd) constVar.getOperand()).isArray()) {
+                                assert false;
                                 loadOrStoreArray(dstReg, (LValOpd) constVar.getOperand(), true);
                             } else {
                                 srcReg = getOrAllocReg4Var(constVar.getOperand().getVarName(), true, dstReg, null);
@@ -395,8 +407,10 @@ public class CodeGen {
                             if (operand instanceof Immediate) {
                                 mipsCodes.add(new Li(getReg(Registers.A0), (Immediate) operand));
                             } else if (operand instanceof RetOpd) {
+                                assert false;
                                 mipsCodes.add(new Move(getReg(Registers.A0), Registers.V0));
                             } else if (operand instanceof LValOpd && ((LValOpd) operand).isArray()) {
+                                assert false;
                                 loadOrStoreArray(getReg(Registers.A0), (LValOpd) operand, true);
                             } else {
                                 srcReg = getOrAllocReg4Var(putOut.getOperand().getVarName(), true, null, null);
@@ -425,13 +439,14 @@ public class CodeGen {
                                 } else if (retCode.getOperand() instanceof RetOpd) {
                                     // do nothing
                                 } else if (retCode.getOperand() instanceof LValOpd && ((LValOpd) retCode.getOperand()).isArray()) {
+                                    assert false;
                                     loadOrStoreArray(Registers.V0, (LValOpd) retCode.getOperand(), true);
                                 } else {
                                     Reg reg = curAR.getVarMapReg(middleCode.getVarName());
                                     if (reg == null) {
                                         loadValue2Reg(middleCode.getVarName(), Registers.V0);
                                     } else {
-                                        mipsCodes.add(new Move(Registers.V0, getOrAllocReg4Var(middleCode.getVarName(), true, null, null)));
+                                        mipsCodes.add(new Move(Registers.V0, reg));
                                     }
                                 }
                             }
@@ -445,6 +460,7 @@ public class CodeGen {
                     case UNARY:
                         UnaryCode unaryCode = (UnaryCode) middleCode;
                         if (unaryCode.getSrc() instanceof RetOpd) {
+                            assert false;
                             srcReg = Registers.V0;
                         } else {
                             // Immediate 应该是不会有的
@@ -475,20 +491,9 @@ public class CodeGen {
                         // 把全局变量存回
                         storeGlobalBackBeforeFuncCall();
                         // curAR = new ActivationRcd(curAR, curSp);
-                        // 先保存 fp
-                        mipsCodes.add(new Sub(Registers.SP, Registers.SP, new Immediate(4)));
-                        mipsCodes.add(new Store(Registers.FP, Registers.SP, new Immediate(0)));
-                        curAR.regsMapToMem(4);
 
                         // push参数
                         ArrayList<Operand> rParaCodes = funcCallCode.getrParaCodes();
-                        /*for (int i = 0; i < rParaCodes.size(); i++) {
-                            // 这一步是把所有没有分配到寄存器的变量，都分配到位，主要是针对于caller-saved
-                            if (!(((RParaCode) rParaCodes.get(i)).getOperand() instanceof Immediate ||
-                                    ((RParaCode) rParaCodes.get(i)).getOperand() instanceof RetOpd)) {
-                                getOrAllocReg4Var(rParaCodes.get(i).getVarName(), true);
-                            }
-                        }*/
 
                         // argReg 都不分配了、
                         // clearArgRegs(); // todo this one!
@@ -496,7 +501,6 @@ public class CodeGen {
                         getReg(Registers.A1);
                         getReg(Registers.A2);
                         getReg(Registers.A3);*/
-
 
 
                         for (int i = 0; i < rParaCodes.size(); i++) {
@@ -510,6 +514,9 @@ public class CodeGen {
                             operand = rParaCode.getOperand();
                             if (rParaCode.isAddr()) {
                                 // 传地址
+                                if (operand instanceof ArrayLoad) {
+                                    operand = ((ArrayLoad) operand).getPrimaryOpd();
+                                }
                                 assert operand instanceof LValOpd;
                                 // 获得基地址
                                 Reg tmp;
@@ -536,6 +543,7 @@ public class CodeGen {
                                         mipsCodes.add(new Add(dstReg, dstReg, (Immediate) offset));
                                     } else if (offset instanceof RetOpd) {
                                         // push aa@1[RET]
+                                        assert false;
                                         mipsCodes.add(new Mul(Registers.V0, Registers.V0, new Immediate(colNum)));
                                         mipsCodes.add(new Sll(Registers.V0, Registers.V0, 2));
                                         mipsCodes.add(new Add(dstReg, dstReg, Registers.V0));
@@ -564,12 +572,14 @@ public class CodeGen {
                                         mipsCodes.add(new Store(dstReg, Registers.SP, new Immediate(-4 * (i - 3))));
                                     }
                                 } else if (operand instanceof RetOpd) {
+                                    assert false;
                                     if (i >= 4) {
                                         mipsCodes.add(new Store(Registers.V0, Registers.SP, new Immediate(-4 * (i - 3))));
                                     } else {
                                         mipsCodes.add(new Move(dstReg, Registers.V0));
                                     }
                                 } else if (operand instanceof LValOpd && ((LValOpd) operand).isArray()) {
+                                    assert false;
                                     assert operand.getVarName().isArray();
                                     loadOrStoreArray(dstReg, (LValOpd) operand, true);
                                     if (i >= 4) {
@@ -577,7 +587,7 @@ public class CodeGen {
                                     }
                                 } else {
                                     // srcReg = getOrTmpDesignateReg(rParaCodes.get(i).getVarName(), dstReg, null);
-                                    srcReg = getOrAllocReg4Var(rParaCodes.get(i).getVarName(),true, dstReg, null);
+                                    srcReg = getOrAllocReg4Var(rParaCodes.get(i).getVarName(), true, dstReg, null);
                                     if (i >= 4) {
                                         mipsCodes.add(new Store(srcReg, Registers.SP, new Immediate(-4 * (i - 3))));
                                     } else {
@@ -588,6 +598,12 @@ public class CodeGen {
                             dstReg.setAlloced(false);
                             // toolReg.setAlloced(false);
                         }
+
+                        // 先保存 fp
+                        mipsCodes.add(new Sub(Registers.SP, Registers.SP, new Immediate(4)));
+                        mipsCodes.add(new Store(Registers.FP, Registers.SP, new Immediate(0)));
+                        curAR.regsMapToMem(4);
+
                         // caller saved                 // push 的时候也会用到寄存器，最好保护
                         ArrayList<Reg> tRegsUsed = registers.getUsedTmpRegs();
                         regsStore(tRegsUsed);
@@ -596,6 +612,7 @@ public class CodeGen {
                         // 函数返回之后
                         mipsCodes.add(new Move(Registers.SP, Registers.FP));    // reset 栈顶
                         regsLoad(tRegsUsed);
+                        // mipsCodes.add(new Load(Registers.FP, curAR.getAddr(new VarName("30FP", 0))));
                         mipsCodes.add(new Load(Registers.FP, Registers.SP, new Immediate(0)));
                         curAR.regsUnMapToMem(4);    // fp 空间的释放
                         mipsCodes.add(new Add(Registers.SP, Registers.SP, new Immediate(4)));
@@ -652,9 +669,9 @@ public class CodeGen {
             // callee saved
             regsLoad(generalRegsUsed);
             // 释放局部变量的栈空间
-            if (curAR.getVarOccupiedSpace() != 0) {
-                mipsCodes.add(new Add(Registers.SP, Registers.SP, new Immediate(curAR.getVarOccupiedSpace())));
-            }
+            // if (curAR.getVarOccupiedSpace() != 0) {
+            //     mipsCodes.add(new Add(Registers.SP, Registers.SP, new Immediate(curAR.getVarOccupiedSpace())));
+            // }
             mipsCodes.add(new Jr(Registers.RA));
         } else {
             mipsCodes.add(new Li(Registers.V0, new Immediate(10)));
@@ -785,6 +802,7 @@ public class CodeGen {
     // 用于 A0,V0 即选即用的
     private Reg getReg(Reg reg) {
         if (reg.isAlloced()) {
+            assert reg.getVarName() != null;
             Reg newReg = registers.allocTReg();
             VarName storeVar = curAR.regUnmapVar(reg);
             // 把 storeVar 移到另外的寄存器或者内存中
@@ -806,6 +824,10 @@ public class CodeGen {
             reg = allocReg2Var(name, true, false, alloc1, alloc2);
         }
         return reg;
+    }
+
+    private Reg allocReg4Imm(Reg alloc1, Reg alloc2) {
+        return allocReg2Var(null, false, false, alloc1, alloc2);
     }
 
     /**
@@ -830,6 +852,7 @@ public class CodeGen {
         if (needMap) {
             curAR.varMap2Reg(name, reg);
         }
+        reg.setAlloced(true);
         return reg;
     }
 
@@ -840,9 +863,11 @@ public class CodeGen {
             while (reg == alloc1 || reg == alloc2) {
                 reg = registers.getOneTReg2Free();
             }
-            VarName storeVar = curAR.regUnmapVar(reg);
-            // 把 storeVar 给 store 回去
-            storeBack(reg, storeVar);
+            if (reg.getVarName() != null) {
+                VarName storeVar = curAR.regUnmapVar(reg);
+                // 把 storeVar 给 store 回去
+                storeBack(reg, storeVar);
+            }
         }
         return reg;
     }
@@ -886,7 +911,7 @@ public class CodeGen {
 
     private void storeGlobalBackBeforeFuncCall() {
         for (Reg reg : registers.getTempRegs()) {
-            if (reg.isAlloced() && reg.getVarName()!= null && reg.getVarName().isGlobalVar()) {
+            if (reg.isAlloced() && reg.getVarName() != null && reg.getVarName().isGlobalVar()) {
                 storeBack(reg, reg.getVarName());
                 curAR.regUnmapVar(reg);
             }
@@ -913,7 +938,7 @@ public class CodeGen {
     public void freeAllTmpReg() {
         // 如果有映射到全局变量的寄存器，要存回
         for (Reg reg : registers.getTempRegs()) {
-            if (reg.isAlloced()) {
+            if (reg.isAlloced() && reg.getVarName() != null) {
                 VarName storeVar = curAR.regUnmapVar(reg);
                 // 把 storeVar 给 store 回去
                 if (storeVar.isGlobalVar()) {

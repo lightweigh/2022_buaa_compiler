@@ -16,7 +16,7 @@ public class Add implements Instruction {
         this.dst = dst;
         this.src1 = src1;
         this.src2 = src2;
-        this.content = "add " + dst.getName() + ", " +
+        this.content = "addu " + dst.getName() + ", " +
                 src1.getName() + ", " +
                 src2.getName() + "\n";
     }
@@ -25,7 +25,7 @@ public class Add implements Instruction {
         this.dst = dst;
         this.src1 = src1;
         this.immediate = immediate;
-        this.content = "add " + dst.getName() + ", " +
+        this.content = "addu " + dst.getName() + ", " +
                 src1.getName() + ", " +
                 immediate + "\n";
     }

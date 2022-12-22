@@ -39,7 +39,7 @@ public class Registers {
     public static Reg RA = new Reg("ra", 31);
 
     private ArrayList<Reg> regs = new ArrayList<>(Arrays.asList(ZERO, AT, V0, V1, A0, A1, A2, A3, T0, T1, T2, T3, T4, T5, T6, T7, S0, S1, S2, S3, S4, S5, S6, S7, T8, T9, K0, K1, GP, SP, FP, RA));
-    private ArrayList<Reg> tempRegs = new ArrayList<>(Arrays.asList(T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, V1)); // todo 把v0怎么加进来呢？ ra也不分配，如果函数是叶子函数，我不会保存你的
+    private ArrayList<Reg> tempRegs = new ArrayList<>(Arrays.asList(T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, V1, A0, A1, A2, A3)); // todo 把v0怎么加进来呢？ ra也不分配，如果函数是叶子函数，我不会保存你的
     private ArrayList<Reg> argRegs = new ArrayList<>(Arrays.asList(Registers.A0, Registers.A1, Registers.A2, Registers.A3));// todo a0
     private ArrayList<Reg> generalRegs = new ArrayList<>(Arrays.asList(S0, S1, S2, S3, S4, S5, S6, S7));
     private int unmapNum;
@@ -95,11 +95,6 @@ public class Registers {
         ArrayList<Reg> res = new ArrayList<>();
         // ArrayList<Reg> src = type.equals("tmp") ? tempRegs : generalRegs;
         for (Reg reg : tempRegs) {
-            if (reg.isAlloced()) {
-                res.add(reg);
-            }
-        }
-        for (Reg reg : argRegs) {
             if (reg.isAlloced()) {
                 res.add(reg);
             }

@@ -14,7 +14,7 @@ public class SaveCmp implements MiddleCode {
         SLT("slt "),    // if op1 <  op2
         SLTI("slti "),   // if op1 <  op2 and op2 instance of Immediate
         SLE("sle "),    // if op1 <= op2
-        SEG("seg "),    // if op1 >= op2
+        SGE("sge "),    // if op1 >= op2
         SGT("sgt "),    // if op1 >  op2
         SEQ("seq "),    // if op1 == op2
         SNE("sne "),    // if op1 != op2

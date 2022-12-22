@@ -14,7 +14,7 @@ public class Sub implements Instruction {
         this.dst = dst;
         this.src1 = src1;
         this.src2 = src2;
-        this.content = "sub " + dst.getName() + ", " +
+        this.content = "subu " + dst.getName() + ", " +
                 src1.getName() + ", " +
                 src2.getName() + "\n";
     }
@@ -24,7 +24,7 @@ public class Sub implements Instruction {
         this.src1 = src1;
         this.immediate = immediate;
 
-        this.content = "sub " + dst.getName() + ", " +
+        this.content = "subu " + dst.getName() + ", " +
                 src1.getName() + ", " +
                 immediate + "\n";
     }

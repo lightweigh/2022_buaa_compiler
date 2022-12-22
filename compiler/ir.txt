@@ -1,81 +1,302 @@
-const str str_0 = "\n"
+const str str_9 = ", val34: "
+const str str_8 = ", val32: "
+const str str_1 = "val20: "
+const str str_7 = "val30: "
+const str str_10 = "val40: "
+const str str_11 = ", val42:"
+const str str_2 = ", val21:"
+const str str_12 = ", val43:"
+const str str_3 = ", val22:"
+const str str_6 = "\n"
+const str str_13 = ", val44:"
+const str str_4 = ", val23:"
+const str str_5 = ", val24:"
+const str str_0 = "19373459\n"
 GLOBAL_0:
-printMyID:
-void printMyID()
-para int id@1
-var int i@1 = 5
-LOOP_1:
-blt i@1, 3, LOOP_END_3
-WHILE_STMT_2:
-printf id@1
-printf const str str_0 = "\n"
-
-i@1 = i@1-1
-j LOOP_1
-LOOP_END_3:
-LOOP_4:
-ble i@1, 0, LOOP_END_6
-WHILE_STMT_5:
-printf id@1
-printf const str str_0 = "\n"
-
-i@1 = i@1-1
-j LOOP_4
-LOOP_END_6:
-var int j@1 = 0
-LOOP_7:
-bgt j@1, 3, LOOP_END_9
-WHILE_STMT_8:
-printf id@1
-printf const str str_0 = "\n"
-
-j@1 = j@1+1
-j LOOP_7
-LOOP_END_9:
-LOOP_10:
-bge j@1, 5, LOOP_END_12
-WHILE_STMT_11:
-printf id@1
-printf const str str_0 = "\n"
-
-j@1 = j@1+1
-j LOOP_10
-LOOP_END_12:
-RET 
-playID:
-int playID()
-para int id@1
-var int i@1 = 0
-LOOP_14:
-bge i@1, id@1, LOOP_END_16
-WHILE_STMT_15:
-i@1 = i@1+1
-IF_17:
-bne i@1, 711, END_IF_19
-IF_STMT_18:
-j LOOP_14
-FOLLOW_GOTO_20:
-END_IF_19:
-IF_21:
-bne i@1, 19182622, END_IF_23
-IF_STMT_22:
-j LOOP_END_16
-FOLLOW_GOTO_24:
-END_IF_23:
-j LOOP_14
-LOOP_END_16:
-RET i@1
-block:
-int block()
+const int Mod = 10007
+dx[2]: 1 0 
+dy[2]: 0 1 
+Map[25]: 0 1 0 1 0 0 1 1 1 1 1 1 1 1 1 1 0 1 0 1 1 1 1 0 1 
+strP[2]
+var int ans
+var int base
+val[25]
+CalcMod:
+int CalcMod()
+para int x@1
+#t0@1 = x@1/10007
+#t1@1 = #t0@1*10007
+#t2@1 = x@1-#t1@1
+RET #t2@1
+Check:
+int Check()
+para int y@1
+IF_2:
+blt y@1, 0, END_IF_4
+COND_AND_5:
+bge y@1, 5, END_IF_4
+IF_STMT_3:
 RET 1
+END_IF_4:
+RET 0
+check:
+int check()
+para int x@1
+para int y@1
+IF_8:
+bge x@1, 0, COND_OR_11
+JUMP_12:
+j IF_STMT_9
+COND_OR_11:
+blt x@1, 5, COND_OR_13
+JUMP_14:
+j IF_STMT_9
+COND_OR_13:
+push y@1
+call Check
+#t2@2 = RET
+bne #t2@2, 0, END_IF_10
+IF_STMT_9:
+RET 0
+END_IF_10:
+IF_16:
+#t4@2 = x@1*5
+#t5@2 = #t4@2+y@1
+#t6@2 = Map[#t5@2]
+beqz #t6@2, ELSE_18
+IF_STMT_17:
+RET 1
+j END_IF_19
+ELSE_18:
+RET 0
+END_IF_19:
+RET 0
+dfs:
+void dfs()
+para int x@1
+para int y@1
+para int base@1
+para int* height@1
+IF_23:
+#t0@2 = x@1*5
+#t1@2 = #t0@2+y@1
+#t2@2 = val[#t1@2]
+beq #t2@2, 0, END_IF_25
+IF_STMT_24:
+RET 
+END_IF_25:
+#t0@1 = x@1*5
+#t1@1 = #t0@1+y@1
+#t2@1 = height@1[#t1@1]
+#t3@1 = base@1*#t2@1
+#t4@1 = #t3@1%10007
+#t5@1 = #t4@1+10007
+push #t5@1 = #t4@1+10007
+
+call CalcMod
+#t6@1 = RET
+#t7@1 = x@1*5
+#t8@1 = #t7@1+y@1
+val[#t8@1] = #t6@1
+IF_27:
+#t9@2 = x@1*5
+#t10@2 = #t9@2+y@1
+#t11@2 = val[#t10@2]
+bne #t11@2, 0, END_IF_29
+IF_STMT_28:
+#t12@2 = x@1*5
+#t13@2 = #t12@2+y@1
+val[#t13@2] = 1
+END_IF_29:
+var int t1@1 = 0
+var int t2@1 = 0
+IF_30:
+#t14@2 = y@1+0
+#t15@2 = x@1+1
+push #t15@2 = x@1+1
+
+push #t14@2 = y@1+0
+
+call check
+#t16@2 = RET
+beqz #t16@2, END_IF_32
+IF_STMT_31:
+#t0@2 = &height@1
+#t1@2 = x@1*5
+#t2@2 = #t1@2+y@1
+#t3@2 = val[#t2@2]
+#t4@2 = y@1+0
+#t5@2 = x@1+1
+push #t5@2 = x@1+1
+
+push #t4@2 = y@1+0
+
+push #t3@2 = val[#t2@2]
+
+push #t0@2 = &height@1
+
+call dfs
+t1@1 = 1
+END_IF_32:
+IF_33:
+#t6@2 = y@1+1
+#t7@2 = x@1+0
+push #t7@2 = x@1+0
+
+push #t6@2 = y@1+1
+
+call check
+#t8@2 = RET
+beqz #t8@2, END_IF_35
+IF_STMT_34:
+#t0@2 = &height@1
+#t1@2 = x@1*5
+#t2@2 = #t1@2+y@1
+#t3@2 = val[#t2@2]
+#t4@2 = y@1+1
+#t5@2 = x@1+0
+push #t5@2 = x@1+0
+
+push #t4@2 = y@1+1
+
+push #t3@2 = val[#t2@2]
+
+push #t0@2 = &height@1
+
+call dfs
+t2@1 = 1
+END_IF_35:
+IF_36:
+beq t1@1, 0, COND_OR_39
+JUMP_40:
+j IF_STMT_37
+COND_OR_39:
+beq t2@1, 0, END_IF_38
+IF_STMT_37:
+RET 
+END_IF_38:
+#t6@1 = x@1*5
+#t7@1 = #t6@1+y@1
+val[#t7@1] = -1
 main:
 int main()
-const int id@1 = 19182622
-push 19182622
-call printMyID
-LOOP_27:
-j LOOP_END_29
-WHILE_STMT_28:
-j LOOP_27
-LOOP_END_29:
+printf const str str_0 = "19373459\n"
+
+var int i@1 = 0
+var int j@1
+arr height@1[25]
+LOOP_42:
+bge i@1, 5, LOOP_END_44
+WHILE_STMT_43:
+j@1 = 0
+LOOP_45:
+bge j@1, 5, LOOP_END_47
+WHILE_STMT_46:
+scanf #t0@3
+#t1@3 = i@1*5
+#t2@3 = #t1@3+j@1
+height@1[#t2@3] = #t0@3
+j@1 = j@1+1
+j LOOP_45
+LOOP_END_47:
+i@1 = i@1+1
+IF_48:
+bne i@1, 5, ELSE_50
+IF_STMT_49:
+j LOOP_END_44
+FOLLOW_GOTO_52:
+j END_IF_51
+ELSE_50:
+j LOOP_42
+FOLLOW_GOTO_53:
+END_IF_51:
+j LOOP_42
+LOOP_END_44:
+i@1 = 0
+LOOP_54:
+bge i@1, 2, LOOP_END_56
+WHILE_STMT_55:
+scanf #t0@2
+strP[i@1] = #t0@2
+i@1 = i@1+1
+j LOOP_54
+LOOP_END_56:
+scanf base
+#t3@1 = &height@1
+#t4@1 = strP[1]
+#t5@1 = strP[0]
+push #t5@1 = strP[0]
+
+push #t4@1 = strP[1]
+
+push base
+push #t3@1 = &height@1
+
+call dfs
+#t6@1 = val[14]
+#t7@1 = val[13]
+#t8@1 = val[12]
+#t9@1 = val[11]
+#t10@1 = val[10]
+printf const str str_1 = "val20: "
+
+printf #t10@1 = val[10]
+
+printf const str str_2 = ", val21:"
+
+printf #t9@1 = val[11]
+
+printf const str str_3 = ", val22:"
+
+printf #t8@1 = val[12]
+
+printf const str str_4 = ", val23:"
+
+printf #t7@1 = val[13]
+
+printf const str str_5 = ", val24:"
+
+printf #t6@1 = val[14]
+
+printf const str str_6 = "\n"
+
+#t11@1 = val[19]
+#t12@1 = val[17]
+#t13@1 = val[15]
+printf const str str_7 = "val30: "
+
+printf #t13@1 = val[15]
+
+printf const str str_8 = ", val32: "
+
+printf #t12@1 = val[17]
+
+printf const str str_9 = ", val34: "
+
+printf #t11@1 = val[19]
+
+printf const str str_6 = "\n"
+
+#t14@1 = val[24]
+#t15@1 = val[23]
+#t16@1 = val[22]
+#t17@1 = val[20]
+printf const str str_10 = "val40: "
+
+printf #t17@1 = val[20]
+
+printf const str str_11 = ", val42:"
+
+printf #t16@1 = val[22]
+
+printf const str str_12 = ", val43:"
+
+printf #t15@1 = val[23]
+
+printf const str str_13 = ", val44:"
+
+printf #t14@1 = val[24]
+
+printf const str str_6 = "\n"
+
 RET 0

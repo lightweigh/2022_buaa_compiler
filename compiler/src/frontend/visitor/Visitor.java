@@ -506,7 +506,7 @@ public class Visitor {
                     case SLE:
                         jumpType = JumpCmp.JumpType.BGT;
                         break;
-                    case SEG:
+                    case SGE:
                         jumpType = JumpCmp.JumpType.BLT;
                         break;
                     case SGT:
@@ -676,10 +676,10 @@ public class Visitor {
                 SaveCmp.CmpType cmpType;
                 switch (condOp.getCondOp().getRefType()) {
                     case LEQ:   // <=
-                        cmpType = swapped ? SaveCmp.CmpType.SEG : SaveCmp.CmpType.SLE;
+                        cmpType = swapped ? SaveCmp.CmpType.SGE : SaveCmp.CmpType.SLE;
                         break;
                     case GEQ:   // >=
-                        cmpType = swapped ? SaveCmp.CmpType.SLE : SaveCmp.CmpType.SEG;
+                        cmpType = swapped ? SaveCmp.CmpType.SLE : SaveCmp.CmpType.SGE;
                         break;
                     case LSS:   // <
                         cmpType = rightIsImm ? (swapped ? SaveCmp.CmpType.SGT : SaveCmp.CmpType.SLTI) : SaveCmp.CmpType.SLT;
@@ -1127,6 +1127,17 @@ public class Visitor {
                     }
                     FParamSymbol fParamSymbol = (FParamSymbol) fparamSyms.get(i);
                     // 但是参数的push是顺序的(否则改CodeGen)
+                    if (fParamSymbol.getType() > 0) {
+                        // 数组及地址
+                        if (lastOne instanceof ArrayLoad) {
+                            operands.remove(lastOne);
+                            lastOne = new ArrayBase(genTmpVar(), (LValOpd) ((ArrayLoad) lastOne).getPrimaryOpd());
+                        } else {
+                            assert lastOne instanceof LValOpd;
+                            lastOne = new ArrayBase(genTmpVar(), (LValOpd) lastOne);
+                        }
+                        operands.add(lastOne);
+                    }
                     rParaCodes.add(0, new RParaCode(lastOne, fParamSymbol.getType() > 0)); // 最后把参数一起push
                 }
                 operands.addAll(rParaCodes);
@@ -1335,7 +1346,7 @@ public class Visitor {
                     operands.addAll(operands1);
                     operands.addAll(operands2);
                     LValOpd dst = genTmpVar();
-                    Operand t1 = new BinaryCode(dst, x, y, "+");
+                    Operand t1 = new BinaryCode(dst, y, x, "+");    // x 是立即数不能作为第一个操作符
                     operands.add(t1);
                     // curFuncDefBb.addLocalVar(t1, true);
                     VarName varName = getVarName(symbol);

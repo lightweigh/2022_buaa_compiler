@@ -1,5 +1,6 @@
 package middle.quartercode.array;
 
+import frontend.grammar.LVal;
 import middle.VarName;
 import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
@@ -8,10 +9,11 @@ import middle.quartercode.operand.primaryOpd.PrimaryOpd;
 
 // 之前没有用ArrayLoad是把它合并到AssignCode里面去了
 public class ArrayLoad implements MiddleCode {
-    private Operand dst;
-    private PrimaryOpd primaryOpd;
+    // #t0 = a[#t1]
+    private LValOpd dst;
+    private LValOpd primaryOpd;
 
-    public ArrayLoad(Operand dst, PrimaryOpd primaryOpd) {
+    public ArrayLoad(LValOpd dst, LValOpd primaryOpd) {
         this.primaryOpd = primaryOpd;
         this.dst = dst;
     }

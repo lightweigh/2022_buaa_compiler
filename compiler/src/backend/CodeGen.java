@@ -425,8 +425,11 @@ public class CodeGen {
                                 Registers.A0.setAlloced(false);
                             } else {
                                 assert !(operand instanceof RetOpd || operand instanceof LValOpd && ((LValOpd) operand).isArray());
-                                srcReg = getOrAllocReg4Var(putOut.getOperand().getVarName(), true, new ArrayList<>());
-                                if (srcReg != Registers.A0) {
+                                srcReg = curAR.getVarMapReg(putOut.getOperand().getVarName());
+                                if (srcReg == null) {
+                                    loadValueOrAddr(putOut.getOperand().getVarName(), getReg(Registers.A0));
+                                    Registers.A0.setAlloced(false);
+                                } else if (srcReg != Registers.A0) {
                                     // System.out.println("maybe optimization!");
                                     mipsCodes.add(new Move(getReg(Registers.A0), srcReg));
                                     Registers.A0.setAlloced(false);
@@ -457,7 +460,7 @@ public class CodeGen {
                                 } else {
                                     Reg reg = curAR.getVarMapReg(middleCode.getVarName());
                                     if (reg == null) {
-                                        loadValue2Reg(middleCode.getVarName(), Registers.V0);
+                                        loadValueOrAddr(middleCode.getVarName(), Registers.V0);
                                     } else {
                                         mipsCodes.add(new Move(Registers.V0, reg));
                                     }
@@ -553,11 +556,6 @@ public class CodeGen {
 
                         // push参数
                         ArrayList<Operand> rParaCodes = funcCallCode.getrParaCodes();
-
-                        // argReg 都不分配了、
-                        // clearArgRegs(); // todo this one!
-
-
                         for (int i = 0; i < rParaCodes.size(); i++) {
                             RParaCode rParaCode = (RParaCode) rParaCodes.get(i);
                             // 用于在需要push参数时的辅助寄存器, 参数push完之后释放
@@ -579,32 +577,27 @@ public class CodeGen {
                                     tmp = Registers.AT; // 抓一个非临时寄存器来
                                     loadValueOrAddr(rParaCodes.get(i).getVarName(), tmp);
                                 }
-                                // tmp = getOrAllocReg4Var(baseAddr.getVarName(), true, dstReg, null);
-                                if (i >= 4) {
-                                    mipsCodes.add(new Store(tmp, Registers.SP, new Immediate(-4 * (i + 1/* - 3*/))));
-                                } else {
+                                if (i <= 4) {
                                     mipsCodes.add(new Move(dstReg, tmp));
                                 }
+                                // 所有参数保存在栈上
+                                mipsCodes.add(new Store(tmp, Registers.SP, new Immediate(-4 * (i + 1/* - 3*/))));
                             } else {
                                 // 传数值
                                 if (operand instanceof Immediate) {
                                     mipsCodes.add(new Li(dstReg, (Immediate) ((RParaCode) rParaCodes.get(i)).getOperand()));
-                                    if (i >= 4) {
-                                        mipsCodes.add(new Store(dstReg, Registers.SP, new Immediate(-4 * (i + 1/* - 3*/))));
-                                    }
+                                    mipsCodes.add(new Store(dstReg, Registers.SP, new Immediate(-4 * (i + 1/* - 3*/))));
                                 } else {
-                                    // srcReg = getOrTmpDesignateReg(rParaCodes.get(i).getVarName(), dstReg, null);
                                     srcReg = curAR.getVarMapReg(rParaCodes.get(i).getVarName());
                                     if (srcReg == null) {
                                         srcReg = Registers.AT;
                                         loadValueOrAddr(rParaCodes.get(i).getVarName(), srcReg);
                                     }
-                                    // srcReg = getOrAllocReg4Var(rParaCodes.get(i).getVarName(), true, dstReg, null);
-                                    if (i >= 4) {
-                                        mipsCodes.add(new Store(srcReg, Registers.SP, new Immediate(-4 * (i + 1/* - 3*/))));
-                                    } else {
+                                    if (i <= 4) {
                                         mipsCodes.add(new Move(dstReg, srcReg));
                                     }
+                                    // 所有参数保存在栈上
+                                    mipsCodes.add(new Store(srcReg, Registers.SP, new Immediate(-4 * (i + 1/* - 3*/))));
                                 }
                             }
                             // dstReg.setAlloced(false);
@@ -663,15 +656,15 @@ public class CodeGen {
         if (!isMainFunc) {
             freeAllTmpReg();  // 切换到另外的函数块中去了，只需要把isAlloced设置为 false
 
-            // 先弹ra 如果有
+            // callee saved
+            regsLoad(generalRegsUsed, null);
+            // 弹ra 如果有
             if (funcDefBlock.isRaNeedSave()) {
                 mipsCodes.add(new Load(getReg(Registers.RA), curAR.getAddr(new VarName("31RA", 0))));
                 Registers.RA.setAlloced(false);
                 // curAR.regsUnMapToMem(4); // ra 空间的释放
                 // mipsCodes.add(new Add(Registers.SP, Registers.SP, new Immediate(4)));
             }
-            // callee saved
-            regsLoad(generalRegsUsed, null);
             // 释放局部变量的栈空间
             // if (curAR.getVarOccupiedSpace() != 0) {
             //     mipsCodes.add(new Add(Registers.SP, Registers.SP, new Immediate(curAR.getVarOccupiedSpace())));
@@ -796,25 +789,9 @@ public class CodeGen {
             offset += 4;
         }
         // 空间收回
-        curAR.regsUnMapToMem(offset);
-        mipsCodes.add(new Add(Registers.SP, Registers.SP, new Immediate(offset)));
-    }
-
-    public void clearArgRegs() {
-        ArrayList<Reg> args = new ArrayList<>(Arrays.asList(Registers.A0, Registers.A1, Registers.A2, Registers.A3));
-        for (Reg reg : args) {
-            if (reg.isAlloced()) {
-                Reg newReg = registers.allocTReg();
-                VarName storeVar = curAR.regUnmapVar(reg);
-                // 把 storeVar 移到另外的寄存器或者内存中
-                if (newReg != null) {
-                    mipsCodes.add(new Move(newReg, reg));
-                    curAR.varMap2Reg(storeVar, newReg);
-                } else {
-                    storeBack(reg, storeVar);
-                }
-                reg.setAlloced(false);
-            }
+        if (offset > 0) {
+            curAR.regsUnMapToMem(offset);
+            mipsCodes.add(new Add(Registers.SP, Registers.SP, new Immediate(offset)));
         }
     }
 
@@ -823,32 +800,10 @@ public class CodeGen {
     private Reg getReg(Reg reg) {
         if (reg.isAlloced()) {
             assert reg.getVarName() != null;
-            /*// 把 storeVar 移到另外的寄存器或者内存中
-            VarName storeVar = curAR.regUnmapVar(reg);
-            Reg newReg = registers.allocTReg();
-            if (newReg != null) {
-                mipsCodes.add(new Move(newReg, reg));
-                curAR.varMap2Reg(storeVar, newReg);
-            } else {
-                storeBack(reg, storeVar);
-                curAR.varUnmapReg(storeVar);
-            }*/
             storeBack(reg, reg.getVarName());
             curAR.varUnmapReg(reg.getVarName());
-            // reg.setAlloced(false);
         }
         reg.setAlloced(true);
-        return reg;
-    }
-
-    // temporary alloc to
-    // note: alloc is true but no map which means if tmpDes then reg.getVarName() = null
-    private Reg getOrTmpDesignateReg(VarName name, Reg alloc1, Reg alloc2) {
-        Reg reg = curAR.getVarMapReg(name);
-        if (reg == null) {
-            ArrayList<Reg> mutexed = new ArrayList<>(Arrays.asList(alloc1, alloc2));
-            reg = allocReg2Var(name, true, false, mutexed);
-        }
         return reg;
     }
 
@@ -862,7 +817,6 @@ public class CodeGen {
      * @param needLoad
      * @return Reg, 保存 变量值 or 数组地址
      */
-    // todo modify this, alloc1-2 是指和当前需要分配寄存器的变量需要同时使用的
     private Reg getOrAllocReg4Var(VarName name, boolean needLoad, ArrayList<Reg> mutexRegs) {
         Reg reg = curAR.getVarMapReg(name);
         if (reg == null) {
@@ -917,12 +871,6 @@ public class CodeGen {
         }
     }
 
-    /**
-     * 全局/局部 变量值
-     *
-     * @param varName
-     * @param dstReg
-     */
     private void loadValue2Reg(VarName varName, Reg dstReg) {
         if (varName.isGlobalVar()) {
             mipsCodes.add(new Load(dstReg, varName.toString(), new Immediate(0)));
@@ -931,12 +879,6 @@ public class CodeGen {
         }
     }
 
-    /**
-     * 全局/局部 数组基地址
-     *
-     * @param varName
-     * @param dstReg
-     */
     private void loadAddr2Reg(VarName varName, Reg dstReg) {
         if (varName.isGlobalVar()) {
             mipsCodes.add(new La(dstReg, varName.toString()));
@@ -962,21 +904,11 @@ public class CodeGen {
             // 对于全局变量也是不够了就放回去
             // todo 改为如果更改了，就放回去?
             mipsCodes.add(new Store(reg, storeVar.toString(), new Immediate(0)));
-        } else if (!storeVar.isArray() ||   // 如果是数组的话，里面存的是 fp-offset，不能存回，也不用存回
-                storeVar.isPtr()) { // 如果是指针，也就是函数的参数，
-            if (!curAR.isAddressed(storeVar)) {
-                assert false;
-                allocMem4Var(storeVar);
-            }
+        } else if (!storeVar.isArray() /*||   // 如果是数组的话，里面存的是 fp-offset，不能存回，也不用存回
+                storeVar.isPtr()*/) { // 如果是指针，也就是函数的参数，一般不用存回，因为不能修改呀
             Address addr = curAR.getAddr(storeVar);
             mipsCodes.add(new Store(reg, addr));
         }
-    }
-
-    private void allocMem4Var(VarName varName) {
-        assert false;
-        curAR.varSetToMem(varName);
-        mipsCodes.add(new Sub(Registers.SP, Registers.SP, new Immediate(4)));
     }
 
     public void freeAllTmpReg() {
@@ -988,14 +920,7 @@ public class CodeGen {
                 if (storeVar.isGlobalVar()) {
                     mipsCodes.add(new Store(reg, storeVar.toString(), new Immediate(0)));
                     // storeVar.setDirty(true);     俩都不是同一个对象
-                }/* else {
-                    if (!curAR.isAddressed(storeVar)) {
-                        curAR.varSetToMem(storeVar);
-                        mipsCodes.add(new Sub(Registers.SP, Registers.SP, new Immediate(4)));
-                    }
-                    Address addr = curAR.getAddr(storeVar);
-                    mipsCodes.add(new Store(reg, addr));
-                }*/
+                }
             }
         }
     }

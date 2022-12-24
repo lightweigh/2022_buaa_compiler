@@ -1,25 +1,96 @@
 const str str_0 = "\n"
+const str str_1 = "19373061\n"
 GLOBAL_0:
-foo:
-int foo()
-para int a@1
-para int b@1
-para int c@1
-para int d@1
-para int e@1
-e@1 = e@1+1
-RET e@1
-main:
-int main()
-var int c@1
-push 1
-push 2
-push 3
-push 4
-push 5
-call foo
-c@1 = foo()
-printf c@1
+isPrime:
+int isPrime()
+para int m@1
+var int i@1
+i@1 = 2
+LOOP_1:
+bge i@1, m@1, LOOP_END_3
+WHILE_STMT_2:
+IF_4:
+#t1@3 = m@1%i@1
+bne #t1@3, 0, END_IF_6
+IF_STMT_5:
+RET 0
+END_IF_6:
+i@1 = i@1+1
+j LOOP_1
+LOOP_END_3:
+RET 1
+check_group:
+void check_group()
+para int* t@1
+var int i@1
+i@1 = 0
+LOOP_9:
+bge i@1, 2, LOOP_END_11
+WHILE_STMT_10:
+var int tmp@2
+tmp@2 = t@1[i@1]
+push tmp@2
+call isPrime
+tmp@2 = isPrime()
+printf tmp@2
 printf const str str_0 = "\n"
 
+i@1 = i@1+1
+j LOOP_9
+LOOP_END_11:
+test:
+int test()
+para int* t@1
+IF_12:
+#t7@2 = t@1[1]
+bne #t7@2, 0, END_IF_14
+IF_STMT_13:
+END_IF_14:
+RET 0
+main:
+int main()
+printf const str str_1 = "19373061\n"
+
+var int num@1
+num@1 = 30
+push num@1
+call isPrime
+#t9@1 = isPrime()
+printf #t9@1 = isPrime()
+
+printf const str str_0 = "\n"
+
+num@1 = 31
+push num@1
+call isPrime
+#t10@1 = isPrime()
+printf #t10@1 = isPrime()
+
+printf const str str_0 = "\n"
+
+arr tmp@1[6]
+#t11@1 = 111
+tmp@1[0] = #t11@1
+#t12@1 = 2222
+tmp@1[1] = #t12@1
+#t13@1 = 3
+tmp@1[2] = #t13@1
+#t14@1 = 4
+tmp@1[3] = #t14@1
+#t15@1 = 5
+tmp@1[4] = #t15@1
+#t16@1 = 6
+tmp@1[5] = #t16@1
+#t18@1 = &tmp@1[0]
+push #t18@1 = &tmp@1[0]
+
+call check_group
+#t20@1 = &tmp@1[1]
+push #t20@1 = &tmp@1[1]
+
+call check_group
+#t22@1 = &tmp@1[2]
+push #t22@1 = &tmp@1[2]
+
+call check_group
 RET 0

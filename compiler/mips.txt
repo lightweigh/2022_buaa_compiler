@@ -1,45 +1,123 @@
 .data
 str_0: .asciiz "\n"
+str_1: .asciiz "19373061\n"
 .text
 j main
 
-foo:
+isPrime:
 move $fp, $sp
-subu $sp, $sp, 20
-lw $t0, -20($fp)
-addu $t0, $t0, 1
-move $v0, $t0
+subu $sp, $sp, 4
+subu $sp, $sp, 8
+li $t0, 2
 # switch basic block. store back vars that are used---------------
-sw $t0, -20($fp)
-sw $a0, -20($fp)
-sw $a1, -20($fp)
-sw $a2, -20($fp)
-sw $a3, -20($fp)
+sw $t0, -8($fp)
+sw $a0, -4($fp)
 # vars store back done!---------------
-j foo_ret_
+
+LOOP_1:
+lw $t0, -8($fp)
+lw $t1, -4($fp)
+# switch basic block. store back vars that are used---------------
+sw $t0, -8($fp)
+sw $t1, -4($fp)
+# vars store back done!---------------
+bge $t0, $t1, LOOP_END_3
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+WHILE_STMT_2:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+IF_4:
+lw $t0, -4($fp)
+lw $t1, -8($fp)
+div $t0, $t1
+mfhi $t2
+# switch basic block. store back vars that are used---------------
+sw $t0, -4($fp)
+sw $t1, -8($fp)
+sw $t2, -12($fp)
+# vars store back done!---------------
+bne $t2, 0, END_IF_6
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+IF_STMT_5:
+li $v0, 0
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j isPrime_ret_
 # switch basic block. store back vars that are used---------------
 # vars store back done!---------------
 # switch basic block. store back vars that are used---------------
 # vars store back done!---------------
 
-foo_ret_:
+END_IF_6:
+lw $t0, -8($fp)
+addu $t0, $t0, 1
+# switch basic block. store back vars that are used---------------
+sw $t0, -8($fp)
+# vars store back done!---------------
+j LOOP_1
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+LOOP_END_3:
+li $v0, 1
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j isPrime_ret_
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+isPrime_ret_:
 jr $ra
 
-main:
+check_group:
 move $fp, $sp
 subu $sp, $sp, 4
 subu $sp, $sp, 4
+sw $ra, ($sp)
+subu $sp, $sp, 8
+li $t0, 0
+# switch basic block. store back vars that are used---------------
+sw $t0, -12($fp)
+# vars store back done!---------------
+
+LOOP_9:
+lw $t0, -12($fp)
+# switch basic block. store back vars that are used---------------
+sw $t0, -12($fp)
+# vars store back done!---------------
+bge $t0, 2, LOOP_END_11
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+WHILE_STMT_10:
+lw $t1, -4($fp)
+lw $t2, -12($fp)
+sll $t3, $t2, 2
+addu $t3, $t1, $t3
+lw $t0, ($t3)
+subu $sp, $sp, 12
+sw $t0, ($sp)
+sw $t1, 4($sp)
+sw $t2, 8($sp)
+subu $sp, $sp, 4
 sw $fp, ($sp)
-li $a0, 1
-li $a1, 2
-li $a2, 3
-li $a3, 4
-li $v0, 5
-sw $v0, -20($sp)
-jal foo
+move $a0, $t0
+sw $t0, -4($sp)
+jal isPrime
 move $sp, $fp
 lw $fp, ($sp)
 addu $sp, $sp, 4
+lw $t0, ($sp)
+lw $t1, 4($sp)
+lw $t2, 8($sp)
+addu $sp, $sp, 12
 move $t0, $v0
 move $a0, $t0
 li $v0, 1
@@ -49,8 +127,240 @@ la $a0, str_0
 li $v0, 4
 syscall
 
+addu $t2, $t2, 1
+# switch basic block. store back vars that are used---------------
+sw $t0, -16($fp)
+sw $t2, -12($fp)
+# vars store back done!---------------
+j LOOP_9
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+LOOP_END_11:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+check_group_ret_:
+lw $ra, -8($fp)
+jr $ra
+
+test:
+move $fp, $sp
+subu $sp, $sp, 4
+subu $sp, $sp, 4
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+IF_12:
+lw $t1, -4($fp)
+lw $t0, 4($t1)
+# switch basic block. store back vars that are used---------------
+sw $t0, -8($fp)
+# vars store back done!---------------
+bne $t0, 0, END_IF_14
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+IF_STMT_13:
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+END_IF_14:
+li $v0, 0
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+j test_ret_
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+# switch basic block. store back vars that are used---------------
+# vars store back done!---------------
+
+test_ret_:
+jr $ra
+
+main:
+move $fp, $sp
+subu $sp, $sp, 72
+la $a0, str_1
+li $v0, 4
+syscall
+
+li $t0, 30
+subu $sp, $sp, 4
+sw $t0, ($sp)
+subu $sp, $sp, 4
+sw $fp, ($sp)
+move $a0, $t0
+sw $t0, -4($sp)
+jal isPrime
+move $sp, $fp
+lw $fp, ($sp)
+addu $sp, $sp, 4
+lw $t0, ($sp)
+addu $sp, $sp, 4
+move $t1, $v0
+move $a0, $t1
+li $v0, 1
+syscall
+
+la $a0, str_0
+li $v0, 4
+syscall
+
+li $t0, 31
+subu $sp, $sp, 8
+sw $t0, ($sp)
+sw $t1, 4($sp)
+subu $sp, $sp, 4
+sw $fp, ($sp)
+move $a0, $t0
+sw $t0, -4($sp)
+jal isPrime
+move $sp, $fp
+lw $fp, ($sp)
+addu $sp, $sp, 4
+lw $t0, ($sp)
+lw $t1, 4($sp)
+addu $sp, $sp, 8
+move $t2, $v0
+move $a0, $t2
+li $v0, 1
+syscall
+
+la $a0, str_0
+li $v0, 4
+syscall
+
+li $t3, 111
+subu $t4, $fp, 36
+sw $t3, ($t4)
+li $t5, 2222
+sw $t5, 4($t4)
+li $t6, 3
+sw $t6, 8($t4)
+li $t7, 4
+sw $t7, 12($t4)
+li $t8, 5
+sw $t8, 16($t4)
+li $t9, 6
+sw $t9, 20($t4)
+move $v1, $t4
+addu $v1, $v1, 0
+subu $sp, $sp, 44
+sw $t0, ($sp)
+sw $t1, 4($sp)
+sw $t2, 8($sp)
+sw $t3, 12($sp)
+sw $t4, 16($sp)
+sw $t5, 20($sp)
+sw $t6, 24($sp)
+sw $t7, 28($sp)
+sw $t8, 32($sp)
+sw $t9, 36($sp)
+sw $v1, 40($sp)
+subu $sp, $sp, 4
+sw $fp, ($sp)
+move $a0, $v1
+sw $v1, -4($sp)
+jal check_group
+move $sp, $fp
+lw $fp, ($sp)
+addu $sp, $sp, 4
+lw $t0, ($sp)
+lw $t1, 4($sp)
+lw $t2, 8($sp)
+lw $t3, 12($sp)
+lw $t4, 16($sp)
+lw $t5, 20($sp)
+lw $t6, 24($sp)
+lw $t7, 28($sp)
+lw $t8, 32($sp)
+lw $t9, 36($sp)
+lw $v1, 40($sp)
+addu $sp, $sp, 44
+move $a0, $t4
+addu $a0, $a0, 8
+sw $a0, -68($fp)
+subu $sp, $sp, 44
+sw $t0, ($sp)
+sw $t1, 4($sp)
+sw $t2, 8($sp)
+sw $t3, 12($sp)
+sw $t4, 16($sp)
+sw $t5, 20($sp)
+sw $t6, 24($sp)
+sw $t7, 28($sp)
+sw $t8, 32($sp)
+sw $t9, 36($sp)
+sw $v1, 40($sp)
+subu $sp, $sp, 4
+sw $fp, ($sp)
+lw $at, -68($fp)
+move $a0, $at
+sw $at, -4($sp)
+jal check_group
+move $sp, $fp
+lw $fp, ($sp)
+addu $sp, $sp, 4
+lw $t0, ($sp)
+lw $t1, 4($sp)
+lw $t2, 8($sp)
+lw $t3, 12($sp)
+lw $t4, 16($sp)
+lw $t5, 20($sp)
+lw $t6, 24($sp)
+lw $t7, 28($sp)
+lw $t8, 32($sp)
+lw $t9, 36($sp)
+lw $v1, 40($sp)
+addu $sp, $sp, 44
+move $a0, $t4
+addu $a0, $a0, 16
+sw $a0, -72($fp)
+subu $sp, $sp, 44
+sw $t0, ($sp)
+sw $t1, 4($sp)
+sw $t2, 8($sp)
+sw $t3, 12($sp)
+sw $t4, 16($sp)
+sw $t5, 20($sp)
+sw $t6, 24($sp)
+sw $t7, 28($sp)
+sw $t8, 32($sp)
+sw $t9, 36($sp)
+sw $v1, 40($sp)
+subu $sp, $sp, 4
+sw $fp, ($sp)
+lw $at, -72($fp)
+move $a0, $at
+sw $at, -4($sp)
+jal check_group
+move $sp, $fp
+lw $fp, ($sp)
+addu $sp, $sp, 4
+lw $t0, ($sp)
+lw $t1, 4($sp)
+lw $t2, 8($sp)
+lw $t3, 12($sp)
+lw $t4, 16($sp)
+lw $t5, 20($sp)
+lw $t6, 24($sp)
+lw $t7, 28($sp)
+lw $t8, 32($sp)
+lw $t9, 36($sp)
+lw $v1, 40($sp)
+addu $sp, $sp, 44
 # switch basic block. store back vars that are used---------------
 sw $t0, -4($fp)
+sw $t1, -8($fp)
+sw $t2, -12($fp)
+sw $t3, -40($fp)
+sw $t5, -44($fp)
+sw $t6, -48($fp)
+sw $t7, -52($fp)
+sw $t8, -56($fp)
+sw $t9, -60($fp)
+sw $v1, -64($fp)
 # vars store back done!---------------
 j main_ret_
 # switch basic block. store back vars that are used---------------

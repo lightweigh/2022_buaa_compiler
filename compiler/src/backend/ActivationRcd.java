@@ -22,7 +22,7 @@ public class ActivationRcd {
     private HashMap<Integer, HashMap<String, VarName>> varsOnMem = new HashMap<>();
     private HashMap<String, Integer> offsets = new HashMap<>();
     private int curOffset = 0;
-    private int varOccupiedSpace = 0;
+    // private int varOccupiedSpace = 0;
 
     // 动态栈
     public ActivationRcd(ActivationRcd parent/*, int addrBase*//*, ActivationRcd arInBasicBlock*/) {
@@ -54,9 +54,9 @@ public class ActivationRcd {
         return null;
     }
 
-    public int getVarOccupiedSpace() {
+    /*public int getVarOccupiedSpace() {
         return varOccupiedSpace;
-    }
+    }*/
 
     public int getCapacity() {
         return curOffset;
@@ -105,7 +105,17 @@ public class ActivationRcd {
         varsOnMem.get(name.getDepth()).put(name.toString(), name);
         curOffset = curOffset + size * 4;
         offsets.put(name.toString(), curOffset);    // 数组名指向空间底部, 向上增长
-        varOccupiedSpace = varOccupiedSpace + size * 4;
+        // varOccupiedSpace = varOccupiedSpace + size * 4;
+    }
+
+
+    public void varSetToMem(VarName name, Integer size) {
+        if (!varsOnMem.containsKey(name.getDepth())) {
+            varsOnMem.put(name.getDepth(), new HashMap<>());
+        }
+        varsOnMem.get(name.getDepth()).put(name.toString(), name);
+        curOffset = curOffset + size * 4;
+        offsets.put(name.toString(), curOffset);
     }
 
     public void varSetToMem(VarName name) {
@@ -115,7 +125,7 @@ public class ActivationRcd {
         varsOnMem.get(name.getDepth()).put(name.toString(), name);
         curOffset += 4;
         offsets.put(name.toString(), curOffset);
-        varOccupiedSpace += 4;
+        // varOccupiedSpace += 4;
     }
 
     public void regsMapToMem(int offset) {

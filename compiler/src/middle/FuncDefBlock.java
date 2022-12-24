@@ -2,12 +2,16 @@ package middle;
 
 import backend.register.Reg;
 import frontend.symbol.Symbol;
+import middle.quartercode.ConstVar;
+import middle.quartercode.array.ArrayDef;
+import middle.quartercode.operand.MiddleCode;
 import middle.quartercode.operand.Operand;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class FuncDefBlock {
     private String lable;
@@ -26,12 +30,103 @@ public class FuncDefBlock {
     private ArrayList<BasicBlock> basicBlocks;
 
     private boolean raNeedSave = false;
+    // private ArrayList<VarName> allVars = new ArrayList<>(); // 所有的临时变量记录下来
+    private LinkedHashMap<VarName, Integer> allVars = new LinkedHashMap<>(); // 所有的变量记录下来 -> varName , size
 
     public FuncDefBlock(String lable, BasicBlock startBb) {
         this.lable = lable;
         this.lastBb = startBb;
         this.basicBlocks = new ArrayList<>();
         basicBlocks.add(startBb);
+    }
+
+    public void funcBlockProcess() {
+        BasicBlock bb = getStartBb();
+        while (bb != null) {
+            for (MiddleCode middleCode : bb.getMiddleCodes()) {
+                // SaveCmp. JumpCmp
+                switch (middleCode.getCodeType()) {
+                    case SAVECMP:
+                        if (!allVars.containsKey(middleCode.getVarName())) {
+                            allVars.put(middleCode.getVarName(), 1);
+                        }
+                        break;
+                    case JUMPCMP:
+                        break;
+                    case ARRAY_DEF:
+                        allVars.put(middleCode.getVarName(), ((ArrayDef) middleCode).getSize());
+                        break;
+                    case ARRAY_LOAD:
+                        if (!allVars.containsKey(middleCode.getVarName())) {
+                            allVars.put(middleCode.getVarName(), 1);
+                        }
+                        break;
+                    case ARRAY_STORE:
+                        break;
+                    case ASSIGN:
+                        if (!allVars.containsKey(middleCode.getVarName())) {
+                            allVars.put(middleCode.getVarName(), 1);
+                        }
+                        break;
+                    case BINARY:
+                        if (!allVars.containsKey(middleCode.getVarName())) {
+                            allVars.put(middleCode.getVarName(), 1);
+                        }
+                        break;
+                    case CONSTVAR:
+                        if (!((ConstVar) middleCode).isConst()) {
+                            assert !allVars.containsKey(middleCode.getVarName());
+                            allVars.put(middleCode.getVarName(), 1);
+                        }
+                        break;
+                    case PRINT:
+                        break;
+                    case SCANF:
+                        if (!allVars.containsKey(middleCode.getVarName())) {
+                            System.out.println("scanf item not defined");
+                            allVars.put(middleCode.getVarName(), 1);
+                        }
+                        break;
+                    case RET:
+                        break;
+                    case UNARY:
+                        if (!allVars.containsKey(middleCode.getVarName())) {
+                            allVars.put(middleCode.getVarName(), 1);
+                        }
+                        break;
+                    case RPARA:
+                    case GLOBAL_ARRAY:
+                        break;
+                    case FPARA:
+                        // 函数参数的空间是事先分配好的，这里记录下函数参数的名字，后续不能再分配空间了！
+                        if (!allVars.containsKey(middleCode.getVarName())) {
+                            allVars.put(middleCode.getVarName(), 0);
+                        }
+                        break;
+                    case ARRAY_BASE:
+                        if (!allVars.containsKey(middleCode.getVarName())) {
+                            allVars.put(middleCode.getVarName(), 1);
+                        }
+                        break;
+                    case FUNCCALL:
+                        break;
+                    case FUNCDEF:
+                        break;
+                    case CONSTSTR:
+                        break;
+                    default:
+                        break;
+                }
+            }
+            bb = bb.getDirectBb();
+        }
+    }
+
+    public LinkedHashMap<VarName, Integer> getAllVars() {
+        for (VarName varName : allVars.keySet()) {
+            System.out.println(varName);
+        }
+        return allVars;
     }
 
     public void addBb(BasicBlock bb) {

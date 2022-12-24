@@ -154,7 +154,7 @@ public class Visitor {
 
     private void visitBlock(Block block, SymTable newTable, String loopBegin, String loopEnd) {
         //  Block → '{' { BlockItem } '}'
-        middleTn.clear();
+        // middleTn.clear();    delete this one
         curSymTable = newTable;
         for (BlockItem blockItem : block.getBlockItems()) {
             if (blockItem.isDecl()) {
@@ -1149,7 +1149,7 @@ public class Visitor {
                 if (funcSymbol != null && funcSymbol.isInt()) {
                     // 错误处理之后不能处理这个null，还是要特判一下
                     LValOpd dst = genTmpVar();
-                    operands.add(new AssignCode(dst, new RetOpd()));
+                    operands.add(new AssignCode(dst, new RetOpd(new VarName(funcName+"()", 0))));
                 }
                 break;
             case 2:
@@ -1157,12 +1157,20 @@ public class Visitor {
                 boolean isNot = unaryExp.getUnaryOp().getOp().equals("!");
 
                 UnaryExp subUnary = unaryExp.getUnaryExp();
-                while (isNeg && subUnary.getType() == 2) {
+                /*while (subUnary.getType() == 2) {
+                    if (!subUnary.getUnaryOp().getOp().equals("!")) {
+                        break;
+                    }
+                    isNot = !isNot;
+                    subUnary = subUnary.getUnaryExp();
+                }*/
+                // todo open follow
+                /*while (isNeg && subUnary.getType() == 2) {
                     // 如果 isNeg，意味着后面一定是+/- 而不会是 !
                     // 异或一下
                     isNeg = isNeg ^ subUnary.getUnaryOp().getOp().equals("-");
                     subUnary = subUnary.getUnaryExp();
-                }
+                }*/
 
                 ArrayList<Operand> operands1 = analyseUnaryExp(subUnary); // recurrence
                 Operand lastOne = getLast(operands1);

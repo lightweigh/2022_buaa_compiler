@@ -1,96 +1,356 @@
-const str str_0 = "\n"
-const str str_1 = "19373061\n"
 GLOBAL_0:
-isPrime:
-int isPrime()
-para int m@1
-var int i@1
-i@1 = 2
-LOOP_1:
-bge i@1, m@1, LOOP_END_3
-WHILE_STMT_2:
-IF_4:
-#t1@3 = m@1%i@1
-bne #t1@3, 0, END_IF_6
-IF_STMT_5:
-RET 0
-END_IF_6:
-i@1 = i@1+1
-j LOOP_1
-LOOP_END_3:
+const int TOKEN_NUM = 0
+const int TOKEN_OTHER = 1
+var int last_char = 32
+var int num
+var int other
+var int cur_token
+oprs[256]
+ops[256]
+next_char:
+int next_char()
+scanf last_char
+RET last_char
+is_space:
+int is_space()
+para int c@1
+IF_2:
+bne c@1, 32, COND_OR_6
+JUMP_7:
+j IF_STMT_3
+COND_OR_6:
+bne c@1, 10, ELSE_4
+IF_STMT_3:
 RET 1
-check_group:
-void check_group()
-para int* t@1
-var int i@1
-i@1 = 0
-LOOP_9:
-bge i@1, 2, LOOP_END_11
-WHILE_STMT_10:
-var int tmp@2
-tmp@2 = t@1[i@1]
-push tmp@2
-call isPrime
-tmp@2 = isPrime()
-printf tmp@2
-printf const str str_0 = "\n"
-
-i@1 = i@1+1
-j LOOP_9
-LOOP_END_11:
-test:
-int test()
-para int* t@1
-IF_12:
-#t7@2 = t@1[1]
-bne #t7@2, 0, END_IF_14
-IF_STMT_13:
-END_IF_14:
+j END_IF_5
+ELSE_4:
 RET 0
+END_IF_5:
+is_num:
+int is_num()
+para int c@1
+IF_10:
+blt c@1, 48, ELSE_12
+COND_AND_14:
+bgt c@1, 57, ELSE_12
+IF_STMT_11:
+RET 1
+j END_IF_13
+ELSE_12:
+RET 0
+END_IF_13:
+next_token:
+int next_token()
+LOOP_17:
+push last_char
+call is_space
+#t3@2 = is_space()
+beqz #t3@2, LOOP_END_19
+WHILE_STMT_18:
+call next_char
+#t4@2 = next_char()
+j LOOP_17
+LOOP_END_19:
+IF_20:
+push last_char
+call is_num
+#t5@2 = is_num()
+beqz #t5@2, ELSE_22
+IF_STMT_21:
+num = last_char-48
+LOOP_24:
+call next_char
+#t7@3 = next_char()
+push #t7@3 = next_char()
+
+call is_num
+#t8@3 = is_num()
+beqz #t8@3, LOOP_END_26
+WHILE_STMT_25:
+#t9@3 = num*10
+#t10@3 = #t9@3+last_char
+num = #t10@3-48
+j LOOP_24
+LOOP_END_26:
+cur_token = 0
+j END_IF_23
+ELSE_22:
+other = last_char
+call next_char
+#t12@2 = next_char()
+cur_token = 1
+END_IF_23:
+RET cur_token
+panic:
+int panic()
+printf 112
+printf 97
+printf 110
+printf 105
+printf 99
+printf 33
+printf 10
+RET -1
+get_op_prec:
+int get_op_prec()
+para int op@1
+IF_29:
+bne op@1, 43, COND_OR_32
+JUMP_33:
+j IF_STMT_30
+COND_OR_32:
+bne op@1, 45, END_IF_31
+IF_STMT_30:
+RET 10
+END_IF_31:
+IF_35:
+bne op@1, 42, COND_OR_38
+JUMP_39:
+j IF_STMT_36
+COND_OR_38:
+bne op@1, 47, COND_OR_40
+JUMP_41:
+j IF_STMT_36
+COND_OR_40:
+bne op@1, 37, END_IF_37
+IF_STMT_36:
+RET 20
+END_IF_37:
+RET 0
+stack_push:
+void stack_push()
+para int* s@1
+para int v@1
+#t13@1 = s@1[0]
+#t14@1 = #t13@1+1
+s@1[0] = #t14@1
+#t15@1 = s@1[0]
+s@1[#t15@1] = v@1
+stack_pop:
+int stack_pop()
+para int* s@1
+#t16@1 = s@1[0]
+#t17@1 = s@1[#t16@1]
+var int last@1 = #t17@1
+#t18@1 = s@1[0]
+#t19@1 = #t18@1-1
+s@1[0] = #t19@1
+RET last@1
+stack_peek:
+int stack_peek()
+para int* s@1
+#t20@1 = s@1[0]
+#t21@1 = s@1[#t20@1]
+RET #t21@1
+stack_size:
+int stack_size()
+para int* s@1
+#t22@1 = s@1[0]
+RET #t22@1
+eval_op:
+int eval_op()
+para int op@1
+para int lhs@1
+para int rhs@1
+IF_47:
+bne op@1, 43, END_IF_49
+IF_STMT_48:
+#t23@2 = lhs@1+rhs@1
+RET #t23@2
+END_IF_49:
+IF_51:
+bne op@1, 45, END_IF_53
+IF_STMT_52:
+#t24@2 = lhs@1-rhs@1
+RET #t24@2
+END_IF_53:
+IF_55:
+bne op@1, 42, END_IF_57
+IF_STMT_56:
+#t25@2 = lhs@1*rhs@1
+RET #t25@2
+END_IF_57:
+IF_59:
+bne op@1, 47, END_IF_61
+IF_STMT_60:
+#t26@2 = lhs@1/rhs@1
+RET #t26@2
+END_IF_61:
+IF_63:
+bne op@1, 37, END_IF_65
+IF_STMT_64:
+#t27@2 = lhs@1%rhs@1
+RET #t27@2
+END_IF_65:
+RET 0
+eval:
+int eval()
+IF_68:
+beq cur_token, 0, END_IF_70
+IF_STMT_69:
+call panic
+#t28@2 = panic()
+RET #t28@2
+END_IF_70:
+#t29@1 = &oprs
+push #t29@1 = &oprs
+
+push num
+call stack_push
+call next_token
+#t30@1 = next_token()
+LOOP_72:
+bne cur_token, 1, LOOP_END_74
+WHILE_STMT_73:
+var int op@2 = other
+IF_75:
+push op@2
+call get_op_prec
+#t31@3 = get_op_prec()
+bne #t31@3, 0, END_IF_77
+IF_STMT_76:
+j LOOP_END_74
+FOLLOW_GOTO_78:
+END_IF_77:
+call next_token
+#t33@2 = next_token()
+LOOP_79:
+#t34@3 = &ops
+push #t34@3 = &ops
+
+call stack_size
+#t35@3 = stack_size()
+beqz #t35@3, LOOP_END_81
+COND_AND_82:
+#t36@3 = &ops
+push #t36@3 = &ops
+
+call stack_peek
+#t37@3 = stack_peek()
+push #t37@3 = stack_peek()
+
+call get_op_prec
+#t38@3 = get_op_prec()
+push op@2
+call get_op_prec
+#t39@3 = get_op_prec()
+blt #t38@3, #t39@3, LOOP_END_81
+WHILE_STMT_80:
+#t41@3 = &ops
+push #t41@3 = &ops
+
+call stack_pop
+#t42@3 = stack_pop()
+var int cur_op@3 = #t42@3
+#t43@3 = &oprs
+push #t43@3 = &oprs
+
+call stack_pop
+#t44@3 = stack_pop()
+var int rhs@3 = #t44@3
+#t45@3 = &oprs
+push #t45@3 = &oprs
+
+call stack_pop
+#t46@3 = stack_pop()
+var int lhs@3 = #t46@3
+push cur_op@3
+push lhs@3
+push rhs@3
+call eval_op
+#t47@3 = eval_op()
+#t48@3 = &oprs
+push #t48@3 = &oprs
+
+push #t47@3 = eval_op()
+
+call stack_push
+j LOOP_79
+LOOP_END_81:
+#t49@2 = &ops
+push #t49@2 = &ops
+
+push op@2
+call stack_push
+IF_83:
+beq cur_token, 0, END_IF_85
+IF_STMT_84:
+call panic
+#t50@3 = panic()
+RET #t50@3
+END_IF_85:
+#t51@2 = &oprs
+push #t51@2 = &oprs
+
+push num
+call stack_push
+call next_token
+#t52@2 = next_token()
+j LOOP_72
+LOOP_END_74:
+call next_token
+#t53@1 = next_token()
+LOOP_87:
+#t54@2 = &ops
+push #t54@2 = &ops
+
+call stack_size
+#t55@2 = stack_size()
+beqz #t55@2, LOOP_END_89
+WHILE_STMT_88:
+#t56@2 = &ops
+push #t56@2 = &ops
+
+call stack_pop
+#t57@2 = stack_pop()
+var int cur_op@2 = #t57@2
+#t58@2 = &oprs
+push #t58@2 = &oprs
+
+call stack_pop
+#t59@2 = stack_pop()
+var int rhs@2 = #t59@2
+#t60@2 = &oprs
+push #t60@2 = &oprs
+
+call stack_pop
+#t61@2 = stack_pop()
+var int lhs@2 = #t61@2
+push cur_op@2
+push lhs@2
+push rhs@2
+call eval_op
+#t62@2 = eval_op()
+#t63@2 = &oprs
+push #t63@2 = &oprs
+
+push #t62@2 = eval_op()
+
+call stack_push
+j LOOP_87
+LOOP_END_89:
+#t64@1 = &oprs
+push #t64@1 = &oprs
+
+call stack_peek
+#t65@1 = stack_peek()
+RET #t65@1
 main:
 int main()
-printf const str str_1 = "19373061\n"
+var int count@1
+scanf count@1
+call next_token
+#t67@1 = next_token()
+LOOP_91:
+beqz count@1, LOOP_END_93
+WHILE_STMT_92:
+call eval
+#t68@2 = eval()
+printf #t68@2 = eval()
 
-var int num@1
-num@1 = 30
-push num@1
-call isPrime
-#t9@1 = isPrime()
-printf #t9@1 = isPrime()
-
-printf const str str_0 = "\n"
-
-num@1 = 31
-push num@1
-call isPrime
-#t10@1 = isPrime()
-printf #t10@1 = isPrime()
-
-printf const str str_0 = "\n"
-
-arr tmp@1[6]
-#t11@1 = 111
-tmp@1[0] = #t11@1
-#t12@1 = 2222
-tmp@1[1] = #t12@1
-#t13@1 = 3
-tmp@1[2] = #t13@1
-#t14@1 = 4
-tmp@1[3] = #t14@1
-#t15@1 = 5
-tmp@1[4] = #t15@1
-#t16@1 = 6
-tmp@1[5] = #t16@1
-#t18@1 = &tmp@1[0]
-push #t18@1 = &tmp@1[0]
-
-call check_group
-#t20@1 = &tmp@1[1]
-push #t20@1 = &tmp@1[1]
-
-call check_group
-#t22@1 = &tmp@1[2]
-push #t22@1 = &tmp@1[2]
-
-call check_group
+printf 10
+count@1 = count@1-1
+j LOOP_91
+LOOP_END_93:
+printf 0
 RET 0

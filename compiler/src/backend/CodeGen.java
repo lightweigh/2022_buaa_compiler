@@ -12,6 +12,7 @@ import backend.mipsCode.instruction.branch.Cmp;
 import backend.mipsCode.instruction.branch.Jump;
 import backend.register.Reg;
 import backend.register.Registers;
+import com.sun.media.sound.MidiInDeviceProvider;
 import middle.BasicBlock;
 import middle.FuncDefBlock;
 import middle.VarName;
@@ -281,8 +282,10 @@ public class CodeGen {
                     case ARRAY_LOAD:
                         // dst = array[idx]
                         ArrayLoad arrayLoad = (ArrayLoad) middleCode;
-                        Reg dstReg = getOrAllocReg4Var(arrayLoad.getDst().getVarName(), false, null);
-                        loadOrStoreArray(dstReg, (LValOpd) arrayLoad.getPrimaryOpd(), true);
+                        mipsCodes.add(new Annotation(arrayLoad.toString().replace("\n", "") + "------"));
+                        // i = next[i]  dstReg不能先alloc
+                        loadArray(arrayLoad.getDst().getVarName(), (LValOpd) arrayLoad.getPrimaryOpd());
+                        mipsCodes.add(new Annotation("finish arrayload----------"));
                         break;
                     case ARRAY_STORE:
                         // array[idx] = src
@@ -297,7 +300,7 @@ public class CodeGen {
                         } else {
                             srcReg = getOrAllocReg4Var(arrayStore.getSrc().getVarName(), true, null);
                         }
-                        loadOrStoreArray(srcReg, (LValOpd) arrayStore.getPrimaryOpd(), false);
+                        storeArray(srcReg, (LValOpd) arrayStore.getPrimaryOpd());
                         if (arrayStore.getSrc() instanceof Immediate) {
                             // 对应上面的 allocReg4Imm
                             srcReg.setAlloced(false);
@@ -305,6 +308,7 @@ public class CodeGen {
                         break;
                     case ASSIGN:
                         AssignCode assignCode = (AssignCode) middleCode;
+                        Reg dstReg;
                         if (assignCode.getOperand() instanceof Immediate) {
                             dstReg = getOrAllocReg4Var(assignCode.getVarName(), false, null);
                             mipsCodes.add(new Li(dstReg, (Immediate) assignCode.getOperand()));
@@ -314,85 +318,70 @@ public class CodeGen {
                         } else {
                             srcReg = getOrAllocReg4Var(assignCode.getOperand().getVarName(), true, null);
                             dstReg = getOrAllocReg4Var(assignCode.getVarName(), false, new ArrayList<>(Collections.singletonList(srcReg)));
-                            mipsCodes.add(new Move(dstReg, srcReg));
+                            if (dstReg != srcReg) {
+                                mipsCodes.add(new Move(dstReg, srcReg));
+                            }
                         }
                         break;
                     case BINARY:
                         BinaryCode binaryCode = (BinaryCode) middleCode;
                         Operand src1 = binaryCode.getSrc1();
                         Operand src2 = binaryCode.getSrc2();
-                        /*if (src1 instanceof Immediate) {
-                            Immediate immediate = (Immediate) src1;
-                            immReg = getOrAllocReg4Var(src1.getVarName(), false, null, null);
-                            srcReg = immReg;    // 不能是AT啊
-                            mipsCodes.add(new Li(srcReg, immediate));
-                        } else if (src1 instanceof RetOpd) {
-                            assert !(src2 instanceof RetOpd);
-                            srcReg = Registers.V0;
-                        } *//*else if (src1 instanceof LValOpd && ((LValOpd) src1).isArray()) {
-                            assert false;
-                        } *//* else {*/
                         assert !(src1 instanceof LValOpd && ((LValOpd) src1).isArray() || src1 instanceof Immediate);
                         srcReg = getOrAllocReg4Var(binaryCode.getSrc1().getVarName(), true, new ArrayList<>());
-                        // }
-                        Immediate immediate = null;
-                        Reg srcReg2 = null;
-                        boolean src2IsImm = false;
+                        Reg srcReg2;
+                        Instruction src2ImmCode = null;
                         if (binaryCode.getSrc2() instanceof Immediate) {
-                            immediate = (Immediate) binaryCode.getSrc2();
-                            src2IsImm = true;
+                            srcReg2 = allocReg4Imm(new ArrayList<>(Collections.singletonList(srcReg)));
+                            src2ImmCode = new Li(srcReg2, (Immediate) binaryCode.getSrc2());
+                            mipsCodes.add(src2ImmCode);
                         } else {
                             assert !(src2 instanceof LValOpd && ((LValOpd) src2).isArray());
                             srcReg2 = getOrAllocReg4Var(binaryCode.getSrc2().getVarName(), true, new ArrayList<>(Collections.singletonList(srcReg)));
                         }
-                        mutexed = new ArrayList<>();
-                        mutexed.add(srcReg);
-                        if (srcReg2 != null) {
-                            mutexed.add(srcReg2);
-                        }
-                        dstReg = getOrAllocReg4Var(binaryCode.getVarName(), false, mutexed);
+                        dstReg = getOrAllocReg4Var(binaryCode.getVarName(), false, new ArrayList<>(Arrays.asList(srcReg, srcReg2)));
                         switch (binaryCode.getOp()) {
                             case ADD:
-                                if (src2IsImm) {
-                                    mipsCodes.add(new Add(dstReg, srcReg, immediate));
-                                } else {
-                                    mipsCodes.add(new Add(dstReg, srcReg, srcReg2));
-                                }
+                                mipsCodes.add(new Addu(dstReg, srcReg, srcReg2));
                                 break;
                             case SUB:
-                                if (src2IsImm) {
-                                    mipsCodes.add(new Sub(dstReg, srcReg, immediate));
-                                } else {
-                                    mipsCodes.add(new Sub(dstReg, srcReg, srcReg2));
-                                }
+                                mipsCodes.add(new Subu(dstReg, srcReg, srcReg2));
                                 break;
                             case MUL:
-                                // todo mfhi ?
-                                if (src2IsImm) {
-                                    mipsCodes.add(new Mul(dstReg, srcReg, immediate));
+                                if (binaryCode.getSrc2() instanceof Immediate) {
+                                    int value = ((Immediate) binaryCode.getSrc2()).getValue();
+                                    if (value == 0) {
+                                        mipsCodes.remove(src2ImmCode);
+                                        mipsCodes.add(new Li(dstReg, new Immediate(0)));
+                                    } else if (value == 1) {
+                                        mipsCodes.remove(src2ImmCode);
+                                        mipsCodes.add(new Move(dstReg, srcReg));
+                                    } else if (value > 1 && (value & (value - 1)) == 0) {
+                                        mipsCodes.remove(src2ImmCode);
+                                        int cnt = 0;
+                                        while (value > 1) {
+                                            cnt++;
+                                            value /= 2;
+                                        }
+                                        mipsCodes.add(new Sll(dstReg, srcReg, cnt));
+                                    } else {
+                                        mipsCodes.add(new Mul(dstReg, srcReg, srcReg2));
+                                    }
                                 } else {
                                     mipsCodes.add(new Mul(dstReg, srcReg, srcReg2));
                                 }
                                 break;
                             case DIV:
-                                // todo mfhi ?
-                                if (src2IsImm) {
-                                    mipsCodes.add(new Div(dstReg, srcReg, immediate));
-                                } else {
-                                    mipsCodes.add(new Div(dstReg, srcReg, srcReg2));
-                                }
+                                mipsCodes.add(new Div(srcReg, srcReg2));
+                                mipsCodes.add(new Mflo(dstReg));
                                 break;
                             case MOD:
-                                if (src2IsImm) {
-                                    srcReg2 = allocReg4Imm(new ArrayList<>(Arrays.asList(srcReg, dstReg)));
-                                    mipsCodes.add(new Li(srcReg2, immediate));
-                                }
                                 mipsCodes.add(new Div(srcReg, srcReg2));
                                 mipsCodes.add(new Mfhi(dstReg));
-                                if (src2IsImm) {
-                                    srcReg2.setAlloced(false);
-                                }
                                 break;
+                        }
+                        if (src2ImmCode != null) {
+                            srcReg2.setAlloced(false);
                         }
                         break;
                     case CONSTVAR:
@@ -454,10 +443,8 @@ public class CodeGen {
                                     mipsCodes.add(new Li(Registers.V0, (Immediate) retCode.getOperand()));
                                 } else if (retCode.getOperand() instanceof RetOpd) {
                                     // do nothing
-                                } else if (retCode.getOperand() instanceof LValOpd && ((LValOpd) retCode.getOperand()).isArray()) {
-                                    assert false;
-                                    loadOrStoreArray(Registers.V0, (LValOpd) retCode.getOperand(), true);
                                 } else {
+                                    assert !(retCode.getOperand() instanceof LValOpd && ((LValOpd) retCode.getOperand()).isArray());
                                     Reg reg = curAR.getVarMapReg(middleCode.getVarName());
                                     if (reg == null) {
                                         loadValueOrAddr(middleCode.getVarName(), Registers.V0);
@@ -524,6 +511,7 @@ public class CodeGen {
                                 mipsCodes.add(new Add(dstReg, dstReg, (Immediate) offset));
                             } else {
                                 // assert offset instanceof MiddleCode;
+                                assert !offset.getVarName().toString().equals(arrayBase.getVarName().toString());
                                 Reg off = getOrAllocReg4Var(offset.getVarName(), true, new ArrayList<>(Collections.singletonList(dstReg)));
                                 tmp = allocReg4Imm(new ArrayList<>(Arrays.asList(off, dstReg)));
                                 mipsCodes.add(new Mul(tmp, off, new Immediate(colNum)));
@@ -620,23 +608,8 @@ public class CodeGen {
                         break;
                 }
             }
-            /*// curBlock 和 nextBlock 层数相同的话? 那应该是不同的Block
-            if (curBlock.getDirectBb() != null) {
-                if (curBlock.getDepth() >= curBlock.getDirectBb().getDepth()) {
-                    // 弹栈
-                    int prevCapacity = blockCapacity.get(curBlock.getDepth());
-                    mipsCodes.add(new Sub(Registers.SP, Registers.SP, new Immediate(curAR.getCapacity() - prevCapacity)));
-                    blockCapacity.remove(curBlock.getDepth());
-                    // AR记录的变量也要删掉？
-                    curAR.removeVarOnMem(curBlock.getLable());
-                }
-            }*/
+
             // 跨越基本块, 将局部变量存回内存
-            // if ((reg = curAR.getVarMapReg(middleCode.getVarName())) != null) {
-            //     storeBack(reg, middleCode.getVarName());
-            //     curAR.regUnmapVar(reg);
-            // }
-            // todo
             storeVarsInCurBlock();
 
             curBlock = curBlock.getDirectBb();
@@ -699,59 +672,73 @@ public class CodeGen {
         mipsCodes.add(new Annotation("vars store back done!"));
     }
 
-    private void loadOrStoreArray(Reg reg, LValOpd lValOpd, boolean isLoad) {
+    private void loadArray(VarName dst, LValOpd lValOpd) {
         if (lValOpd.isGlobalVar()) {
             // 全局数组
             String label = lValOpd.getVarName().toString();
             if (lValOpd.getIdx() instanceof Immediate) {    // g[1]
                 Immediate offset = ((Immediate) lValOpd.getIdx()).procValue("*", 4);
-                if (isLoad) {
-                    mipsCodes.add(new Load(reg, label, offset));
-                } else {
-                    mipsCodes.add(new Store(reg, label, offset));
-                }
+                mipsCodes.add(new Load(getOrAllocReg4Var(dst, false, null), label, offset));
+
             } else {    // g[#t1] or g[a]
                 Reg offset, tmp;
-                if (lValOpd.getIdx() instanceof RetOpd) {
-                    assert false;
-                    offset = Registers.V0;
-                } else {
-                    offset = getOrAllocReg4Var(lValOpd.getIdx().getVarName(), true, new ArrayList<>(Collections.singletonList(reg)));
-                }
+                assert !(lValOpd.getIdx() instanceof RetOpd);
+                offset = getOrAllocReg4Var(lValOpd.getIdx().getVarName(), true, null);
+                tmp = allocReg4Imm(new ArrayList<>(Collections.singletonList(offset)));
+                Reg dstReg = getOrAllocReg4Var(dst, false, new ArrayList<>(Arrays.asList(offset, tmp)));
+                mipsCodes.add(new Sll(tmp, offset, 2));
+                mipsCodes.add(new Load(dstReg, label, tmp));
+                tmp.setAlloced(false);
+            }
+        } else {
+            Reg base = getOrAllocReg4Var(lValOpd.getVarName(), true, null);
+            if (lValOpd.getIdx() instanceof Immediate) {
+                Immediate offset = ((Immediate) lValOpd.getIdx()).procValue("*", 4);
+                Reg dstReg = getOrAllocReg4Var(dst, false, new ArrayList<>(Collections.singletonList(base)));
+                mipsCodes.add(new Load(dstReg, base, offset));
+            } else {
+                Reg offset, tmp;
+                assert !(lValOpd.getIdx() instanceof RetOpd);
+                // a[#t0], offset -> #t0
+                offset = getOrAllocReg4Var(lValOpd.getIdx().getVarName(), true, new ArrayList<>(Collections.singletonList(base)));
+                tmp = allocReg4Imm(new ArrayList<>(Arrays.asList(offset, base)));
+                Reg dstReg = getOrAllocReg4Var(dst, false, new ArrayList<>(Arrays.asList(base, tmp, offset)));
+                mipsCodes.add(new Sll(tmp, offset, 2));
+                mipsCodes.add(new Add(tmp, base, tmp));
+                mipsCodes.add(new Load(dstReg, tmp, null));
+                tmp.setAlloced(false);
+            }
+        }
+    }
+
+    private void storeArray(Reg reg, LValOpd lValOpd) {
+        if (lValOpd.isGlobalVar()) {
+            // 全局数组
+            String label = lValOpd.getVarName().toString();
+            if (lValOpd.getIdx() instanceof Immediate) {    // g[1]
+                Immediate offset = ((Immediate) lValOpd.getIdx()).procValue("*", 4);
+                mipsCodes.add(new Store(reg, label, offset));
+            } else {    // g[#t1] or g[a]
+                Reg offset, tmp;
+                offset = getOrAllocReg4Var(lValOpd.getIdx().getVarName(), true, new ArrayList<>(Collections.singletonList(reg)));
                 tmp = allocReg4Imm(new ArrayList<>(Arrays.asList(offset, reg)));
                 mipsCodes.add(new Sll(tmp, offset, 2));
-                if (isLoad) {
-                    mipsCodes.add(new Load(reg, label, tmp));
-                } else {
-                    mipsCodes.add(new Store(reg, label, tmp));
-                }
+                mipsCodes.add(new Store(reg, label, tmp));
                 tmp.setAlloced(false);
             }
         } else {
             Reg base = getOrAllocReg4Var(lValOpd.getVarName(), true, new ArrayList<>(Collections.singletonList(reg)));
             if (lValOpd.getIdx() instanceof Immediate) {
                 Immediate offset = ((Immediate) lValOpd.getIdx()).procValue("*", 4);
-                if (isLoad) {
-                    mipsCodes.add(new Load(reg, base, offset));
-                } else {
-                    mipsCodes.add(new Store(reg, base, offset));
-                }
+                mipsCodes.add(new Store(reg, base, offset));
             } else {
                 Reg offset, tmp;
-                if (lValOpd.getIdx() instanceof RetOpd) {
-                    offset = Registers.V0;
-                } else {
-                    // a[#t0], offset -> #t0
-                    offset = getOrAllocReg4Var(lValOpd.getIdx().getVarName(), true, new ArrayList<>(Arrays.asList(reg, base)));
-                }
+                // a[#t0], offset -> #t0
+                offset = getOrAllocReg4Var(lValOpd.getIdx().getVarName(), true, new ArrayList<>(Arrays.asList(reg, base)));
                 tmp = allocReg4Imm(new ArrayList<>(Arrays.asList(offset, base, reg)));   // 还有reg
                 mipsCodes.add(new Sll(tmp, offset, 2));
                 mipsCodes.add(new Add(tmp, base, tmp));
-                if (isLoad) {
-                    mipsCodes.add(new Load(reg, tmp, null));
-                } else {
-                    mipsCodes.add(new Store(reg, tmp, null));   // todo 考虑换一个store
-                }
+                mipsCodes.add(new Store(reg, tmp, null));   // todo 考虑换一个store
                 tmp.setAlloced(false);
             }
         }

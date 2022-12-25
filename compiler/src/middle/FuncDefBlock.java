@@ -75,8 +75,13 @@ public class FuncDefBlock {
                         break;
                     case CONSTVAR:
                         if (!((ConstVar) middleCode).isConst()) {
-                            assert !allVars.containsKey(middleCode.getVarName());
-                            allVars.put(middleCode.getVarName(), 1);
+                            // assert !allVars.containsKey(middleCode.getVarName());
+                            if (!allVars.containsKey(middleCode.getVarName())) {
+                                // 如果varName相同, 意味着 名字 和 blockDepth 都相同, 那么它们生命周期一定不同
+                                allVars.put(middleCode.getVarName(), 1);
+                            } else {
+                                System.out.println("same var declare");
+                            }
                         }
                         break;
                     case PRINT:

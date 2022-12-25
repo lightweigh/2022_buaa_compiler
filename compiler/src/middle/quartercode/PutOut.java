@@ -14,7 +14,7 @@ public class PutOut implements MiddleCode {
 
     @Override
     public VarName getVarName() {
-        return name;
+        return operand.getVarName();
     }
 
     @Override

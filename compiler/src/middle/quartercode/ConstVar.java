@@ -49,7 +49,6 @@ public class ConstVar implements MiddleCode {
 
     @Override
     public VarName getVarName() {
-        // todo no use?
         return varName;
     }
 

@@ -73,8 +73,8 @@ public class JumpCmp implements MiddleCode {
 
     @Override
     public VarName getVarName() {
-        assert false;
-        return null;
+        // assert false;
+        return new VarName("no content", 0);
     }
 
     @Override

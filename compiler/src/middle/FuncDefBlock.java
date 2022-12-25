@@ -44,83 +44,85 @@ public class FuncDefBlock {
         BasicBlock bb = getStartBb();
         while (bb != null) {
             for (MiddleCode middleCode : bb.getMiddleCodes()) {
-                // SaveCmp. JumpCmp
-                switch (middleCode.getCodeType()) {
-                    case SAVECMP:
-                        if (!allVars.containsKey(middleCode.getVarName())) {
-                            allVars.put(middleCode.getVarName(), 1);
-                        }
-                        break;
-                    case JUMPCMP:
-                        break;
-                    case ARRAY_DEF:
-                        allVars.put(middleCode.getVarName(), ((ArrayDef) middleCode).getSize());
-                        break;
-                    case ARRAY_LOAD:
-                        if (!allVars.containsKey(middleCode.getVarName())) {
-                            allVars.put(middleCode.getVarName(), 1);
-                        }
-                        break;
-                    case ARRAY_STORE:
-                        break;
-                    case ASSIGN:
-                        if (!allVars.containsKey(middleCode.getVarName())) {
-                            allVars.put(middleCode.getVarName(), 1);
-                        }
-                        break;
-                    case BINARY:
-                        if (!allVars.containsKey(middleCode.getVarName())) {
-                            allVars.put(middleCode.getVarName(), 1);
-                        }
-                        break;
-                    case CONSTVAR:
-                        if (!((ConstVar) middleCode).isConst()) {
-                            // assert !allVars.containsKey(middleCode.getVarName());
+                if (!middleCode.getVarName().isGlobalVar()) {   // 全局变量没必要加进来了
+                    // SaveCmp. JumpCmp
+                    switch (middleCode.getCodeType()) {
+                        case SAVECMP:
                             if (!allVars.containsKey(middleCode.getVarName())) {
-                                // 如果varName相同, 意味着 名字 和 blockDepth 都相同, 那么它们生命周期一定不同
                                 allVars.put(middleCode.getVarName(), 1);
-                            } else {
-                                System.out.println("same var declare");
                             }
-                        }
-                        break;
-                    case PRINT:
-                        break;
-                    case SCANF:
-                        if (!allVars.containsKey(middleCode.getVarName())) {
-                            System.out.println("scanf item not defined");
-                            allVars.put(middleCode.getVarName(), 1);
-                        }
-                        break;
-                    case RET:
-                        break;
-                    case UNARY:
-                        if (!allVars.containsKey(middleCode.getVarName())) {
-                            allVars.put(middleCode.getVarName(), 1);
-                        }
-                        break;
-                    case RPARA:
-                    case GLOBAL_ARRAY:
-                        break;
-                    case FPARA:
-                        // 函数参数的空间是事先分配好的，这里记录下函数参数的名字，后续不能再分配空间了！
-                        if (!allVars.containsKey(middleCode.getVarName())) {
-                            allVars.put(middleCode.getVarName(), 0);
-                        }
-                        break;
-                    case ARRAY_BASE:
-                        if (!allVars.containsKey(middleCode.getVarName())) {
-                            allVars.put(middleCode.getVarName(), 1);
-                        }
-                        break;
-                    case FUNCCALL:
-                        break;
-                    case FUNCDEF:
-                        break;
-                    case CONSTSTR:
-                        break;
-                    default:
-                        break;
+                            break;
+                        case JUMPCMP:
+                            break;
+                        case ARRAY_DEF:
+                            allVars.put(middleCode.getVarName(), ((ArrayDef) middleCode).getSize());
+                            break;
+                        case ARRAY_LOAD:
+                            if (!allVars.containsKey(middleCode.getVarName())) {
+                                allVars.put(middleCode.getVarName(), 1);
+                            }
+                            break;
+                        case ARRAY_STORE:
+                            break;
+                        case ASSIGN:
+                            if (!allVars.containsKey(middleCode.getVarName())) {
+                                allVars.put(middleCode.getVarName(), 1);
+                            }
+                            break;
+                        case BINARY:
+                            if (!allVars.containsKey(middleCode.getVarName())) {
+                                allVars.put(middleCode.getVarName(), 1);
+                            }
+                            break;
+                        case CONSTVAR:
+                            if (!((ConstVar) middleCode).isConst()) {
+                                // assert !allVars.containsKey(middleCode.getVarName());
+                                if (!allVars.containsKey(middleCode.getVarName())) {
+                                    // 如果varName相同, 意味着 名字 和 blockDepth 都相同, 那么它们生命周期一定不同
+                                    allVars.put(middleCode.getVarName(), 1);
+                                } else {
+                                    System.out.println("same var declare");
+                                }
+                            }
+                            break;
+                        case PRINT:
+                            break;
+                        case SCANF:
+                            if (!allVars.containsKey(middleCode.getVarName())) {
+                                System.out.println("scanf item not defined");
+                                allVars.put(middleCode.getVarName(), 1);
+                            }
+                            break;
+                        case RET:
+                            break;
+                        case UNARY:
+                            if (!allVars.containsKey(middleCode.getVarName())) {
+                                allVars.put(middleCode.getVarName(), 1);
+                            }
+                            break;
+                        case RPARA:
+                        case GLOBAL_ARRAY:
+                            break;
+                        case FPARA:
+                            // 函数参数的空间是事先分配好的，这里记录下函数参数的名字，后续不能再分配空间了！
+                            if (!allVars.containsKey(middleCode.getVarName())) {
+                                allVars.put(middleCode.getVarName(), 0);
+                            }
+                            break;
+                        case ARRAY_BASE:
+                            if (!allVars.containsKey(middleCode.getVarName())) {
+                                allVars.put(middleCode.getVarName(), 1);
+                            }
+                            break;
+                        case FUNCCALL:
+                            break;
+                        case FUNCDEF:
+                            break;
+                        case CONSTSTR:
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
             bb = bb.getDirectBb();

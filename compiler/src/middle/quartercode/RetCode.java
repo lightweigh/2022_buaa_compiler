@@ -19,6 +19,7 @@ public class RetCode implements MiddleCode {
 
     @Override
     public VarName getVarName() {
+        if (operand == null)    return new VarName("no ret value", 0);
         return operand.getVarName();
     }
 

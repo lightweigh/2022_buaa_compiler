@@ -653,7 +653,7 @@ public class CodeGen {
     public void storeVarsInCurBlock() {
         mipsCodes.add(new Annotation("switch basic block. store back vars that are used"));
         for (Reg reg : registers.getUsedTmpRegs()) {
-            if (reg.isAlloced() && reg.getVarName() != null) {
+            if (reg.isAlloced() && reg.getVarName() != null && reg.getVarName().toString().charAt(0) != '#') {
                 storeBack(reg, reg.getVarName());
                 curAR.regUnmapVar(reg);
             }

@@ -14,6 +14,13 @@ public class BlockItem {
     private Decl decl = null;
     private Stmt stmt = null;
 
+    public BlockItem() {
+    }
+
+    public BlockItem(Stmt stmt) {
+        this.stmt = stmt;
+    }
+
     public void parser() {
         Token.Type type = Lexer.tokenList.peek(0).getRefType();
         if (type == Token.Type.CONSTTK || type == Token.Type.INTTK) {

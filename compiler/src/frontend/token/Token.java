@@ -37,6 +37,7 @@ public class Token implements Component {
         PRINTFTK("printf", true),
         RETURNTK("return", true),
         VOIDTK("void", true),
+        FORTK("for", true),
 
         IDENFR("[_a-zA-Z][_a-zA-Z0-9]*", false),
         INTCON("[0-9]+", false),

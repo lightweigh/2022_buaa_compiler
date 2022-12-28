@@ -17,6 +17,16 @@ public class WhileStmt extends Stmt {
     private Token rParent;
     private Stmt stmt;
 
+    public WhileStmt() {
+    }
+
+    public WhileStmt(Token lParent, Cond cond, Token rParent, Stmt stmt) {
+        this.lParent = lParent;
+        this.cond = cond;
+        this.rParent = rParent;
+        this.stmt = stmt;
+    }
+
     public Token getWhileTK() {
         return whileTK;
     }

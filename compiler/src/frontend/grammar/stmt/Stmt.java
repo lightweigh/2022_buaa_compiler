@@ -49,6 +49,10 @@ public class Stmt implements Component {
                 printfStmt.parser();
                 Error.errorDetect(printfStmt, "printfStmt");
                 return printfStmt;
+            case FORTK:
+                ForStmt forStmt = new ForStmt();
+                forStmt.parser();
+                return forStmt;
             default:
                 // Stmt → LVal '=' Exp ';'
                 // Stmt → Exp ';'

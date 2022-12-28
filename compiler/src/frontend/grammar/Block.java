@@ -43,6 +43,10 @@ public class Block extends Stmt {
         return blockItems;
     }
 
+    public void addBlockItems(BlockItem blockItem) {
+        blockItems.add(blockItem);
+    }
+
     public boolean isStmt() {
         return isStmt;
     }

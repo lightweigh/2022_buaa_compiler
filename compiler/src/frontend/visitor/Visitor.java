@@ -386,6 +386,9 @@ public class Visitor {
             }
             // 切换基本块
             createNewCurBlock("AFTER_RET_", 0, BasicBlock.BBType.BASIC);
+        } else if (stmt instanceof ForStmt) {
+            visitStmt(((ForStmt) stmt).getStmt1(), loopBeginLabel, loopEndLabel);
+            visitStmt(((ForStmt) stmt).getWhileStmt(),loopBeginLabel, loopEndLabel);
         }
     }
 

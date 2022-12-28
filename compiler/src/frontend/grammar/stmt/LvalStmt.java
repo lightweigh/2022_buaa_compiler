@@ -23,6 +23,14 @@ public class LvalStmt extends Stmt {
     private Token lParent;
     private Token rParent;
 
+    public LvalStmt() {
+    }
+
+    public LvalStmt(LVal lVal, Exp exp) {
+        this.lVal = lVal;
+        this.exp = exp;
+    }
+
     public LVal getlVal() {
         return lVal;
     }
